@@ -89,9 +89,12 @@ def search_subject():
         result = cursor.fetchall()
         print(result)
 
+        cursor.execute('SELECT  teacher.teacher_name,teacher_id FROM cap_project.teacher') 
+        joblist1=cursor.fetchall()
+
         cursor.close()
 
-        return render_template("searchitem1.html", result=result, papercount_id=papercount_id, teacher_id=teacher_id, timetable_id=timetable_id,selected_values=selected_values)
+        return render_template("searchitem1.html", result=result, papercount_id=papercount_id, teacher_id=teacher_id, timetable_id=timetable_id,selected_values=selected_values,joblist1=joblist1)
     
     else:
         return redirect("/issuehome")
