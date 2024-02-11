@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Home - Cap</title>
+    <!-- <meta content="" name="description">
+    <meta content="" name="keywords"> -->
+
+    <!-- Favicons -->
+    <!-- <link href="{{ url_for('static', filename='/Append/assets/img/favicon.png') }}" rel="icon">
+    <link href="{{ url_for('static', filename='/Append/assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon"> -->
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="{{ url_for('static', filename='/Append/assets/vendor/bootstrap/css/bootstrap.min.css') }}"
+        rel="stylesheet">
+    <link href="{{ url_for('static', filename='/Append/assets/vendor/bootstrap-icons/bootstrap-icons.css') }}"
+        rel="stylesheet">
+    <link href="{{ url_for('static', filename='/Append/assets/vendor/glightbox/css/glightbox.min.css') }}"
+        rel="stylesheet">
+    <link href="{{ url_for('static', filename='/Append/assets/vendor/swiper/swiper-bundle.min.css') }}"
+        rel="stylesheet">
+    <link href="{{ url_for('static', filename='/Append/assets/vendor/aos/aos.css') }}" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="{{ url_for('static', filename='/Append/assets/css/main.css') }}" rel="stylesheet">
+
+    <!-- =======================================================
+  * Template Name: Append
+  * Updated: Jan 09 2024 with Bootstrap v5.3.2
+  * Template URL: https://bootstrapmade.com/append-bootstrap-website-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+
+
+    <style>
+        body {
+            background-image: url('https://t4.ftcdn.net/jpg/02/44/29/99/360_F_244299930_81B2P2ji5D3BiUqG0FOq8EjuYao4kVVj.jpg');
+            background-repeat: no-repeat;
+            background-size: 1500px 900px;
+        }
+
+        *,
+        *:before,
+        *:after {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        /* body{
+    background-color: #080710;
+    background-image: url('https://t4.ftcdn.net/jpg/02/44/29/99/360_F_244299930_81B2P2ji5D3BiUqG0FOq8EjuYao4kVVj.jpg');
+    background-repeat: no-repeat;
+    background-size: 1500px 900px;
+} */
+        .background {
+            width: 430px;
+            height: 520px;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            left: 50%;
+            top: 50%;
+        }
+
+        .background .shape {
+            height: 200px;
+            width: 200px;
+            position: absolute;
+            border-radius: 50%;
+        }
+
+        /* .shape:first-child{
+    background: linear-gradient(
+        #1845ad,
+        #23a2f6
+    );
+    left: -80px;
+    top: -80px;
+} */
+        /* .shape:last-child{
+    background: linear-gradient(
+        to right,
+        #ff512f,
+        #f09819
+    );
+    right: -30px;
+    bottom: -80px;
+} */
+        form {
+            height: 520px;
+            width: 400px;
+            background-color: rgba(16, 14, 14, 0.626);
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 400%;
+            left: 80%;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+            padding: 50px 35px;
+        }
+
+        form * {
+            font-family: 'Poppins', sans-serif;
+            color: #f6f1f1;
+            letter-spacing: 0.5px;
+            outline: none;
+            border: none;
+        }
+
+        form h3 {
+            font-size: 32px;
+            font-weight: 500;
+            line-height: 42px;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 30px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        input {
+            display: block;
+            height: 50px;
+            width: 100%;
+            background-color: rgba(166, 140, 140, 0.69);
+            border-radius: 3px;
+            padding: 0 10px;
+            margin-top: 8px;
+            font-size: 14px;
+            font-weight: 300;
+        }
+
+        ::placeholder {
+            color: #2120209c;
+        }
+
+        button {
+            margin-top: 50px;
+            width: 100%;
+            background-color: #0993f6ec;
+            color: #080710;
+            padding: 15px 0;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .social {
+            margin-top: 30px;
+            display: flex;
+        }
+
+        .social div {
+            background: rgb(54, 51, 51);
+            width: 150px;
+            border-radius: 3px;
+            padding: 5px 10px 10px 5px;
+            background-color: rgba(55, 51, 51, 0.771);
+            color: #333435;
+            text-align: center;
+        }
+
+        .social div:hover {
+            background-color: rgba(26, 24, 24, 0.47);
+        }
+
+        .social .fb {
+            margin-left: 25px;
+        }
+
+        .social i {
+            margin-right: 4px;
+        }
+
+        .form-popup {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            right: 50px;
+            border: 3px solid #f1f1f1;
+            z-index: 9;
+        }
+
+        .form-container {
+            display: none;
+            position: fixed;
+            bottom: 340px;
+            right: 400px;
+            /* left: 200px; */
+            z-index: 1000;
+        }
+
+        .form-container form {
+            height: 520px;
+            width: 400px;
+            padding: 20px;
+            background-color: rgba(16, 14, 14, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            color: #f6f1f1;
+        }
+    </style>
+</head>
+
+<body class="index-page" data-bs-spy="scroll" data-bs-target="#navmenu">
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top d-flex align-items-center">
+        <div class="container-fluid d-flex align-items-center justify-content-between">
+
+            <a href="#" class="logo d-flex align-items-center me-auto me-xl-0">
+                <!-- Uncomment the line below if you also wish to use an image logo -->
+                <!-- <img src="assets/img/logo.png" alt=""> -->
+            </a>
+
+            <!-- Nav Menu -->
+            <nav id="navmenu" class="navmenu">
+                <ul>
+                    <li><a href="{{ url_for('static', filename='/Append/index1.html') }}" class="active">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Portfolio</a></li>
+                    <li><a href="#">Team</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+            </nav>
+            <a class="btn-getstarted" onclick="openForm()">Login</a>
+            <div class="background">
+                <div class="shape"></div>
+                <div class="shape"></div>
+            </div>
+            <div class="form-container" id="myForm">
+                <form action="{{ url_for('login.home') }}" method="post">
+                    <h3>Login Here</h3><br>
+                    <div class="msg">{{ msg }}</div>
+                    <label for="username">Username</label>
+                    <input type="text" placeholder="Username" id="username" name="username">
+                    <label for="password">Password</label>
+                    <input type="password" placeholder="Password" id="password" name="password">
+                    <button>Log In</button>
+                </form>
+            </div>
+
+        </div>
+    </header><!-- End Header -->
+
+    <main id="main">
+
+        <!-- Hero Section - Home Page -->
+        <section id="hero" class="hero">
+
+            <img src="https://t4.ftcdn.net/jpg/02/44/29/99/360_F_244299930_81B2P2ji5D3BiUqG0FOq8EjuYao4kVVj.jpg" alt=""
+                data-aos="fade-in">
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-10">
+                        <h2 data-aos="fade-up" data-aos-delay="100">Welcome To </h2>
+                        <h2 data-aos="fade-up" data-aos-delay="100"> Central Assessment System </h2>
+
+                        <p data-aos="fade-up" data-aos-delay="200">Vivekanand College,Kolhapur</p>
+                    </div>
+
+                </div>
+            </div>
+            </div>
+
+        </section>
+        <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+                class="bi bi-arrow-up-short"></i></a>
+
+        <!-- Preloader -->
+        <div id="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+
+        <!-- Vendor JS Files -->
+        <script
+            src="{{ url_for('static', filename='/Append/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='/Append/assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
+        <script
+            src="{{ url_for('static', filename='/Append/assets/vendor/purecounter/purecounter_vanilla.js') }}"></script>
+        <script
+            src="{{ url_for('static', filename='/Append/assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='/Append/assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='/Append/assets/vendor/aos/aos.js') }}"></script>
+        <script src="{{ url_for('static', filename='/Append/assets/vendor/php-email-form/validate.js') }}"></script>
+
+        <!-- Template Main JS File -->
+        <script src="{{ url_for('static', filename='/Append/assets/js/main.js') }}"></script>
+        <script>
+            function openForm() {
+                document.getElementById("myForm").style.display = "block";
+            }
+
+            // function closeForm() {
+            //   document.getElementById("myForm").style.display = "none";
+            // }
+        </script>
+
+</body>
+
+</html>

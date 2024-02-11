@@ -1,0 +1,523 @@
+mysql> create database cap;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use cap
+Database changed
+mysql> create  table faculty(id int primary key ,faculty varchar(200) not null,duration varchar(200));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> desc faculty;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| id       | int          | NO   | PRI | NULL    |       |
+| faculty  | varchar(200) | NO   |     | NULL    |       |
+| duration | varchar(200) | YES  |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> update faculty id id varchar(200);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'id varchar(200)' at line 1
+mysql> drop table faculty;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> create  table faculty(id varchar primary key ,faculty varchar(200) not null,duration varchar(200));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'primary key ,faculty varchar(200) not null,duration varchar(200))' at line 1
+mysql> create  table faculty(id varchar(200) primary key ,faculty_name varchar(200) not null,duration varchar(200));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> desc faculty;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| id           | varchar(200) | NO   | PRI | NULL    |       |
+| faculty_name | varchar(200) | NO   |     | NULL    |       |
+| duration     | varchar(200) | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into faculty values("AS1","B.Sc","I");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from faculty;
++-----+--------------+----------+
+| id  | faculty_name | duration |
++-----+--------------+----------+
+| AS1 | B.Sc         | I        |
++-----+--------------+----------+
+1 row in set (0.00 sec)
+
+mysql> create table course(semester varchar(200),course_id varchar(200),course_name varchar(200),faculty_id varchar(200));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc course;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| semester    | varchar(200) | YES  |     | NULL    |       |
+| course_id   | varchar(200) | YES  |     | NULL    |       |
+| course_name | varchar(200) | YES  |     | NULL    |       |
+| faculty_id  | varchar(200) | YES  |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> drop table course;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> create table course(course_id varchar(200) primary key,semester varchar(200),course_name varchar(200),faculty_id varchar(200));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> desc course;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| course_id   | varchar(200) | NO   | PRI | NULL    |       |
+| semester    | varchar(200) | YES  |     | NULL    |       |
+| course_name | varchar(200) | YES  |     | NULL    |       |
+| faculty_id  | varchar(200) | YES  |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> insert into course values("DSC-1001C","I","Computer science","AS1");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> desc course;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| course_id   | varchar(200) | NO   | PRI | NULL    |       |
+| semester    | varchar(200) | YES  |     | NULL    |       |
+| course_name | varchar(200) | YES  |     | NULL    |       |
+| faculty_id  | varchar(200) | YES  |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc faculty;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| id           | varchar(200) | NO   | PRI | NULL    |       |
+| faculty_name | varchar(200) | NO   |     | NULL    |       |
+| duration     | varchar(200) | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select id,faculty_name,duration,semester,course_name from course join faculty on course.faculty_id= faculty.id;
++-----+--------------+----------+----------+------------------+
+| id  | faculty_name | duration | semester | course_name      |
++-----+--------------+----------+----------+------------------+
+| AS1 | B.Sc         | I        | I        | Computer science |
++-----+--------------+----------+----------+------------------+
+1 row in set (0.00 sec)
+
+mysql> insert into course values("DSC-1002B","II","Maths","AS2");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into faculty values("AS2","B.Sc","II");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select id,faculty_name,duration,semester,course_name from course join faculty on course.faculty_id= faculty.id;
++-----+--------------+----------+----------+------------------+
+| id  | faculty_name | duration | semester | course_name      |
++-----+--------------+----------+----------+------------------+
+| AS1 | B.Sc         | I        | I        | Computer science |
+| AS2 | B.Sc         | II       | II       | Maths            |
++-----+--------------+----------+----------+------------------+
+2 rows in set (0.00 sec)
+
+mysql> insert into course values("DSC-1001C","I","Physics","AS1");
+ERROR 1062 (23000): Duplicate entry 'DSC-1001C' for key 'course.PRIMARY'
+mysql> insert into course values("DSC-1002C","I","Physics","AS1");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select id,faculty_name,duration,semester,course_name from course join faculty on course.faculty_id= faculty.id;
++-----+--------------+----------+----------+------------------+
+| id  | faculty_name | duration | semester | course_name      |
++-----+--------------+----------+----------+------------------+
+| AS1 | B.Sc         | I        | I        | Computer science |
+| AS2 | B.Sc         | II       | II       | Maths            |
+| AS1 | B.Sc         | I        | I        | Physics          |
++-----+--------------+----------+----------+------------------+
+3 rows in set (0.00 sec)
+
+mysql> select id,faculty_name,duration,semester,course_name from course join faculty on course.faculty_id= faculty.id where faculty.id="AS1";
++-----+--------------+----------+----------+------------------+
+| id  | faculty_name | duration | semester | course_name      |
++-----+--------------+----------+----------+------------------+
+| AS1 | B.Sc         | I        | I        | Computer science |
+| AS1 | B.Sc         | I        | I        | Physics          |
++-----+--------------+----------+----------+------------------+
+2 rows in set (0.00 sec)
+
+mysql> create table cap_faculty(designation varchar(200),appointmencreate table cap_faculty(designation varchar(200),appointment_date date,appointment_letter blob,examination_name varchar(200),faculty_id varchar(200));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> desc cap_faculty;
++--------------------+--------------+------+-----+---------+-------+
+| Field              | Type         | Null | Key | Default | Extra |
++--------------------+--------------+------+-----+---------+-------+
+| designation        | varchar(200) | YES  |     | NULL    |       |
+| appointment_date   | date         | YES  |     | NULL    |       |
+| appointment_letter | blob         | YES  |     | NULL    |       |
+| examination_name   | varchar(200) | YES  |     | NULL    |       |
+| faculty_id         | varchar(200) | YES  |     | NULL    |       |
++--------------------+--------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> drop table cap_faculty;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> create table cap_faculty(id int primary key auto increment,designation varchar(200),appointment_date date,appointment_letter blob,examination_name varchar(200),faculty_id varchar(200));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'auto increment,designation varchar(200),appointment_date date,appointment_letter' at line 1
+mysql> create table cap_faculty(cap_id int primary key auto_increment,designation varchar(200),appointment_date date,appointment_letter blob,examination_name varchar(200),faculty_id varchar(200));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc cap_faculty;
++--------------------+--------------+------+-----+---------+----------------+
+| Field              | Type         | Null | Key | Default | Extra          |
++--------------------+--------------+------+-----+---------+----------------+
+| cap_id             | int          | NO   | PRI | NULL    | auto_increment |
+| designation        | varchar(200) | YES  |     | NULL    |                |
+| appointment_date   | date         | YES  |     | NULL    |                |
+| appointment_letter | blob         | YES  |     | NULL    |                |
+| examination_name   | varchar(200) | YES  |     | NULL    |                |
+| faculty_id         | varchar(200) | YES  |     | NULL    |                |
++--------------------+--------------+------+-----+---------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> insert into cap_faculty values("director","2023-10-18",null,"may-june-2023","AS1");
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into cap_faculty values(1,"director","2023-10-18","null","may-june-2023","AS1");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into cap_faculty values("Q.director","2023-09-18","null","may-june-2023","AS2");
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into cap_faculty (designation,appointment_date,appointment_letter,examination_name,faculty_id)values("Q.director","2023-09-18","null","may-june-2023","AS2");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select faculty_name,cap_id,designation,appointment_date,appointment_letter,examination_name,faculty_id from cap_faculty faculty on cap_faculty.faculty_id=faculty.id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'on cap_faculty.faculty_id=faculty.id' at line 1mysql> select faculty_name,cap_id,designation,appointment_date,appointment_letter,examination_name,faculty_id from cap_faculty join faculty on cap_faculty.faculty_id=faculty.id;
++--------------+--------+-------------+------------------+----------------------------------------+------------------+------------+
+| faculty_name | cap_id | designation | appointment_date | appointment_letter                     | examination_name | faculty_id |
++--------------+--------+-------------+------------------+----------------------------------------+------------------+------------+
+| B.Sc         |      1 | director    | 2023-10-18       | 0x6E756C6C                             | may-june-2023    | AS1        |
+| B.Sc         |      2 | Q.director  | 2023-09-18       | 0x6E756C6C                             | may-june-2023    | AS2        |
++--------------+--------+-------------+------------------+----------------------------------------+------------------+------------+
+2 rows in set (0.00 sec)
+
+mysql> create table time_table(timetable_id,date date,starttime time,endtime time,course_id varchar(200));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',date date,starttime time,endtime time,course_id varchar(200))' at line 1
+mysql> create table time_table(timetable_id int primary key auto_increment,date date,starttime time,endtime time,course_id varchar(200));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc time_table;
++--------------+--------------+------+-----+---------+----------------+
+| Field        | Type         | Null | Key | Default | Extra          |
++--------------+--------------+------+-----+---------+----------------+
+| timetable_id | int          | NO   | PRI | NULL    | auto_increment |
+| date         | date         | YES  |     | NULL    |                |
+| starttime    | time         | YES  |     | NULL    |                |
+| endtime      | time         | YES  |     | NULL    |                |
+| course_id    | varchar(200) | YES  |     | NULL    |                |
++--------------+--------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> insert into time_table (date,starttime,endtime,course_id)values("Sunday 2023-10-9","11.00","12:00","AS2");
+ERROR 1292 (22007): Incorrect date value: 'Sunday 2023-10-9' for column 'date' at row 1
+mysql> insert into time_table (date,starttime,endtime,course_id)values("Sunday 2023-10-09","11.00","12:00","AS2");
+ERROR 1292 (22007): Incorrect date value: 'Sunday 2023-10-09' for column 'date' at row 1
+mysql> insert into time_table (date,starttime,endtime,course_id)values("2023-10-09","11.00","12:00","AS2");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into time_table (date,starttime,endtime,course_id)values("2023-10-10","11.00","01:00","AS1");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select timetable_id,date starttime,endtime,course_id,course_name from time_table join course on time_table.course_id=course.course_id;
+ERROR 1052 (23000): Column 'course_id' in field list is ambiguous
+mysql> select timetable_id,date starttime,endtime,course_name from time_table join course on time_table.course_id=course.course_id;
+Empty set (0.00 sec)
+
+mysql> select * from time_table;
++--------------+------------+-----------+----------+-----------+
+| timetable_id | date       | starttime | endtime  | course_id |
++--------------+------------+-----------+----------+-----------+
+|            1 | 2023-10-09 | 00:00:11  | 12:00:00 | AS2       |
+|            2 | 2023-10-10 | 00:00:11  | 01:00:00 | AS1       |
++--------------+------------+-----------+----------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from course;
++-----------+----------+------------------+------------+
+| course_id | semester | course_name      | faculty_id |
++-----------+----------+------------------+------------+
+| DSC-1001C | I        | Computer science | AS1        |
+| DSC-1002B | II       | Maths            | AS2        |
+| DSC-1002C | I        | Physics          | AS1        |
++-----------+----------+------------------+------------+
+3 rows in set (0.00 sec)
+
+mysql> select timetable_id,date, starttime,endtime,course_name from time_table join course on time_table.course_id=course.course_id;
+Empty set (0.00 sec)
+
+mysql> select timetable_id,date, starttime,endtime,course_name from time_table join course on time_table.course_id=course.course_id;
+Empty set (0.00 sec)
+
+mysql> delete from time_table;
+Query OK, 2 rows affected (0.01 sec)
+
+mysql> select * from course;
++-----------+----------+------------------+------------+
+| course_id | semester | course_name      | faculty_id |
++-----------+----------+------------------+------------+
+| DSC-1001C | I        | Computer science | AS1        |
+| DSC-1002B | II       | Maths            | AS2        |
+| DSC-1002C | I        | Physics          | AS1        |
++-----------+----------+------------------+------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from time_table;
+Empty set (0.00 sec)
+
+mysql> insert into time_table (date,starttime,endtime,course_id)values("2023-10-09","11.00","12:00","DSC-1001C");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into time_table (date,starttime,endtime,course_id)values("2023-10-10","11.00","01:00","DSC-1002B");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from time_table;
++--------------+------------+-----------+----------+-----------+
+| timetable_id | date       | starttime | endtime  | course_id |
++--------------+------------+-----------+----------+-----------+
+|            3 | 2023-10-09 | 00:00:11  | 12:00:00 | DSC-1001C |
+|            4 | 2023-10-10 | 00:00:11  | 01:00:00 | DSC-1002B |
++--------------+------------+-----------+----------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> select timetable_id,date, starttime,endtime,course_name from time_table join course on time_table.course_id=course.course_id;
++--------------+------------+-----------+----------+------------------+
+| timetable_id | date       | starttime | endtime  | course_name      |
++--------------+------------+-----------+----------+------------------+
+|            3 | 2023-10-09 | 00:00:11  | 12:00:00 | Computer science |
+|            4 | 2023-10-10 | 00:00:11  | 01:00:00 | Maths            |
++--------------+------------+-----------+----------+------------------+
+2 rows in set (0.00 sec)
+
+mysql> delete from time_table;
+Query OK, 2 rows affected (0.01 sec)
+
+mysql> insert into time_table (date,starttime,endtime,course_id)values("2023-10-09","11:00","12:00","DSC-1001C");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into time_table (date,starttime,endtime,course_id)values("2023-10-10","11:00","01:00","DSC-1002B");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from time_table;
++--------------+------------+-----------+----------+-----------+
+| timetable_id | date       | starttime | endtime  | course_id |
++--------------+------------+-----------+----------+-----------+
+|            5 | 2023-10-09 | 11:00:00  | 12:00:00 | DSC-1001C |
+|            6 | 2023-10-10 | 11:00:00  | 01:00:00 | DSC-1002B |
++--------------+------------+-----------+----------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> select timetable_id,date,starttime,endtime,course_id,course_name from time_table join course on time_table.course_id=course.course_id;
+ERROR 1052 (23000): Column 'course_id' in field list is ambiguous
+mysql> select timetable_id,date,starttime,endtime,course_name from time_table join course on time_table.course_id=course.course_id;
++--------------+------------+-----------+----------+------------------+
+| timetable_id | date       | starttime | endtime  | course_name      |
++--------------+------------+-----------+----------+------------------+
+|            5 | 2023-10-09 | 11:00:00  | 12:00:00 | Computer science |
+|            6 | 2023-10-10 | 11:00:00  | 01:00:00 | Maths            |
++--------------+------------+-----------+----------+------------------+
+2 rows in set (0.00 sec)
+
+mysql> select timetable_id,date,starttime,endtime,course.course_id,course_name from time_table join course on time_table.course_id=course.course_id;
++--------------+------------+-----------+----------+-----------+------------------+
+| timetable_id | date       | starttime | endtime  | course_id | course_name      |
++--------------+------------+-----------+----------+-----------+------------------+
+|            5 | 2023-10-09 | 11:00:00  | 12:00:00 | DSC-1001C | Computer science |
+|            6 | 2023-10-10 | 11:00:00  | 01:00:00 | DSC-1002B | Maths            |
++--------------+------------+-----------+----------+-----------+------------------+
+2 rows in set (0.00 sec)
+
+
+
+ create table examsession(examsession_id int auto_increment primary key,faculty varchar(250),semester int not null,sem_year YEAR,sem_month varchar(250),pattern varchar(250));
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> insert into examsession(faculty,semester,sem_year,sem_month,pattern)values("B.Sc",1,2023,"January","Nep");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from examsession
+    -> ;
++----------------+---------+----------+----------+-----------+---------+
+| examsession_id | faculty | semester | sem_year | sem_month | pattern |
++----------------+---------+----------+----------+-----------+---------+
+|              1 | B.Sc    |        1 |     2023 | January   | Nep     |
++----------------+---------+----------+----------+-----------+---------+
+1 row in set (0.00 sec)
+
+
+ alter table time_table add column examsession_id int not null;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc time_table;
++----------------+--------------+------+-----+---------+----------------+
+| Field          | Type         | Null | Key | Default | Extra          |
++----------------+--------------+------+-----+---------+----------------+
+| timetable_id   | int          | NO   | PRI | NULL    | auto_increment |
+| date           | date         | YES  |     | NULL    |                |
+| starttime      | time         | YES  |     | NULL    |                |
+| endtime        | time         | YES  |     | NULL    |                |
+| course_id      | varchar(200) | YES  |     | NULL    |                |
+| examsession_id | int          | NO   |     | NULL    |                |
++----------------+--------------+------+-----+---------+----------------+
+6 rows in set (0.00 sec)
+
+
+
+        #  AND paper_count.remark = "pending"'
+
+
+
+
+from flask import Flask, Blueprint, render_template, request, jsonify, redirect,url_for,session
+from flask_mysqldb import MySQL
+
+
+moderation = Blueprint('moderation', __name__, template_folder='templates')
+
+
+app = moderation
+
+mysql = MySQL()
+
+
+# @app.route("/moderation")
+# def home():
+#     return render_template("moderation_form.html")
+
+
+@app.route("/moderation", methods=["POST", "GET"])
+def home():
+    if request.method == "GET":
+        
+        cursor = mysql.connection.cursor()
+       
+
+        queryfaculty = "SELECT faculty FROM faculty"
+        cursor.execute(queryfaculty)
+        datafaculty = [row[0] for row in cursor.fetchall()]
+
+        queryteacher = "SELECT subject FROM subject"
+        cursor.execute(queryteacher)
+        datasubject = [row[0] for row in cursor.fetchall()]
+
+        querycourse = "SELECT coursename FROM coursename"
+        cursor.execute(querycourse)
+        datacourse = [row[0] for row in cursor.fetchall()]
+
+        querycourseid = "SELECT course_id FROM coursename"
+        cursor.execute(querycourseid)
+        datacourseid = [row[0] for row in cursor.fetchall()]
+
+        return render_template("mod.html",  datafaculty=datafaculty,datasubject=datasubject,datacourse=datacourse, datacourseid=datacourseid)
+
+@app.route("/moderationbuttion", methods=["POST", "GET"])
+def scrutanybuttion():
+    if request.method == "POST": 
+        search_option = request.form.get('radio_option')
+        print("search_option:",search_option)
+        
+
+        faculty = request.form.get('faculty')
+        print("faculty:",faculty)
+
+        subject_name = request.form.get('subject_name')
+        print("subject_name:",subject_name)
+        coursename = request.form.get('course_name')
+        course_id = request.form.get('course_id')
+        selected_values = session.get('selected_values')
+
+        cursor = mysql.connection.cursor()
+        # query= "SELECT paper_count.quespaper_code, paper_count.count, time_table.year, time_table.sem, subject.subject, coursename.coursename, coursename.course_id, faculty.faculty,paper_count.papercount_id,time_table.timetable_id FROM paper_count JOIN time_table  ON paper_count.timetable_id = time_table.timetable_id JOIN subject ON time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id"
+        cursor = mysql.connection.cursor()
+        if search_option == "faculty":
+            query = "SELECT paper_count.quespaper_code, paper_count.count, time_table.year, time_table.sem, subject.subject, coursename.coursename, coursename.course_id, faculty.faculty,paper_count.papercount_id,time_table.timetable_id FROM paper_count JOIN time_table  ON paper_count.timetable_id = time_table.timetable_id JOIN subject ON time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id WHERE paper_count.count>100 and time_table.year=3 and faculty.faculty=%s"
+            cursor.execute(query, (faculty,))
+
+        elif search_option == "subject":
+            query = "SELECT paper_count.quespaper_code, paper_count.count, time_table.year, time_table.sem, subject.subject, coursename.coursename, coursename.course_id, faculty.faculty,paper_count.papercount_id,time_table.timetable_id FROM paper_count JOIN time_table  ON paper_count.timetable_id = time_table.timetable_id JOIN subject ON time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id WHERE paper_count.count>100 and time_table.year=3 and subject.subject==%s"
+            cursor.execute(query, (subject_name,))
+        
+        elif search_option == "course_name":
+            query = "SELECT paper_count.quespaper_code, paper_count.count, time_table.year, time_table.sem, subject.subject, coursename.coursename, coursename.course_id, faculty.faculty,paper_count.papercount_id,time_table.timetable_id FROM paper_count JOIN time_table  ON paper_count.timetable_id = time_table.timetable_id JOIN subject ON time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id where coursename.coursename=%s"
+            cursor.execute(query, (coursename,))
+        
+        elif search_option == "course_id":
+            query = " SELECT paper_count.quespaper_code, paper_count.count, time_table.year, time_table.sem, subject.subject, coursename.coursename, coursename.course_id, faculty.faculty,paper_count.papercount_id,time_table.timetable_id FROM paper_count JOIN time_table  ON paper_count.timetable_id = time_table.timetable_id JOIN subject ON time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id where coursename.course_id=%s"
+            cursor.execute(query, (course_id,))
+
+        print("query=",query)
+        result = cursor.fetchall()
+        print(result)
+        queryteacher='select teacher_name,teacher_id from teacher'
+        cursor.execute(queryteacher) 
+        joblist = cursor.fetchall()
+        print(joblist)
+
+        cursor.close()
+        return render_template("mod.html",  result=result, selected_values=selected_values,joblist=joblist)
+    
+    else:
+        return render_template("mod.html")
+
+# @app.route("/moderationbuttion", methods=["POST", "GET"])
+# def moderationbuttion():
+#     if request.method == "POST": 
+#         cursor = mysql.connection.cursor()
+#         query= "SELECT faculty.faculty,teacher.year,teacher.sem,subject.subject,coursename.coursename,coursename.course_id,paper_count.count,paper_count.quespaper_code,time_table.timetable_id,teacher.teacher_id,paper_count.papercount_id FROM teacher INNER JOIN faculty ON teacher.faculty_id = faculty.faculty_id INNER JOIN subject ON teacher.subject_id = subject.subject_id INNER JOIN coursename ON teacher.coursename_id = coursename.coursename_id INNER JOIN time_table ON time_table.coursename_id = teacher.coursename_id INNER JOIN paper_count ON time_table.timetable_id = paper_count.timetable_id WHERE paper_count.count>100 and teacher.year=3"
+#         cursor.execute(query) 
+#         result = cursor.fetchall()
+#         print(result)
+#         queryteacher='select teacher_name,teacher_id from teacher'
+#         cursor.execute(queryteacher) 
+#         joblist = cursor.fetchall()
+#         print(joblist)
+         
+
+#         return render_template("moderation_form.html",result=result,joblist=joblist)
+    
+#     else:
+#         return render_template("moderation_form.html")
+    
+ 
+    
+    
+@app.route('/paper_moderation', methods=["POST"])         
+def paper_moderation(): 
+    issue_date = request.form.getlist('issue_date[]')
+    print("issue_date=",issue_date)
+    return_date = request.form.getlist('return_date[]')
+    print("return_date=",return_date)
+    papercount_id = request.form['papercount_id']
+    print("papercount_id=",papercount_id)
+    teacher_id = request.form['teacher_id'] 
+    print("teacher_id=",teacher_id)
+    cases = request.form['cases']
+    print("cases=",cases)
+    timetable_id = request.form['timetable_id']
+    print("timetable_id=",timetable_id)
+
+    cur = mysql.connection.cursor()
+    
+    
+    for issuedate, returndate in zip(issue_date, return_date):
+        
+        cur.execute("INSERT INTO moderation (issue_date, return_date,cases, papercount_id, teacher_id, timetable_id) VALUES (%s, %s, %s, %s, %s, %s)", (issuedate, returndate,cases, papercount_id, teacher_id, timetable_id))
+        mysql.connection.commit()
+        
+    cur.close()
+
+    return redirect('/moderationbuttion')

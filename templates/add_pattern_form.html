@@ -1,0 +1,174 @@
+{% extends "homepage.html" %} 
+{% block content %}
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Corrected -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Add more field using bootstrap 5, jQuery & PHP</title>
+        <!-- Corrected Bootstrap 5 CSS link -->
+        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.1/css/bootstrap.min.css' />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <!-- ... Other styles and scripts ... -->
+    
+    <style>
+            .row {
+                --bs-gutter-x: 1.5rem;
+                --bs-gutter-y: -8%;
+            }
+           
+            .center {
+                width: 100.5%;
+                max-width: 400%;
+                background: rgba(31, 158, 172, 0.881);
+                padding: 20px;
+                margin: 0 120px;
+                box-shadow: inset -2px 2px 2px rgb(32, 30, 30);
+                color: #ecf0f4;
+                margin-top: 7%;                 
+
+            }
+
+            div {
+                display: block;
+            }
+            body {
+                margin: 0;
+                font-family: var(--bs-body-font-family);
+                font-size: var(--bs-body-font-size);
+                font-weight: var(--bs-body-font-weight);
+                line-height: var(--bs-body-line-height);
+                text-align: var(--bs-body-text-align);
+                -webkit-text-size-adjust: 100%;
+                
+
+            }
+            .word{
+                color: black;
+            }
+            .add_item_btn {
+                width: 80%;
+                position: absolute;
+                top: 65%;
+                transform: translateY(-40%);
+                left: 7.5%;
+            }
+            .rmv_btn {
+                width: 25%;
+                position: absolute;
+                margin-top: -3.5%;
+                transform: translateY(-40%);
+                margin-top: -95.5%;            }
+            .box{
+              margin-left: 49.5%;
+            }
+        </style>
+</head>
+<body>
+    <div class="row my-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="center">
+          <div class="word">
+            <h2 style="font-style: normal;">ADD  PATTERN</h2>
+            <hr style="border-bottom: 5px solid rgb(11, 11, 11);"><br>
+
+            <form id="dataInsertionpattern">
+                <div class="row">
+                <div class="col-md-4">
+                    <label for="Faculty" class="form-label" style="font-size: 17px;">Faculty</label>
+                    <select id="facultyDrop" class="form-select" name="Faculty">
+                      <option value="" selected disabled>---select---</option>
+                      {% for j in joblist %}
+                      <OPTION value={{j[2]}}>{{j[0]}}</OPTION>
+                      {% endfor %}                    
+                    </select>
+                  </div>
+
+                  <div class="col-md-4">
+                    <label for="year" class="form-label" style="font-size: 17px;">Year</label>
+                    <select id="year" class="form-select" name="Year"></select>                
+                  </div>
+                  </div>
+                <div class="row">
+                <div class="col-md-4">
+                  <label for="pattern" class="form-label" style="font-size: 17px;">Pattern</label>
+                  <input type="text" id="pattern" class="form-control" placeholder="Enter Pattern"   name="pattern">
+                </div>
+               
+                  <div class="col-md-4">
+                    <label for="internal_mark" class="form-label" style="font-size: 17px;">Internal Marks</label>
+                    <input type="text" id="internal_mark" class="form-control" placeholder="Enter internal_mark"   name="internal_mark">
+                  </div>
+                  <div class="col-md-4">
+                    <label for="theory_mark" class="form-label" style="font-size: 17px;">Theory Marks</label>
+                    <input type="text" id="theory_mark" class="form-control" placeholder="Enter Theory Mark"   name="theory_mark">
+                  </div>      
+                </div><br><br>
+                <div class="col-md-2 mb-3 d-grid">
+                    <input type="submit" value="SAVE" class="btn btn-primary" id="save_btn">
+                </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Include Bootstrap JS library -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script>
+        facultyDrop.onchange = function () {
+                    faculty = this.value;
+                    console.log("faculty: ", faculty)
+
+                    var data = new FormData();
+                    data.append("faculty", (faculty));
+                    fetch("/getYear", { method: "POST", body: data })
+                        .then(res => res.json())
+                        .then(duration => {
+                            console.log("duration: ", duration);
+                            while (year.options.length) {
+                                year.options.remove(0);
+                            }
+                            for (var i = 1; i <= duration; i++) {
+                                var option = document.createElement("OPTION");
+                                option.innerHTML = i;
+                                option.value = i;
+                                year.options.add(option);
+                            }
+                        });
+                }
+                
+            $('#dataInsertionpattern').submit(function (e) {
+                e.preventDefault();
+                let formData = $('#dataInsertionpattern').serialize();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/pattern',
+                    data: formData,
+                    success: function (response) {
+                      
+                          alert("Data Added Successfully!");
+                          document.getElementById('dataInsertionpattern').reset(); // Reset the form
+                     
+                  },
+                    error: function (error) {
+                        console.log(error);
+                        // Handle error
+                    }
+                })
+            })
+                
+    
+    </script>
+</body>
+</html>
+{% endblock %}
+                        
+        
+

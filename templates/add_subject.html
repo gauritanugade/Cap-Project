@@ -1,0 +1,145 @@
+{%extends "homepage.html" %} 
+{%block content%} 
+
+
+ <html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatiible" content="IE=edge">
+    <meta name="viewpoint" content="width=device-width, initial-scale=1.0">
+    <title>Add more field using bootstrap 5, jQuery & PHP</title>
+    <link rel='stylesheet'
+        href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.1/css/bootstrap.min.css' />
+        <style>
+            .row {
+            
+            --bs-gutter-y: auto;
+            margin-top: calc(var(--bs-gutter-y) * -1);
+            }
+        </style>
+
+    
+</head>
+
+<body>
+    <div class="bg=dark">
+        <div class="container">
+            <div class="row my-4">
+                <div class="col-lg-10 mx-auto">
+                    <div class="card shadow">
+                        <div class="card-header">
+                            <h4>Add Subject</h4>
+                        </div>
+                        <div class="card-body p-4">
+                            <form id="dataInsertion">
+                                <div id="show_item">
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="faculty"><strong>Faculty</strong></label>
+                                            <SELECT id="facultyDrop" name="Faculty" class="form-control" >
+                                                {% for j in joblist %}
+                                                <OPTION value={{j[2]}}>{{j[0]}}</OPTION>
+                                                {% endfor %}
+                                            </SELECT>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="faculty"><strong>Subject</strong></label>
+                                            <input type="text" name="subject" class="form-control"
+                                                placeholder="Enter subject" id="subject" required>
+                                        </div>
+                                        <div class="col-md-2 mb-3 d-grid">
+                                            <button class="btn btn-success add_item_btn">add More</button>
+
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-2 mb-3 d-grid">
+                                    <input type="submit" value="SAVE" class="btn btn-primary" id="save_btn">
+
+                                    <!-- <button class="bin btn=success add_item_btn" >add More</button> -->
+                                </div>
+                            </form>
+                            <form action="/datasubject" method="POST">
+                                <div class="col-md-2 mb-3 d-grid">
+                                    <input type="submit" value="LIST_DATA" class="btn btn-primary" id="listing_btn">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+                <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+                <script>
+                    $(document).ready(function () {
+                        $(".add_item_btn").click(function (e) {
+                            e.preventDefault();
+                            $("#show_item").append(`<div class="row"><div class="col-md-4 mb-3">
+                                            <label for="faculty"><strong>Faculty</strong></label>
+                                            <SELECT id="facultyDrop" name="Faculty" class="form-control" >
+                                                {% for j in joblist %}
+                                                <OPTION value={{j[2]}}>{{j[0]}}</OPTION>
+                                                {% endfor %}
+                                            </SELECT>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="faculty"><strong>Subject</strong></label>
+                                            <input type="text" name="subject" class="form-control"
+                                                placeholder="Enter subject" id="subject" required>
+                                        </div>
+                                        <div class="col-md-2 mb-3 d-grid">
+                                            <button class="btn btn-danger rmv_btn">Remove</button>`);
+                        });
+
+                        $(document).on('click', '.rmv_btn', function (e) {
+                            e.preventDefault();
+                            $(this).parent().parent().remove();
+                        })
+
+                        //insert data into DB
+                        $('#dataInsertion').submit(function (e) {
+                            e.preventDefault();
+                            let formData = $('#dataInsertion').serialize();
+
+                            $.ajax({
+                                type: 'POST',
+                                url: '/submitsubject',
+                                data: formData,
+                                success: function (response) {
+                                    //alert(response)
+                                    swal({
+                                        title: "Done.!",
+                                        text: "Data Added Successfully!",
+                                        icon: "success",
+                                        button: "okay!",
+                                    }).then((value) => {
+                                        location.reload();
+                                    })
+                                    
+                                },
+                                error: function (error) {
+                                    console.log(error);
+                                    // Handle error
+                                }
+                            });
+
+
+                            // let save_btn = document.getElementById("save_btn");
+                            //     save_btn.addEventListener("click",function(){
+                            //         let Faculty =  document.getElementById("Faculty").value;
+                            //         if(name == "success"){
+                            //             swal ("Success", Faculty, "success" )
+                            //         }
+                            //         else{
+                            //             swal("error" , "Duplicate entry", "error")
+                            //         }
+                            //     })
+                        })
+                    });
+                </script>
+</body>
+
+</html>
+{% endblock %}

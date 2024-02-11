@@ -1,0 +1,357 @@
+<!-- 
+
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Courses</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <h1 class="display-4 text-center">Course Details</h1>
+
+      <form action="/submitteacher" method="POST">
+        <div class="form-group m-3">
+          <label for="facultyDrop"><strong>Faculty</strong></label>
+            <SELECT id="facultyDrop" name="Faculty" class="form-control" >
+              {% for j in joblist %}
+              <OPTION value={{j[2]}}>{{j[0]}}</OPTION>
+              {% endfor %}
+            </SELECT>
+          
+        </div>
+
+        <div class="form-group  m-3">
+          <form onsubmit="return false;" >
+            <label for="year"><strong>year</strong></label>
+            <select id="year" name="Year" class="form-control" required></select>
+
+        </div>
+
+        <div class="form-group m-3">
+          <label for="sem"><strong>semester</strong></label>
+          <select id="sem" name="Sem" class="form-control" required></select>
+        </div>
+
+
+        <label for="subject"><strong>Subject</strong></label>
+            <SELECT id="subject" name="subject" class="form-control" >
+              {% for i in joblist1 %}
+              <OPTION value={{i[1]}}>{{i[0]}}</OPTION>
+              {% endfor %}
+            </SELECT>
+          
+        </div>
+
+        <label for="coursename"><strong>course Id course name</strong></label>
+            <SELECT id="coursename" name="coursename" class="form-control" >
+              {% for i in joblist1 %}
+              <OPTION value={{i[2]}}>{{i[0]}}{{i[1]}}</OPTION>
+              {% endfor %}
+            </SELECT>
+          
+
+        <div class="form-group m-3">
+            <label for="teacher_name"><strong>Teacher Name</strong></label>
+            <input type="text" id="teacher_name" class="form-control" name="teacher_name">
+        </div>
+
+        <div class="form-group m-3">
+            <label for="teacher_email"><strong>Teacher Email</strong></label>
+            <input type="text" id="teacher_email" class="form-control" name="teacher_email">
+        </div>
+
+        <div class="form-group m-3">
+            <label for="teacher_phoneno"><strong>Teacher phoneno</strong></label>
+            <input type="text" id="teacher_phoneno" class="form-control" name="teacher_phoneno">
+        </div>
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary m-3">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+    integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+    crossorigin="anonymous"></script>
+
+    <script>
+        facultyDrop.onchange = function () {
+          faculty = this.value;
+          console.log("faculty: ", faculty)
+    
+          var data = new FormData();
+          data.append("faculty", (faculty));
+          fetch("/getYear", { method: "POST", body: data })
+            .then(res => res.json())
+            .then(duration => {
+              console.log("duration: ", duration);
+              while (year.options.length) {
+                year.options.remove(0);
+              }
+              for (var i = 1; i <= duration; i++) {
+                var option = document.createElement("OPTION");
+                option.innerHTML = i;
+                option.value = i;
+                year.options.add(option);
+              }
+            });
+        }
+        year.onchange = function () {
+          selYear = this.value;
+          console.log("onchange year: ", selYear);
+    
+          var yearData = new FormData();
+          yearData.append("year", selYear);
+    
+          fetch("/getSem", { method: "POST", body: yearData })
+          .then( x => x.json())
+          .then(sems => {
+            console.log("sems =", sems);
+            while(sem.options.length){
+              sem.options.remove(0);
+            }
+            for(var i = 0; i < sems.length; i++){
+              var op = document.createElement("OPTION")
+              op.innerHTML = "Sem " + sems[i] ;
+              op.value = sems[i];
+              sem.options.add(op);
+            }
+          });
+    
+        }
+      </script>
+  
+</body>
+
+</html> -->
+
+<!-- 
+{%extends "homepage.html" %} 
+{%block content%}  -->
+  
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Courses</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+
+    <style>
+      .row {
+      
+      --bs-gutter-y: auto;
+      margin-top: calc(var(--bs-gutter-y) * -1);
+      }
+     
+      .center {
+          width: 100%;
+          max-width: 900px;
+          background: rgb(0 0 0 / 66%);
+          padding: 30px;
+          margin: 0 250px;
+          border-radius: 10px;
+          box-shadow: inset -2px 2px 2px rgb(32, 30, 30);
+          color: #ecf0f4;
+      }
+      .card {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          min-width: 0;
+          word-wrap: break-word;
+          background-color: #fff0;
+          background-clip: border-box;
+          border: 1px solid rgb(0 0 0 / 0%);
+          border-radius: .25rem;
+      }
+      .card-header {
+          padding: .5rem 1rem;
+          margin-bottom: 0;
+          background-color: rgb(237 233 232 / 60%);
+          border-bottom: 1px solid rgba(213, 21, 21, 0.125);
+      }
+
+      div {
+          display: block;
+      }
+      body {
+          margin: 0;
+          font-family: var(--bs-body-font-family);
+          font-size: var(--bs-body-font-size);
+          font-weight: var(--bs-body-font-weight);
+          line-height: var(--bs-body-line-height);
+          /* color: var(--bs-body-color); */
+          text-align: var(--bs-body-text-align);
+          /* background-color: #692531; */
+          /* background-image: url("https://t4.ftcdn.net/jpg/02/44/29/99/360_F_244299930_81B2P2ji5D3BiUqG0FOq8EjuYao4kVVj.jpg");
+          background-repeat: no-repeat;
+          background-color: #cccccc; */
+          
+          background-image: url('https://t4.ftcdn.net/jpg/02/44/29/99/360_F_244299930_81B2P2ji5D3BiUqG0FOq8EjuYao4kVVj.jpg');
+          background-repeat: no-repeat;
+          background-size: 1500px 900px;
+         
+          /* background-image: "{{ url_for('static', filename='/webtemplate/ivancik.jpg') }}"; */
+
+          -webkit-text-size-adjust: 100%;
+          /* -webkit-tap-highlight-color: transparent; */
+      }
+
+  </style>  
+</head>
+
+<body>
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <h1 class="display-4 text-center">Course Details</h1>
+
+      <form action="/teacher_data" method="POST">
+        
+        <div class="form-group m-3">
+          <label for="teacher_name"><strong>Teacher Name</strong></label>
+          <input type="text" id="teacher_name" class="form-control" name="teacher_name">
+      </div>
+
+      <div class="form-group m-3">
+          <label for="teacher_email"><strong>Teacher Email</strong></label>
+          <input type="text" id="teacher_email" class="form-control" name="teacher_email">
+      </div>
+
+      <div class="form-group m-3">
+          <label for="teacher_phoneno"><strong>Teacher phoneno</strong></label>
+          <input type="text" id="teacher_phoneno" class="form-control" name="teacher_phoneno">
+      </div>
+
+
+        <div class="form-group  m-3">
+          <form onsubmit="return false;" >
+            <label for="year"><strong>year</strong></label>
+            <select id="year" name="Year" class="form-control" required></select>
+
+        </div>
+
+        <div class="form-group m-3">
+          <label for="sem"><strong>semester</strong></label>
+          <select id="sem" name="Sem" class="form-control" required></select>
+        </div>
+
+        <div class="form-group m-3">
+          <label for="facultyDrop"><strong>Faculty</strong></label>
+            <SELECT id="facultyDrop" name="Faculty" class="form-control" >
+              {% for j in joblist %}
+              <OPTION value={{j[2]}}>{{j[0]}}</OPTION>
+              {% endfor %}
+            </SELECT>
+          
+        </div>
+
+        <div>
+          <label for="coursename"><strong>course Id course name</strong></label>
+              <SELECT id="coursename" name="coursename" class="form-control" >
+                {% for k in joblist3 %}
+                <OPTION value={{k[1]}}>{{k[0]}}</OPTION>
+                {% endfor %}
+              </SELECT>
+            </div>
+
+
+            <div>
+              <label for="subject"><strong>Subject</strong></label>
+                  <SELECT id="subject" name="subject" class="form-control" >
+                    {% for i in joblist1 %}
+                    <OPTION value={{i[1]}}>{{i[0]}}</OPTION>
+                    {% endfor %}
+                  </SELECT>
+            </div>
+
+            
+            <div >
+              <label for="subject" class="form-label">Subject</label>
+              <SELECT id="subject" name="subject" class="form-control" >
+                {% for i in joblist1 %}
+                <OPTION value={{i[1]}}>{{i[0]}}</OPTION>
+                {% endfor %}
+              </SELECT>
+            </div>
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary m-3">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"></script>
+
+    <script>
+        facultyDrop.onchange = function () {
+                    faculty = this.value;
+                    console.log("faculty: ", faculty)
+
+                    var data = new FormData();
+                    data.append("faculty", (faculty));
+                    fetch("/getYear", { method: "POST", body: data })
+                        .then(res => res.json())
+                        .then(duration => {
+                            console.log("duration: ", duration);
+                            while (year.options.length) {
+                                year.options.remove(0);
+                            }
+                            for (var i = 1; i <= duration; i++) {
+                                var option = document.createElement("OPTION");
+                                option.innerHTML = i;
+                                option.value = i;
+                                year.options.add(option);
+                            }
+                        });
+                }
+                year.onchange = function () {
+                    selYear = this.value;
+                    console.log("onchange year: ", selYear);
+
+                    var yearData = new FormData();
+                    yearData.append("year", selYear);
+
+                    fetch("/getSem", { method: "POST", body: yearData })
+                        .then(x => x.json())
+                        .then(sems => {
+                            console.log("sems =", sems);
+                            while (sem.options.length) {
+                                sem.options.remove(0);
+                            }
+                            for (var i = 0; i < sems.length; i++) {
+                                var op = document.createElement("OPTION")
+                                op.innerHTML = "Sem " + sems[i];
+                                op.value = sems[i];
+                                sem.options.add(op);
+                            }
+                        });
+
+                }
+      </script>
+  
+</body>
+
+</html> 
+<!-- {% endblock %} -->

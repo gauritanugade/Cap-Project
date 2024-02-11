@@ -1,0 +1,29 @@
+<html>
+	<body>
+		<h1><center>Vivekanand College, Kolhapur</center></h1>
+		<h2><center>Department Of Computer Science</center></h2>
+		<h3><center>Result 2023-2024</center></h3>
+
+	<table bo>
+		<tr>
+			<td>Roll Number</td>
+			<td>Name</td>
+			<td>Birth Date</td>
+			<td>Theory Mark</td>
+			<td>Practical Mark</td>
+		</tr>
+		{% for data in student %}
+		<tr>
+		
+			<td>{{data[0]}}</td>
+			<td>{{data[1]}}</td>
+			<td>{{data[2]}}</td>
+			<td>{{data[3]}}</td>
+			<td>{{data[4]}}</td>
+		</tr>
+		{% endfor %}
+
+	</table>
+
+</body>
+</html>

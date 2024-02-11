@@ -1,0 +1,434 @@
+<!-- <html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Time Table</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <h1 class="display-4 text-center">Time Table</h1>
+
+
+            <form action="/timetabledata" method="POST">
+                <div class="form-group m-3">
+                    <label for="Examinationdrop"><strong>Examination Final Program for </strong></label>
+                    <SELECT id="Examinationdrop" name="Examname" class="form-control">
+                        {% for j in joblist %}
+
+                        <OPTION value={{j[3]}}>{{j[0]}} {{j[1]}} {{j[2]}}</OPTION>
+                        {% endfor %}
+                    </SELECT>
+                        
+                </div>
+
+
+
+                <div class="form-group  m-3">
+                    <form onsubmit="return false;">
+                        <label for="faculty"><strong>Faculty</strong></label>
+                        <select id="faculty" name="Faculty" class="form-control" required></select>
+
+                </div>
+
+                <div class="form-group  m-3">
+                    <form onsubmit="return false;">
+                        <label for="year1"><strong>year</strong></label>
+                        <select id="year1" name="Year1" class="form-control" required></select>
+
+                </div>
+
+
+                <div class="form-group m-3">
+                    <label for="sem"><strong>semester</strong></label>
+                    <select id="sem" name="Sem" class="form-control" required></select>
+                </div>
+
+
+
+                <div class="form-group m-3">
+                    <label for="date1"><strong>Date</strong></label>
+                    <input type="date" id="date1" class="form-control" name="Date">
+                </div>
+
+                <div class="form-group m-3">
+                    <label for="stime"><strong>Starttime</strong></label>
+                    <input type="time" id="stime" class="form-control" name="Starttime">
+                </div>
+
+                <div class="form-group m-3">
+                    <label for="etime"><strong>Endtime</strong></label>
+                    <input type="time" id="edate" class="form-control" name="Endtime">
+                </div>
+
+            
+                  <div class="form-group m-3">
+                    <label for="coursename"><strong>Course </strong></label>
+                    <select id="coursename" name="Course" class="form-control" required></select>
+                  </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary m-3">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch("/course", { method: "GET" })
+                .then(res => res.json())
+                .then(courses => {
+                    console.log("courses: ", courses);
+                    console.log("courses length: ", courses.length);
+                    while (faculty.options.length) {
+                        faculty.options.remove(0);
+                    }
+                    for (var i = 0; i <= courses.length; i++) {
+                        console.log("courses:", courses[i]);
+                        var option = document.createElement("OPTION");
+                        option.innerHTML = courses[i][4];
+                        option.value = courses[i][4];
+                        faculty.options.add(option);
+                    }
+                    console.log("faculty: ", faculty.options);
+
+                })
+        });
+
+        var selectedFaculty=""
+        faculty.onchange = function () {
+            faculty = this.value;
+            selectedFaculty=faculty
+            console.log("faculty: ", faculty)
+
+            var data = new FormData();
+            data.append("faculty", (faculty));
+            fetch("/getYear", { method: "POST", body: data })
+                .then(res => res.json())
+                .then(duration => {
+                    console.log("duration: ", duration);
+                    while (year1.options.length) {
+                        year1.options.remove(0);
+                    }
+                    for (var i = 1; i <= duration; i++) {
+                        var option = document.createElement("OPTION");
+                        option.innerHTML = i;
+                        option.value = i;
+                        year1.options.add(option);
+                    }
+                });
+        }
+        year1.onchange = function () {
+            selYear = this.value;
+            console.log("onchange year: ", selYear);
+
+            var yearData = new FormData();
+            yearData.append("year", selYear);
+
+            fetch("/getSem", { method: "POST", body: yearData })
+                .then(x => x.json())
+                .then(sems => {
+                    console.log("sems =", sems);
+                    while (sem.options.length) {
+                        sem.options.remove(0);
+                    }
+                    for (var i = 0; i < sems.length; i++) {
+                        var op = document.createElement("OPTION")
+                        op.innerHTML = sems[i];
+                        op.value = sems[i];
+                        sem.options.add(op);
+                    }
+                });
+
+        }
+        sem.onchange = function () {
+            selSem = this.value;
+            console.log("onchange sem:", selSem);
+
+            selYear1 = year1.value;
+            console.log("onchange year1: ", selYear1);
+            console.log("onchange faculty: ", selectedFaculty);
+
+            var Course_iddata = new FormData();
+            Course_iddata.append("semester", selSem);
+            Course_iddata.append("year",selYear);
+            Course_iddata.append("faculty",selectedFaculty);
+            fetch("/getCourseid", { method: "POST", body: Course_iddata })
+                .then(x => x.json())
+                .then(courses => {
+                    console.log(courses)
+                    while(coursename.options.length){
+                        coursename.options.remove(0);
+                    }
+                    for(var i=0;i<courses.length;i++){
+                        var op=document.createElement("OPTION")
+                        op.innerHTML=`${courses[i][1]} (${courses[i][0]}`
+                        op.value=courses[i][0]
+                        coursename.options.add(op);
+                    }
+                });
+        }
+
+    </script>
+
+</body>
+
+</html> -->
+
+
+<!-- <html>
+    {% set count=namespace(srno=0) %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Add Faculty</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <h2 class="text-center">Vivekanand College,kolhapur(Autonomous)</h2>
+    <h3 class="text-center">Examination Final Program for </h3>
+
+
+    <form action="/display" method="POST">
+        <div class="form-group m-3">
+            <label for="Examinationdrop"><strong>Examination Final Program for</strong></label>
+            <SELECT id="Examinationdrop" name="Examsession_id" class="form-control">
+                {% for j in joblist %}
+                <OPTION value={{j[3]}}>{{j[0]}} {{j[1]}} {{j[2]}}</OPTION>
+                {% endfor %}
+            </SELECT>
+
+        </div>
+
+        <div class="form-group m-3">
+            <label for="facultyDrop"><strong>Faculty</strong></label>
+              <SELECT id="facultyDrop" name="Faculty" class="form-control" >
+                {% for i in joblist1 %}
+                <OPTION value={{i[0]}}>{{i[0]}}</OPTION>
+                {% endfor %}
+              </SELECT>
+            
+          </div>
+
+
+        <div class="form-group  m-3">
+            <form onsubmit="return false;">
+                <label for="year1"><strong>year</strong></label>
+                <select id="year1" name="Year1" class="form-control" required></select>
+
+        </div>
+
+
+        <div class="form-group m-3">
+            <label for="sem"><strong>semester</strong></label>
+            <select id="sem" name="Sem" class="form-control" required></select>
+        </div>
+
+        <div class="text-center">
+            <button type="open" class="btn btn-primary m-3">open</button>
+        </div>
+
+    </form>
+    
+    
+   
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+
+    <script>
+
+    facultyDrop.onchange = function () {
+      faculty = this.value;
+      console.log("faculty: ", faculty)
+
+      var data = new FormData();
+      data.append("faculty", (faculty));
+      fetch("/getYear", { method: "POST", body: data })
+        .then(res => res.json())
+        .then(duration => {
+          console.log("duration: ", duration);
+          while (year1.options.length) {
+            year1.options.remove(0);
+          }
+          for (var i = 1; i <= duration; i++) {
+            var option = document.createElement("OPTION");
+            option.innerHTML = i;
+            option.value = i;
+            year1.options.add(option);
+          }
+        });
+    }
+
+    year1.onchange = function () {
+            selYear = this.value;
+            console.log("onchange year: ", selYear);
+
+            var yearData = new FormData();
+            yearData.append("year", selYear);
+
+            fetch("/getSem", { method: "POST", body: yearData })
+                .then(x => x.json())
+                .then(sems => {
+                    console.log("sems =", sems);
+                    while (sem.options.length) {
+                        sem.options.remove(0);
+                    }
+                    for (var i = 0; i < sems.length; i++) {
+                        var op = document.createElement("OPTION")
+                        op.innerHTML = sems[i];
+                        op.value = sems[i];
+                        sem.options.add(op);
+                    }
+                });
+
+        }
+
+
+
+    </script>
+</body>
+
+</html> -->
+
+<!doctype html>
+<html lang="en">
+    {% set count=namespace(srno=0) %}
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="{{ url_for('static', filename='style.css')}}" rel="stylesheet" >
+    <title>Add Faculty</title>
+  </head>
+  <body>
+
+    <h2 class="text-center">Vivekanand College,kolhapur(Autonomous)</h2>
+
+        <div class="container-fluid">
+            <form  action='/displaytimetable' method="POST" class="mx-auto">
+                <h4 class="text-center">timetable</h4>
+
+                <div class="row">
+                <div class="col">
+                  <label for="Examinationdrop" class="form-label">Examination Final Program for</label>
+                  <SELECT id="Examinationdrop" name="Examsession_id" class="form-control" >
+                    {% for j in joblist4 %}
+                    <OPTION value={{j[3]}}>{{j[0]}} {{j[1]}} {{j[2]}}</OPTION>
+                    {% endfor %}
+                  </SELECT>
+                </div>
+
+                <div class="col">
+                    <label for="facultyDrop" class="form-label">Faculty</label>
+                    <SELECT id="facultyDrop" name="Faculty" class="form-control" >
+                      {% for i in joblist5 %}
+                      <OPTION value={{i[2]}}>{{i[0]}}</OPTION>
+                      {% endfor %}
+                    </SELECT>
+                  </div>
+
+                </div>
+                
+
+
+                <div class="row">
+                <div class="col">
+                  <label for="year1" class="form-label">year</label>
+                  <select id="year1" name="Year" class="form-control" required></select>
+                </div>
+
+                <div class="col">
+                    <label for="sem" class="form-label">semester</label>
+                    <select id="sem" name="Sem" class="form-control" required></select>
+                </div>
+            </div>
+            
+              
+                <button type="submit" class="btn btn-primary mt-5">Save</button>
+              </form>
+        </div>
+
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script>
+        facultyDrop.onchange = function () {
+      faculty = this.value;
+      console.log("faculty: ", faculty)
+
+      var data = new FormData();
+      data.append("faculty", (faculty));
+      fetch("/Year", { method: "POST", body: data })
+        .then(res => res.json())
+        .then(duration => {
+          console.log("duration: ", duration);
+          while (year1.options.length) {
+            year1.options.remove(0);
+          }
+          for (var i = 1; i <= duration; i++) {
+            var option = document.createElement("OPTION");
+            option.innerHTML = i;
+            option.value = i;
+            year1.options.add(option);
+          }
+        });
+    }
+
+    year1.onchange = function () {
+            selYear = this.value;
+            console.log("onchange year: ", selYear);
+
+            var yearData = new FormData();
+            yearData.append("year", selYear);
+
+            fetch("/getSem", { method: "POST", body: yearData })
+                .then(x => x.json())
+                .then(sems => {
+                    console.log("sems =", sems);
+                    while (sem.options.length) {
+                        sem.options.remove(0);
+                    }
+                    for (var i = 0; i < sems.length; i++) {
+                        var op = document.createElement("OPTION")
+                        op.innerHTML = sems[i];
+                        op.value = sems[i];
+                        sem.options.add(op);
+                    }
+                });
+
+        }
+
+
+
+    </script>
+  </body>
+</html>

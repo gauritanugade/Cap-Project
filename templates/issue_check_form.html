@@ -1,0 +1,239 @@
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Add Cap Faculty</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <form action="/issue_check_data" method="POST">
+
+                <h1 align="center">Cap Faculty</h1><br>
+
+                <div class="col-md-4 mb-3">
+                    <label for="faculty"><strong>Faculty</strong></label>
+                    <SELECT id="facultyDrop" name="faculty" class="form-control">
+                        {% for j in joblist %}
+                        <OPTION value={{j[2]}}>{{j[0]}}</OPTION>
+                        {% endfor %}
+                    </SELECT>
+                </div>
+
+                <div class="col-md-4 mb-3 d-grid">
+                    <label for="year" class="form-label"><strong>Year</strong></label>
+                    <select id="year" name="Year" class="form-control"></select>
+                </div>
+
+
+                <div class="col-md-4 mb-3 d-grid">
+                    <label for="sem" class="form-label"><strong>semester</strong></label>
+                    <select id="sem" name="Sem" class="form-control" required></select>
+                </div>
+                <div class="col-md-4 mb-3 d-grid">
+                    <label for="subject" class="form-label"><strong>subject</strong></label>
+                    <select id="subject" name="subject" class="form-control"></select>
+                </div>
+                <div class="col-md-4 mb-3 d-grid">
+                    <label for="course" class="form-label">Course Name</label>
+                    <select id="course" name="course" class="form-control"></select>
+                </div>
+                <!-- <div class="col-md-4 mb-3 d-grid">
+                    <label for="course_id" class="form-label"><strong>Course Code</strong></label>
+                    <select id="course_id" name="course_id" class="form-control"></select>
+                </div> -->
+                <label for="course_id">Course Id</label><br>
+                <span id="course_id">---</span><br><br>
+                <label for="teacher">Teacher</label><br>
+                <span id="teacher">---</span><br><br>
+
+                <div class="col-md-4 mb-3">
+                    <label for="quescode"><strong>Question paper code</strong></label>
+                    <SELECT id="quescode" name="quescode" class="form-control">
+                        {% for i in joblist1 %}
+                        <OPTION value={{i[0]}}>{{i[0]}}</OPTION>
+                        {% endfor %}
+                    </SELECT>
+                </div>
+                <label for="pcount">paper Count</label><br>
+                <span id="pcount">---</span><br><br>
+                <div class="col-md-4">
+                    <label for="issutime"><strong>Issue time</strong></label>
+                    <input type="time" id="issutime" class="form-control" name="issutime">
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                    <label for="issudate"><strong>Issue Date</strong></label>
+                    <input type="date" id="issudate" class="form-control" name="issudate">
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                    <label for="returndate"><strong>Return Date</strong></label>
+                    <input type="date" id="returndate" class="form-control" name="returndate">
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary m-3">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+    <script>
+
+
+        facultyDrop.onchange = function () {
+            faculty = this.value;
+            console.log("faculty: ", faculty)
+
+            var data = new FormData();
+            data.append("faculty", (faculty));
+            fetch("/getYear", { method: "POST", body: data })
+                .then(res => res.json())
+                .then(duration => {
+                    console.log("duration: ", duration);
+                    while (year.options.length) {
+                        year.options.remove(0);
+                    }
+                    for (var i = 1; i <= duration; i++) {
+                        var option = document.createElement("OPTION");
+                        option.innerHTML = i;
+                        option.value = i;
+                        year.options.add(option);
+                    }
+                });
+        }
+
+        year.onchange = function () {
+            selYear = this.value;
+            console.log("onchange year: ", selYear);
+
+            var yearData = new FormData();
+            yearData.append("year", selYear);
+
+            fetch("/getSem", { method: "POST", body: yearData })
+                .then(x => x.json())
+                .then(sems => {
+                    console.log("sems =", sems);
+                    while (sem.options.length) {
+                        sem.options.remove(0);
+                    }
+                    for (var i = 0; i < sems.length; i++) {
+                        var op = document.createElement("OPTION")
+                        op.innerHTML = "Sem " + sems[i];
+                        op.value = sems[i];
+                        sem.options.add(op);
+                    }
+                });
+
+        }
+
+
+        $('#facultyDrop').change(function () {
+           // alert(this.value)
+            var facultyID = {
+                "fID" : this.value,
+            }
+            $.ajax({
+                url: '/getSubject',
+                data: facultyID,
+                type: 'POST',
+               // dataType: 'json',
+                success: function (data) {
+                    console.log('Data from Flask:', data);
+                    console.log("Type of data = "+typeof(data))
+                    // Handle the data here
+                    var html = "<option value=''>Please Select</option>"
+                    for(var obj in data){
+                        html += "<option value='"+data[obj][0]+"'>"+data[obj][1]+"</option>"
+                    }
+                    document.getElementById("subject").innerHTML = html;
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            })
+        })
+
+        $('#subject').change(function () {
+           // alert(this.value)
+            var SubjectID = {
+                "SID" : this.value,
+            }
+            $.ajax({
+                url: '/getcourse',
+                data: SubjectID,
+                type: 'POST',
+               // dataType: 'json',
+                success: function (data) {
+                    console.log('Data from Flask:', data);
+                    console.log("Type of data = "+typeof(data))
+                    // Handle the data here
+                    var html = "<option value=''>Please Select</option>"
+                    for(var obj in data){
+                        html += "<option value='"+data[obj][3]+"'>"+data[obj][1]+"</option>"
+                    }
+                    document.getElementById("course").innerHTML = html;
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            })
+        })
+            $(document).ready(function() {
+            $('#course').change(function() {
+            var selectedcoursename = $(this).val();
+            $.ajax({
+            url: '/get_courseid/' + selectedcoursename,
+            type: 'GET',
+            success: function(response) {
+            $('#course_id').text(response.name);
+            $('#teacher').text(response.teachername);
+
+            },
+            error: function(error) {
+            console.log(error);
+            }
+            });
+            });
+            });
+            $(document).ready(function() {
+            $('#quescode').change(function() {
+            var selectedquescode = $(this).val();
+            $.ajax({
+            url: '/get_quescode/' + selectedquescode,
+            type: 'GET',
+            success: function(response) {
+            $('#pcount').text(response.count);
+
+            },
+            error: function(error) {
+            console.log(error);
+            }
+            });
+            });
+            });
+   
+           
+   
+
+    </script>
+</body>
+
+</html>

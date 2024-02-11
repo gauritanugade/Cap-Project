@@ -1,0 +1,242 @@
+{%extends "homepage.html" %} {%block content%}
+
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Corrected -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add more field using bootstrap 5, jQuery & PHP</title>
+    <!-- Corrected Bootstrap 5 CSS link -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.1/css/bootstrap.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <!-- ... Other styles and scripts ... -->
+
+    <style>
+      .row {
+        --bs-gutter-x: 1.5rem;
+        --bs-gutter-y: -8%;
+      }
+
+      .center {
+        width: 100.5%;
+        max-width: 400%;
+        background: rgba(31, 158, 172, 0.881);
+        padding: 20px;
+        margin: 0 120px;
+        box-shadow: inset -2px 2px 2px rgb(32, 30, 30);
+        color: #ecf0f4;
+        /* margin-top: -47%; */
+        margin-top: 7%;
+      }
+
+      div {
+        display: block;
+      }
+      body {
+        margin: 0;
+        font-family: var(--bs-body-font-family);
+        font-size: var(--bs-body-font-size);
+        font-weight: var(--bs-body-font-weight);
+        line-height: var(--bs-body-line-height);
+        text-align: var(--bs-body-text-align);
+        -webkit-text-size-adjust: 100%;
+      }
+      .word {
+        color: black;
+      }
+      .add_item_btn {
+        width: 11%;
+        position: absolute;
+        top: -223.5%;
+        transform: translateY(-40%);
+        left: 73.5%;
+      }
+      .rmv_btn {
+        width: 11%;
+        position: absolute;
+        margin-top: -0.5%;
+        transform: translateY(-40%);
+        left: 73.5%;
+      }
+      .box {
+        margin-left: 49.5%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="row my-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="center">
+          <div class="word">
+            <h2 style="font-style: normal">Remuneration</h2>
+            <hr style="border-bottom: 5px solid rgb(11, 11, 11)" />
+            <br />
+
+            <form id="datainsert">
+              <div>
+                <div class="row">
+                  <div class="col-md-5">
+                    <label for="Examinationdrop" class="form-label"
+                      >Examination Final Program for</label
+                    >
+                    <select
+                      id="Examinationdrop"
+                      name="Examsession_id"
+                      class="form-select"
+                    >
+                      <option value="" selected disabled></option>
+                      {% for j in joblist %}
+                      <option value="{{j[2]}}">{{j[0]}} {{j[1]}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  <div class="col-md-5">
+                    <label for="degree" class="form-label">Degree</label>
+                    <select id="degreedrop" name="degree" class="form-select">
+                      <option value="" selected disabled></option>
+                      <option value="UG">UG</option>
+                      <option value="PG">PG</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-2">
+                    <label for="slab" class="form-label">Slab</label>
+                </div>
+                <div class="col-md-2">
+                    <label for="slab" class="form-label">Lower Limit</label>
+                </div>
+                <div class="col-md-2">
+                    <label for="slab" class="form-label">Upper Limit</label>
+                </div>
+                <div class="col-md-2">
+                    <label for="slab" class="form-label">Rupees</label>
+                </div>
+            </div>
+
+              <div id="show_item">
+                <!-- dynamic rows -->
+              </div>
+
+              <div class="row">
+                <div class="col-md-11">
+                  <button class="btn btn-success add_item_btn">Add More</button>
+                </div>
+              </div>
+              <div class="col-md-2 mb-1 d-grid">
+                <label for="perpaper_rs" class="form-label"
+                  >Perpaper Rupees</label
+                >
+                <input
+                  type="text"
+                  id="perpaper_rs"
+                  class="form-control"
+                  name="perpaper_rs"
+                />
+              </div>
+              <div class="col-md-2 mb-3 d-grid">
+                <input
+                  type="submit"
+                  value="SAVE"
+                  class="btn btn-primary"
+                  id="save_btn"
+                />
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        var slabCount = 1; // Initialize slab count
+
+        // Function to add a new slab row
+        function addSlabRow() {
+          let slabValue = `slab${slabCount}`; // Generate the slab value for the new row
+          console.log("slabCount=", slabCount);
+          var newRow = `<div class="row">
+                    <div class="col-md-2">
+                        <input type="text" class="form-control" name="slab" value="${slabValue}">
+                    </div>
+                
+                    .<div class="col-md-2">
+                        <input type="number" min="1" step="1" id="lowerlimit" class="form-control" name="lowerlimit">
+                    </div>
+    
+                    <div class="col-md-2">
+                        <input type="number" min="1" step="1" id="upperlimit" class="form-control" name="upperlimit">
+                    </div>
+    
+                    <div class="col-md-2">
+                        <input type="number" min="1" step="1" id="rupees" class="form-control" name="rupees">
+                    </div>
+                    <div class="col-md-11 mb-9 d-grid">
+                        <button class="btn btn-danger rmv_btn" id="${slabCount}">Remove</button>
+                    </div>
+
+                </div>`;
+
+          // Append the new row after the last row
+          $("#show_item").append(newRow);
+          slabCount++; // Increment slab count for the next row
+        }
+
+        // Add the first slab row when the document is ready
+        addSlabRow();
+
+        // Click event handler for the "Add More" button
+        $(document).on("click", ".add_item_btn", function (e) {
+          e.preventDefault();
+          console.log("add =", e);
+          addSlabRow(); // Add a new slab row
+        });
+
+        // Click event handler for the "Remove" button
+        $(document).on("click", ".rmv_btn", function (e) {
+          e.preventDefault();
+          $(this).closest(".row").remove();
+          let id = parseInt(e.target.id)
+          if(id == slabCount-1){
+            slabCount = id;
+          }
+        });
+
+        // Submit event handler for the form
+        $("#datainsert").submit(function (e) {
+          e.preventDefault();
+          let formData = $(this).serialize();
+
+          $.ajax({
+            type: "POST",
+            url: "/remunerationdata",
+            data: formData,
+            success: function (response) {
+              alert("Data Added Successfully!");
+              $("#datainsert")[0].reset(); // Reset the form
+            },
+            error: function (error) {
+              console.log(error);
+              // Handle error
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
+{% endblock %}

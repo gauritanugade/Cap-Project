@@ -1,0 +1,499 @@
+{%extends "capfacultypage.html" %}
+{%block content%}
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Corrected -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add more field using bootstrap 5, jQuery & PHP</title>
+    <style>
+        .row {
+            --bs-gutter-x: 1.5rem;
+            --bs-gutter-y: -8%;
+        }
+
+        .center {
+            width: 100.5%;
+            max-width: 400%;
+            background: rgba(31, 158, 172, 0.881);
+            padding: 20px;
+            margin: 0 120px;
+            box-shadow: inset -2px 2px 2px rgb(32, 30, 30);
+            color: #ecf0f4;
+            margin-top: 7%;
+
+        }
+
+        div {
+            display: block;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--bs-body-font-family);
+            font-size: var(--bs-body-font-size);
+            font-weight: var(--bs-body-font-weight);
+            line-height: var(--bs-body-line-height);
+            text-align: var(--bs-body-text-align);
+            -webkit-text-size-adjust: 100%;
+
+
+        }
+
+        .word {
+            color: black;
+        }
+
+        .box {
+            margin-left: 49.5%;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        input[type="text"],
+        input[type="date"] {
+            width: 100%;
+            padding: 6px 10px;
+            margin: 4px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .radio-container {
+            position: relative;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="row my-4">
+        <div class="col-lg-10 mx-auto">
+            <div class="center">
+                <div class="word">
+                    <h2 style="font-style: normal;">PAPER ISSUE DETAILS</h2>
+                    <hr style="border-bottom: 5px solid rgb(11, 11, 11);"><br>
+                    <div align="center">
+                        <form action="/search_subject" method="POST" align="center">
+                            <label>
+                                <input type="radio" name="radio_option" value="teacher_name"
+                                    onchange="showSearchBar('teacher_name')"> Teacher Name
+                            </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                            <label>
+                                <input type="radio" name="radio_option" value="faculty"
+                                    onchange="showSearchBar('faculty')"> Faculty
+                            </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                            <label>
+                                <input type="radio" name="radio_option" value="course_name"
+                                    onchange="showSearchBar('course_name')"> Course Name
+                            </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                            <label>
+                                <input type="radio" name="radio_option" value="course_id"
+                                    onchange="showSearchBar('course_id')"> Course_id
+                            </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                            <br><br><br>
+                            <label id="teacher_name-label" for="teacher_name" class="search-bar-label"
+                                style="display: none;">Teacher Name:</label>
+                            <div class="input-box1" id="teacher_name-input-box" style="display: none;">
+                                <i class="uil uil-search"></i>
+                                <input type="text" placeholder="   Search Teacher Name" id="teacher_name"
+                                    name="teacher_name" class="input-box" />
+                                <button class="btn btn-primary designBtn">Search</button>
+                            </div>
+
+                            <label id="faculty-label" for="faculty" class="search-bar-label"
+                                style="display: none;">Faculty:</label>
+                            <div class="input-box1" id="faculty-input-box" style="display: none;">
+                                <i class="uil uil-search"></i>
+                                <input type="text" placeholder="   Search Faculty" id="faculty" name="faculty"
+                                    class="input-box" />
+                                <button class="btn btn-primary designBtn">Search</button>
+                            </div>
+
+                            <label id="course_name-label" for="course_name" class="search-bar-label"
+                                style="display: none;">Course Name:</label>
+                            <div class="input-box1" id="course_name-input-box" style="display: none;">
+                                <i class="uil uil-search"></i>
+                                <input type="text" placeholder="   Search Course Name" id="course_name"
+                                    name="course_name" class="input-box" />
+                                <button class="btn btn-primary designBtn">Search</button>
+                            </div>
+
+                            <label id="course_id-label" for="course_id" class="search-bar-label"
+                                style="display: none;">Course Id:</label>
+                            <div class="input-box1" id="course_id-input-box" style="display: none;">
+                                <i class="uil uil-search"></i>
+                                <input type="text" placeholder="   Search Course Id" id="course_id" name="course_id"
+                                    class="input-box" />
+                                <button class="btn btn-primary designBtn">Search</button>
+                            </div>
+
+
+
+
+                        </form>
+                        {% if result|length > 0 %}
+                        <form action='/paper_issue' method="POST">
+                            <h2>Search Results</h2>
+                            <table class="table table-striped table-bordered" border="5">
+                                <thead>
+                                    <tr>
+                                        <th>Radio Column</th>
+                                        <th scope="col">Sr.no</th>
+                                        <th scope="col">faculty</th>
+                                        <th scope="col">year</th>
+                                        <th scope="col">sem</th>
+                                        <th scope="col">subject</th>
+                                        <th scope="col">coursename</th>
+                                        <th scope="col">course_id</th>
+                                        <th scope="col">count</th>
+                                        <th scope="col">quespaper_code</th>
+                                        <th scope="col">Remaining Paper Count</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for result in result %}
+                                    <tr>
+                                        <td>
+                                            <input type="radio" name="selected_row" class="radio-container  "
+                                                data-faculty="{{ result[0] }}" data-year="{{ result[1] }}"
+                                                data-sem="{{ result[2] }}" data-subject="{{ result[3] }}"
+                                                data-coursename="{{ result[4] }}" data-course_id="{{ result[5] }}"
+                                                data-count="{{ result[6] }}" data-quespaper_code="{{ result[7] }}"
+                                                data-teacher_id="{{ result[9] }}" data-timetable_id="{{ result[8] }}"
+                                                data-papercount_id="{{ result[10]}}" id="radio_{{ loop.index }}"
+                                                onclick="displaySelectedRow(this)">
+                                        </td>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ result[0] }}</td>
+                                        <td>{{ result[1] }}</td>
+                                        <td>{{ result[2] }}</td>
+                                        <td>{{ result[3] }}</td>
+                                        <td>{{ result[4] }}</td>
+                                        <td>{{ result[5] }}</td>
+                                        <td>{{ result[6] }}</td>
+                                        <td>{{ result[7] }}</td>
+                                        <td>{{ result[11] }}</td>
+
+                                        <input type="hidden" name="timetable_id[]" value="{{ result[8] }}">
+                                        <input type="hidden" name="papercount_id[]" value="{{ result[10] }}">
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </form>
+
+                        <form action='/paper_issue' method="POST">
+
+                            <h2 id="selected_row_heading" style="display: none;">Selected Row</h2>
+                            <table id="selected_row_table" class="table table-striped table-bordered" border="1"
+                                style="display: none;">
+                                <thead>
+                                    <tr>
+                                        <th style="font-size: 12px; width: 5%;">Sr.no</th>
+                                        <th style="font-size: 12px; width: 10%;">faculty</th>
+                                        <th style="font-size: 12px; width: 7%;">year</th>
+                                        <th style="font-size: 12px; width: 7%;">sem</th>
+                                        <th style="font-size: 12px; width: 15%;">subject</th>
+                                        <th style="font-size: 12px; width: 15%;">coursename</th>
+                                        <th style="font-size: 12px; width: 7%;">Course id</th>
+                                        <th style="font-size: 12px; width: 5%;">count</th>
+                                        <th style="font-size: 12px; width: 10%;">Quespaper code</th>
+                                        <th style="font-size: 12px; width: 7%;">Remaining Paper</th>
+                                        <th style="font-size: 12px; width: 7%;">from Paper_count</th>
+                                        <th style="font-size: 12px; width: 7%;">To Paper_count</th>
+
+                                        <th style="font-size: 12px; width: 10%;">Teacher Paper count</th>
+                                        <th style="font-size: 12px; width: 10%;">Issue Date</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="selected_row_body">
+                                    {% for data in result %}
+                                    <tr>
+                                        <td style="font-size: 12px; width: 5%;">{{ loop.index }}</td>
+                                        <td style="font-size: 10px; width: 10%;">{{ data[0] }}</td>
+                                        <td style="font-size: 10px; width: 7%;">{{ data[1] }}</td>
+                                        <td style="font-size: 10px; width: 7%;">{{ data[2] }}</td>
+                                        <td style="font-size: 10px; width: 15%;">{{ data[3] }}</td>
+                                        <td style="font-size: 10px; width: 15%;">{{ data[4] }}</td>
+                                        <td style="font-size: 10px; width: 7%;">{{ data[5] }}</td>
+                                        <td style="font-size: 10px; width: 5%;">{{ data[6] }}</td>
+                                        <td style="font-size: 10px; width: 10%;">{{ data[7] }}</td>
+                                        <td style="font-size: 10px; width: 10%;">{{ data[11] }}</td>
+
+
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary m-3">Issue Paper</button>
+                            </div>
+                        </form>
+                        {% endif %}
+
+
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var countfrom = 0
+        var countto = 0
+        function updateCount() {
+            let totalCount = document.getElementById("totalCount");
+            let count = countto - countfrom
+            console.log("count = ", count)
+            if (count > 0) {
+                totalCount.value = count + 1
+                totalCount.innerText = count + 1
+            }
+            else {
+                totalCount.innerText = ""
+                totalCount.value = 0
+            }
+        }
+        function fromCountChange() {
+            countfrom = document.getElementById("from_count").value;
+            console.log("countfrom: ", countfrom)
+            updateCount()
+        }
+
+        function toCountChange() {
+            countto = document.getElementById("to_count").value;
+            console.log("countto: ", countto)
+            updateCount()
+        }
+
+        function displaySelectedRow(radio) {
+            if (radio.checked) {
+                let papercount_id = radio.dataset.papercount_id
+                console.log("radio papercount_id", papercount_id)
+                var backData = new FormData();
+                backData.append("papercount_id", papercount_id);
+
+                fetch("/backdata", { method: "POST", body: backData })
+                    .then(x => x.json())
+                    .then(backdatas => {
+                        console.log("backdatas =", backdatas);
+                        var row = radio.parentNode.parentNode;
+                        var selectedRowBody = document.getElementById('selected_row_body');
+                        selectedRowBody.innerHTML = '';
+                        function addTextInCell(name, value, newRow) {
+                            console.log("value", value)
+                            var label = document.createElement('label');
+
+                            label.appendChild(document.createTextNode(value));
+
+                            var cell = newRow.insertCell();
+                            cell.appendChild(label);
+                        }
+
+                        for (var i = 0; i < backdatas.length; i++) {
+                            var newRow = selectedRowBody.insertRow();
+                            let cell = newRow.insertCell();
+                            let srNo = document.createElement('label')
+                            srNo.textContent = i + 1;
+                            cell.appendChild(srNo)
+
+                            addTextInCell("faculty", backdatas[i][0], newRow)
+                            addTextInCell("year", backdatas[i][1], newRow)
+                            addTextInCell("sem", backdatas[i][2], newRow)
+                            addTextInCell("subject", backdatas[i][3], newRow)
+                            addTextInCell("coursename", backdatas[i][4], newRow)
+                            addTextInCell("course_id", backdatas[i][5], newRow)
+                            addTextInCell("count", backdatas[i][6], newRow)
+                            addTextInCell("quespaper_code", backdatas[i][7], newRow)
+                            addTextInCell("remaining_paper", backdatas[i][8], newRow)
+                            addTextInCell("from_count", backdatas[i][10], newRow)
+                            addTextInCell("to_count", backdatas[i][11], newRow)
+                            addTextInCell("teacher_paper_count", backdatas[i][14], newRow)
+                            var today = new Date(backdatas[i][12])
+                            var year = today.getFullYear();
+                            var month = String(today.getMonth() + 1).padStart(2, '0');
+                            var day = String(today.getDate()).padStart(2, '0');
+                            var formattedDate = `${year}-${month}-${day}`;
+                            addTextInCell("issue_date", formattedDate, newRow)
+
+                        }
+
+
+                        var row = radio.parentNode.parentNode;
+                        var selectedRowBody = document.getElementById('selected_row_body');
+                        //selectedRowBody.innerHTML = '';
+                        var newRow = selectedRowBody.insertRow();
+                        for (var i = 1; i < row.cells.length; i++) {
+                            var cell = newRow.insertCell();
+                            cell.textContent = row.cells[i].textContent;
+                        }
+
+                        // Add input fields for additional columns
+
+                        var fromPaperCountCell = newRow.insertCell();
+                        fromPaperCountCell.innerHTML = '<input type="text" name="from_count"  id="from_count" onchange="fromCountChange()" placeholder="from"  required>'
+
+                        var toPaperCountCell = newRow.insertCell();
+                        toPaperCountCell.innerHTML = '<input type="text" name="to_count"  id="to_count" onchange="toCountChange()"  placeholder="to" required>'
+
+
+                        var teacherPaperCountCell = newRow.insertCell();
+                        teacherPaperCountCell.innerHTML = '<input type="text" name="teacher_paper_count" id="totalCount"  placeholder="totalCount" readonly tabindex="-1" >'
+
+                        var issueDateCell = newRow.insertCell(); ''
+                        today = new Date();
+                        year = today.getFullYear();
+                        month = String(today.getMonth() + 1).padStart(2, '0');
+                        day = String(today.getDate()).padStart(2, '0');
+                        formattedDate = `${year}-${month}-${day}`;
+                        issueDateCell.innerHTML = `<input type="date" name="issue_date[]" value="${formattedDate}" required readonly>`;
+
+
+                        // Add teacher_id input hidden field
+                        var teacherIdInput = document.createElement('input');
+                        teacherIdInput.type = 'hidden';
+                        teacherIdInput.name = 'teacher_id';
+                        teacherIdInput.value = radio.dataset.teacher_id;
+                        newRow.appendChild(teacherIdInput);
+
+                        var paperIdInput = document.createElement('input');
+                        paperIdInput.type = 'hidden';
+                        paperIdInput.name = 'papercount_id';
+                        paperIdInput.value = radio.dataset.papercount_id;
+                        newRow.appendChild(paperIdInput);
+
+                        var timetableIdInput = document.createElement('input');
+                        timetableIdInput.type = 'hidden';
+                        timetableIdInput.name = 'timetable_id';
+                        timetableIdInput.value = radio.dataset.timetable_id;
+                        newRow.appendChild(timetableIdInput);
+
+                        document.getElementById('selected_row_heading').style.display = 'block';
+                        document.getElementById('selected_row_table').style.display = 'block';
+
+                    }
+                    );
+            } else {
+                document.getElementById('selected_row_heading').style.display = 'none';
+                document.getElementById('selected_row_table').style.display = 'none';
+            }
+        }
+
+        function showSearchBar(category) {
+            var searchBars = document.querySelectorAll('.search-bar');
+            searchBars.forEach(function (bar) {
+                bar.style.display = 'none';
+            });
+
+            var selectedSearchBar = document.getElementById(category);
+            if (selectedSearchBar) {
+                selectedSearchBar.style.display = 'block';
+            }
+
+            var labels = document.querySelectorAll('.search-bar-label');
+            labels.forEach(function (label) {
+                label.style.display = 'none';
+            });
+
+            var selectedLabel = document.getElementById(category + '-label');
+            if (selectedLabel) {
+                selectedLabel.style.display = 'block';
+            }
+
+            // Additional code to handle the display of input boxes
+            var inputBoxes = document.querySelectorAll('.input-box1');
+            inputBoxes.forEach(function (box) {
+                box.style.display = 'none';
+            });
+
+            var selectedInputBox = document.getElementById(category + '-input-box');
+            if (selectedInputBox) {
+                selectedInputBox.style.display = 'block';
+            }
+        }
+
+        $(function () {
+            var teacherdata = [
+                {% for item in datateacher %} 
+                            "{{item}}",
+            {% endfor %} 
+                    ];
+
+        var facultydata = [
+            {% for item1 in datafaculty %}
+        "{{item1}}",
+            {% endfor %} 
+                    ];
+        var coursedata = [
+            {% for item2 in datacourse %}
+        "{{item2}}",
+            {% endfor %} 
+                    ];
+
+        var courseiddata = [
+            {% for item3 in datacourseid %}
+        "{{item3}}",
+            {% endfor %} 
+                    ];
+
+        $("#teacher_name").autocomplete({
+            source: teacherdata
+        });
+        $("#faculty").autocomplete({
+            source: facultydata
+        });
+        $("#course_name").autocomplete({
+            source: coursedata
+        });
+
+        $("#course_id").autocomplete({
+            source: courseiddata
+        });
+                });
+
+
+
+
+    </script>
+</body>
+
+</html>
+{% endblock %}

@@ -1,0 +1,349 @@
+{%extends "homepage.html" %} 
+{%block content%} 
+<html>
+    {% set count=namespace(srno=0) %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatiible" content="IE=edge">
+    <meta name="viewpoint" content="width=device-width, initial-scale=1.0">
+    <title>Add more field using bootstrap 5, jQuery & PHP</title>
+    <link rel='stylesheet'
+        href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.1/css/bootstrap.min.css' />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="style1.css">
+        <style>
+            .row {
+            
+            --bs-gutter-y: auto;
+            margin-top: calc(var(--bs-gutter-y) * -1);
+            }
+           
+            .col {
+                width: 100%;
+                max-width: 1000px;
+                background: rgb(0 0 0 / 66%);
+                padding: 30px;
+                margin: 0 250px;
+                border-radius: 10px;
+                box-shadow: inset -2px 2px 2px rgb(32, 30, 30);
+                color: #ecf0f4;
+            }
+            .card-header {
+                padding: .5rem 1rem;
+                margin-bottom: 0;
+                background-color: rgb(237 233 232 / 60%);
+                border-bottom: 1px solid rgba(0,0,0,.125);
+            }
+
+            div {
+                display: block;
+            }
+            body {
+                margin: 0;
+                font-family: var(--bs-body-font-family);
+                font-size: var(--bs-body-font-size);
+                font-weight: var(--bs-body-font-weight);
+                line-height: var(--bs-body-line-height);
+                /* color: var(--bs-body-color); */
+                text-align: var(--bs-body-text-align);
+                /*background-color: rgba(11, 11, 11, 0.862); */
+                /* background-image: "{{ url_for('static', filename='/webtemplate/ivancik.jpg') }}"; */
+
+                -webkit-text-size-adjust: 100%;
+                /* -webkit-tap-highlight-color: transparent; */
+                
+                background-image: url('https://t4.ftcdn.net/jpg/02/44/29/99/360_F_244299930_81B2P2ji5D3BiUqG0FOq8EjuYao4kVVj.jpg');
+                background-repeat: no-repeat;
+                background-size: 1500px 900px;
+            }
+            .table-striped>tbody>tr:nth-of-type(odd)>* {
+                --bs-table-accent-bg: var(--bs-table-striped-bg);
+                color: #e6eaed;
+            }
+            #subjects_div {
+                    display: flex;
+                    flex-direction: row;
+                }
+
+                #subjects_div label {
+                    margin-right: 10px;  /* Adjust the margin as needed for spacing between radio buttons and labels */
+}
+
+            
+            
+        </style>
+
+</head>
+
+<body>
+    <div class="bg=dark">
+        <div class="container">
+            <div class="row my-4">
+                <div class="col-lg-10 mx-auto">
+                    
+                    <div class="col">
+                        <div class="card-header">
+                            <h2 class="text-center">Vivekanand College,kolhapur(Autonomous)</h2>
+                            <h3 class="text-center">Examination Final Program for </h3>
+
+                        </div><br>
+                         <form action="/timetabledata" method="POST">
+                            <div class="col-md-7">
+                                <label for="Examinationdrop" class="form-label">Examination Final Program for</label>
+                                <select id="Examinationdrop" name="Examsession_id" class="form-select">
+                                    <option value="" selected disabled></option>
+                                    {% for j in joblist %}
+                                    <OPTION value={{j[2]}}>{{j[0]}} {{j[1]}}</OPTION>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <label for="degree" class="form-label">Degree</label>
+                                    <select id="degreedrop" name="degree" class="form-select" required>
+                                    <option value="" selected disabled></option>
+                                    <option value="UG">UG</option>
+                                    <option value="PG">PG</option>
+                                    </select>
+                                    
+                                  </div>
+                                  <div class="col-md-5">
+                                    <label for="yeardrop" class="form-label">year</label>
+                                    <select id="yeardrop" name="Year" class="form-select" required>
+                                    <!-- <option value="" selected disabled></option> -->
+                                    </select>
+                                  </div>
+                            </div>
+                            <div class="row">
+                                  <div class="col-md-5">
+                                    <label for="sem" class="form-label">semester</label>
+                                    <select id="sem" name="Sem" class="form-select" required>
+                                    <!-- <option value="" selected disabled></option> -->
+                                    </select>
+                                  </div>
+                                  <div class="col-md-5">
+                                    <label for="patterndrop" class="form-label">pattern</label>
+                                    <SELECT id="patterndrop" name="pattern" class="form-select">
+                                        {% for k in joblist2 %}
+                                        <OPTION value={{k[1]}}>{{k[0]}}</OPTION>
+                                        {% endfor %}
+                                    </select>
+                                  </div>
+                                    <!-- <div class="col-md-5"> -->
+                                  <div id="faculties_div" >
+                                    <label for="facultyDrop" name="faculty">Faculty</lable><br>
+                                </div>
+
+                                <label for="subjectDrop" name="subject">Subject</label><br>
+                                <div id="subjects_div"></div> 
+                                
+                                <label for="courseDrop" name="course"><strong>Course</strong></lable><br>
+                                    <div id="course_div"></div>
+                    
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                        <label for="date1"><strong>Date</strong></label>
+                                        <input type="date" id="date1" class="form-control" name="date">
+                                    </div>
+                    
+                                    <div class="col-md-4">
+                                        <label for="stime"><strong>Starttime</strong></label>
+                                        <input type="time" id="stime" class="form-control" name="starttime">
+                                    </div>
+                    
+                                    <div class="col-md-4">
+                                        <label for="etime"><strong>Endtime</strong></label>
+                                        <input type="time" id="edate" class="form-control" name="endtime">
+                                    </div>
+                                </div>
+                                
+                                    <div class="text-center">
+                                        <button type="save" class="btn btn-primary m-3">save</button>
+                                    </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+
+    <script>
+           var facultyValue, subValue;
+
+degreedrop.onchange = function () {
+    degree = this.value;
+    console.log("degree:", degree)
+    var duration
+    if (degree == "UG") {
+        duration = 3
+    } else {
+        duration = 2
+    }
+    while (yeardrop.options && yeardrop.options.length) {
+        yeardrop.options.remove(0);
+    }
+    for (var i = 1; i <= duration; i++) {
+        var option = document.createElement("OPTION");
+        option.innerHTML = i;
+        option.value = i;
+        yeardrop.options.add(option);
+    }
+
+}
+
+
+
+yeardrop.onchange = function () {
+    selYear = this.value;
+    console.log("onchange year: ", selYear);
+
+    var yearData = new FormData();
+    yearData.append("year", selYear);
+
+    fetch("/getSem", { method: "POST", body: yearData })
+        .then(x => x.json())
+        .then(sems => {
+            console.log("sems =", sems);
+            while (sem.options.length) {
+                sem.options.remove(0);
+            }
+            for (var i = 0; i < sems.length; i++) {
+                var op = document.createElement("OPTION")
+                op.innerHTML = "Sem " + sems[i];
+                op.value = sems[i];
+                sem.options.add(op);
+            }
+        });
+
+}
+
+
+patterndrop.onchange = function () {
+    pattern = this.value;
+
+    year = yeardrop.value
+    sem = sem.value
+    degree = degreedrop.value
+    console.log("onchange pattern: ", pattern);
+    console.log("onchange year: ", year);
+    console.log("onchange semester: ", sem);
+    console.log("onchange degree: ", degree);
+
+    var patternData = new FormData();
+    patternData.append("pattern", pattern);
+    var degreeData = new FormData();
+    degreeData.append("degree", degree);
+
+
+    fetch("/faculty", { method: "POST", body: degreeData })
+        .then(x => x.json())
+        .then(faculties => {
+            console.log("faculties =", faculties);
+            while (faculties_div.firstChild) {
+                faculties_div.removeChild(faculties_div.firstChild);
+            }
+            for (var i = 0; i < faculties.length; i++) {
+                var radio = document.createElement("input");
+                radio.type = "radio";
+                radio.name = "facultyradio";
+                radio.id = "facultyradio";
+                radio.value = faculties[i][2]
+                radio.addEventListener("change", handleRadioChange);
+
+                var label = document.createElement("label");
+                label.htmlFor = "facultyradio";
+                label.appendChild(document.createTextNode(faculties[i][0]));
+                faculties_div.appendChild(radio);
+                faculties_div.appendChild(label);
+                faculties_div.appendChild(document.createElement("br"));
+            }
+        });
+
+}
+
+function handleRadioChange(event) {
+    var selectedValue = event.target.value;
+    facultyValue = selectedValue
+    console.log("Selected value: " + selectedValue);
+    console.log("onchange faculty: ", selectedValue);
+    var facultyData = new FormData();
+    facultyData.append("faculty", selectedValue);
+
+    fetch("/subject", { method: "POST", body: facultyData })
+        .then(x => x.json())
+        .then(subjects => {
+            console.log("subjects =", subjects);
+            while (subjects_div.firstChild) {
+                subjects_div.removeChild(subjects_div.firstChild);
+            }
+            for (var i = 0; i < subjects.length; i++) {
+                var radio = document.createElement("input");
+                radio.type = "radio";
+                radio.name = "subjectradio";
+                radio.id = "subjectradio";
+                radio.value = subjects[i][2]
+                radio.addEventListener("change", handleRadioChange1);
+
+                var label = document.createElement("label");
+                label.htmlFor = "subjectradio";
+                label.appendChild(document.createTextNode(subjects[i][0]));
+                subjects_div.appendChild(radio);
+                subjects_div.appendChild(label);
+                subjects_div.appendChild(document.createElement("br"));
+            }
+        });
+
+}
+
+function handleRadioChange1(event1) {
+    var selectedsubValue = event1.target.value;
+    subValue = selectedsubValue
+    console.log("Selected value: " + selectedsubValue);
+    console.log("onchange subject: ", selectedsubValue);
+    var subjectData = new FormData();
+    subjectData.append("subject", selectedsubValue);
+
+    fetch("/course", { method: "POST", body: subjectData })
+        .then(x => x.json())
+        .then(courses => {
+            console.log("courses =", courses);
+            while (course_div.firstChild) {
+                course_div.removeChild(course_div.firstChild);
+            }
+            for (var i = 0; i < courses.length; i++) {
+                var radio = document.createElement("input");
+                radio.type = "radio";
+                radio.name = "courseradio";
+                radio.id = "courseradio";
+                radio.value = courses[i][3]
+                // radio.addEventListener("change", handleRadioChange1);
+
+                var label = document.createElement("label");
+                label.htmlFor = "courseradio";
+                label.appendChild(document.createTextNode(courses[i][0]));
+                course_div.appendChild(radio);
+                course_div.appendChild(label);
+                course_div.appendChild(document.createElement("br"));
+            }
+        });
+
+}
+
+</script>
+</body>
+
+</html>
+{% endblock %}

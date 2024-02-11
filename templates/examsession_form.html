@@ -1,0 +1,94 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Exam Session</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <h1 class="display-4 text-center">Exam Session</h1>
+
+            <form action='/examsessiondata' method="POST">
+                <div class="form-group m-3">
+                    <label for="facultyDrop"><strong>Faculty</strong></label>
+                      <SELECT id="facultyDrop" name="Faculty" class="form-control" >
+                        {% for j in joblist %}
+                        <OPTION value={{j[0]}}>{{j[0]}}</OPTION>
+                        {% endfor %}
+                      </SELECT>
+                    
+                  </div>
+
+                
+                <div class="form-group m-3">
+                    <label for="semester"><strong>Semester</strong></lable>
+                        <select name="semester" class="form-control" id="Semester">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="3">4</option>
+                            <option value="3">5</option>
+                            <option value="3">6</option>
+                        </select>
+                    </div>
+
+                    
+                
+                <div class="form-group m-3">
+                    <label for="sem_month"><strong>Sem-Month</strong></lable>
+                        <select name="sem_month" class="form-control" id="sem_month">
+                            <option value="January">January</option>
+                            <option value="February">February</option>
+                            <option value="March">March</option>
+                            <option value="April">April</option>
+                            <option value="May">May</option>
+                            <option value="June">June</option>
+                            <option value="July">July</option>
+                            <option value="August">August</option>
+                            <option value="September">September</option>
+                            <option value="October">October</option>
+                            <option value="November">November</option>
+                            <option value="December">December</option>
+                        </select>
+                    </div>
+
+                <div class="form-group m-3">
+                    <label for="sem_year"><strong>Sem_year</strong></label>
+                    <input type="year" id="sem_year" class="form-control" name="sem_year">
+                </div>
+
+                <div class="form-group m-3">
+                    <label for="pattern"><strong>Pattern</strong></lable>
+                        <select name="pattern" class="form-control" id="pattern">
+                            <option value="old">Old</option>
+                            <option value="new">New</option>
+                            <option value="nep">NEP</option>
+                        </select>
+                </div>
+
+                
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary m-3">Save</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+                crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+                integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+                crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+                integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+                crossorigin="anonymous"></script>
+</body>
+
+</html>

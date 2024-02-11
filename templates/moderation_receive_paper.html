@@ -1,0 +1,405 @@
+{%extends "capfacultypage.html" %} 
+{%block content%} 
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Corrected -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Add more field using bootstrap 5, jQuery & PHP</title>
+        <!-- Corrected Bootstrap 5 CSS link -->
+        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.1/css/bootstrap.min.css' />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ url_for('static', filename='/simple.css') }}" />
+
+
+        <!-- ... Other styles and scripts ... -->
+    
+    <style>
+            .row {
+                --bs-gutter-x: 1.5rem;
+                --bs-gutter-y: -8%;
+            }
+           
+            .center {
+            width: 100.5%;
+            max-width: 400%;
+            background: rgba(31, 158, 172, 0.881);
+            padding: 20px;
+            margin: 0 120px;
+            box-shadow: inset -2px 2px 2px rgb(32, 30, 30);
+            color: #ecf0f4;
+            margin-top: 7%;
+
+        }
+
+            div {
+                display: block;
+            }
+            body {
+                margin: 0;
+                font-family: var(--bs-body-font-family);
+                font-size: var(--bs-body-font-size);
+                font-weight: var(--bs-body-font-weight);
+                line-height: var(--bs-body-line-height);
+                text-align: var(--bs-body-text-align);
+                -webkit-text-size-adjust: 100%;
+                
+
+            }
+            .word{
+                color: black;
+            }
+         
+            .box{
+              margin-left: 49.5%;
+            }
+            
+        </style>
+</head>
+<body>
+    <div class="row my-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="center">
+          <div class="word">
+            <h2 style="font-style: normal;">Moderation Receive Paper</h2>
+            <hr style="border-bottom: 5px solid rgb(11, 11, 11);"><br>
+            <div align="center">
+                <form action="/searchsubjects" method="POST" align="center">
+                    <label>
+                        <input type="radio" name="radio_option" value="teacher_name"
+                            onchange="showSearchBar('teacher_name')"> Teacher Name
+                    </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                    <label>
+                        <input type="radio" name="radio_option" value="faculty"
+                            onchange="showSearchBar('faculty')"> Faculty
+                    </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                    <label>
+                        <input type="radio" name="radio_option" value="course_name"
+                            onchange="showSearchBar('course_name')"> Course Name
+                    </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                    <label>
+                        <input type="radio" name="radio_option" value="course_id"
+                            onchange="showSearchBar('course_id')"> Course_id
+                    </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <br><br><br>
+
+                    <label id="teacher_name-label" for="teacher_name" class="search-bar-label"
+                    style="display: none;">Teacher Name:</label>
+                <div class="input-box1" id="teacher_name-input-box" style="display: none;">
+                    <i class="uil uil-search"></i>
+                    <input type="text" placeholder="   Search Teacher Name" id="teacher_name"
+                        name="teacher_name" class="input-box" />
+                    <button class="btn btn-primary designBtn">Search</button>
+                </div>
+
+                <label id="faculty-label" for="faculty" class="search-bar-label"
+                    style="display: none;">Faculty:</label>
+                <div class="input-box1" id="faculty-input-box" style="display: none;">
+                    <i class="uil uil-search"></i>
+                    <input type="text" placeholder="   Search Faculty" id="faculty" name="faculty"
+                        class="input-box" />
+                    <button class="btn btn-primary designBtn">Search</button>
+                </div>
+
+                <label id="course_name-label" for="course_name" class="search-bar-label"
+                    style="display: none;">Course Name:</label>
+                <div class="input-box1" id="course_name-input-box" style="display: none;">
+                    <i class="uil uil-search"></i>
+                    <input type="text" placeholder="   Search Course Name" id="course_name"
+                        name="course_name" class="input-box" />
+                    <button class="btn btn-primary designBtn">Search</button>
+                </div>
+
+                <label id="course_id-label" for="course_id" class="search-bar-label"
+                    style="display: none;">Course Id:</label>
+                <div class="input-box1" id="course_id-input-box" style="display: none;">
+                    <i class="uil uil-search"></i>
+                    <input type="text" placeholder="   Search Course Id" id="course_id" name="course_id"
+                        class="input-box" />
+                    <button class="btn btn-primary designBtn">Search</button>
+                </div>
+
+
+            </form>
+
+            {% if result|length > 0 %}
+            <form action='/paper_receives' method="POST">
+                <h2>Search Results</h2>
+                <table class="table table-striped table-bordered" border="5">
+                    <thead>
+                        <tr>
+                            <th>Radio Column</th>
+                            <th scope="col">Sr.no</th>
+                            <th scope="col">faculty</th>
+                            <th scope="col">year</th>
+                            <th scope="col">sem</th>
+                            <th scope="col">subject</th>
+                            <th scope="col">coursename</th>
+                            <th scope="col">course Id</th>
+                            <th scope="col">quespaper code</th>
+                            <th scope="col">from Paper count</th>
+                            <th scope="col">To Paper count</th>
+                            <th scope="col">moderation Paper Count</th>
+                            <th scope="col">Issue Date</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for result in result %}
+                        <tr>
+                            <td>
+                                <input type="radio" name="selected_row" class="radio-container  " data-faculty="{{ result[6] }}"
+                                    data-year="{{ result[1] }}" data-sem="{{ result[2] }}" data-subject="{{ result[3] }}"
+                                    data-coursename="{{ result[4] }}" data-course_id="{{ result[5] }}"
+                                    data-quespaper_code="{{ result[0] }}"
+                                    data-issue_date="{{ result[10]}}"
+                                    data-moderation_id="{{ result[14]}}" id="radio_{{ loop.index }}"
+                                    onclick="displaySelectedRow(this)">
+                            </td>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ result[6] }}</td>
+                            <td>{{ result[1] }}</td>
+                            <td>{{ result[2] }}</td>
+                            <td>{{ result[3] }}</td>
+                            <td>{{ result[4] }}</td>
+                            <td>{{ result[5] }}</td>
+
+                            <td>{{ result[0] }}</td>
+                            <td>{{ result[11] }}</td>
+                            <td>{{ result[12] }}</td>
+                            <td>{{ result[13] }}</td>
+                            <td>{{ result[10] }}</td>
+                             
+
+                            <!-- <input type="hidden" name="timetable_id[]" value="{{ result[8] }}">
+                            <input type="hidden" name="papercount_id[]" value="{{ result[10] }}"> -->
+                        </tr>
+                        {% endfor %}    
+                      
+                    </tbody>
+                </table>
+            </form>
+
+            <form id="dataInsertionreturnm"  method="POST">
+                <h2 id="selected_row_heading" style="display: none;">Selected Row</h2>
+                <table id="selected_row_table" class="table table-striped table-bordered" border="1" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th style="font-size: 12px; width: 5%;">Sr.no</th>
+                            <th style="font-size: 12px; width: 10%;">faculty</th>
+                            <th style="font-size: 12px; width: 7%;">year</th>
+                            <th style="font-size: 12px; width: 7%;">sem</th>
+                            <th style="font-size: 12px; width: 15%;">subject</th>
+                            <th style="font-size: 12px; width: 15%;">coursename</th>
+                            <th style="font-size: 12px; width: 7%;">Course id</th>
+                             <th style="font-size: 12px; width: 10%;">Quespaper code</th>
+                             <th style="font-size: 12px; width: 7%;">from Paper_count</th>
+                            <th style="font-size: 12px; width: 7%;">To Paper_count</th>
+                            <th style="font-size: 12px; width: 10%;">moderation Paper count</th>
+                            <th style="font-size: 12px; width: 10%;">Issue Date</th>
+                            <th style="font-size: 12px; width: 10%;">Received Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="selected_row_body">
+                        {% for data in result %}
+                        <tr>
+                            <td style="font-size: 12px; width: 5%;">{{ loop.index }}</td>
+                            <td style="font-size: 10px; width: 10%;">{{ data[6] }}</td>
+                            <td style="font-size: 10px; width: 7%;">{{ data[1] }}</td>
+                            <td style="font-size: 10px; width: 7%;">{{ data[2] }}</td>
+                            <td style="font-size: 10px; width: 15%;">{{ data[3] }}</td>
+                            <td style="font-size: 10px; width: 15%;">{{ data[4] }}</td>
+                            <td style="font-size: 10px; width: 7%;">{{ data[5] }}</td>
+                            <td style="font-size: 10px; width: 5%;">{{ data[0] }}</td>
+                            <td style="font-size: 10px; width: 10%;">{{ data[11] }}</td>
+                            <td style="font-size: 10px; width: 10%;">{{ data[12] }}</td> 
+                            <td style="font-size: 10px; width: 10%;">{{ data[13] }}</td>
+                            <td style="font-size: 10px; width: 10%;">{{ data[10] }}</td>
+                         
+                               
+                            
+                            <td>
+                                <input type="date" class=" s2" name="received_date" >
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary m-3">Save</button>
+                </div>
+            </form>
+            {% endif %}
+
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+   
+<script>
+
+    var countfrom = 0
+    var countto = 0
+    function updateCount() {
+        let totalCount = document.getElementById("totalCount");
+        let count = countto - countfrom
+        console.log("count = ", count)
+        if (count > 0) {
+            totalCount.value = count+1
+            totalCount.innerText = count+1
+        }
+        else {
+            totalCount.innerText = ""
+            totalCount.value = 0
+        }
+    }
+    function fromCountChange() {
+        countfrom = document.getElementById("from_count").value;
+        console.log("countfrom: ", countfrom)
+        updateCount()
+    }
+
+    function toCountChange() {
+        countto = document.getElementById("to_count").value;
+        console.log("countto: ", countto)
+        updateCount()
+    }
+function displaySelectedRow(radio) {
+    if (radio.checked) {
+        var row = radio.parentNode.parentNode;
+        var selectedRowBody = document.getElementById('selected_row_body');
+        selectedRowBody.innerHTML = '';
+        var newRow = selectedRowBody.insertRow();
+        for (var i = 1; i < row.cells.length; i++) {
+            var cell = newRow.insertCell();
+            cell.textContent = row.cells[i].textContent;
+        }
+
+        // Add input fields for additional columns
+
+        
+        // var teacherPaperCountCell = newRow.insertCell();
+        // teacherPaperCountCell.innerHTML = 
+        // `<SELECT id="teacherdrop" name="teacher_id" class="form-control">
+        //     {% for j in joblist %}
+        //     <OPTION value={{j[1]}}>{{j[0]}}</OPTION>
+        //     {% endfor %}
+        // </SELECT>`
+
+        var receiveDateCell = newRow.insertCell();
+        receiveDateCell.innerHTML = '<input type="date" name="return_date" required>'
+
+        // Add teacher_id input hidden field
+        var teacherIdInput = document.createElement('input');
+        teacherIdInput.type = 'hidden';
+        teacherIdInput.name = 'moderation_id';
+        teacherIdInput.value = radio.dataset.moderation_id;
+        newRow.appendChild(teacherIdInput);
+
+        document.getElementById('selected_row_heading').style.display = 'block';
+        document.getElementById('selected_row_table').style.display = 'block';
+    } else {
+        document.getElementById('selected_row_heading').style.display = 'none';
+        document.getElementById('selected_row_table').style.display = 'none';
+    }
+}
+function showSearchBar(category) {
+var searchBars = document.querySelectorAll('.search-bar');
+searchBars.forEach(function (bar) {
+    bar.style.display = 'none';
+});
+
+var selectedSearchBar = document.getElementById(category);
+if (selectedSearchBar) {
+    selectedSearchBar.style.display = 'block';
+}
+
+var labels = document.querySelectorAll('.search-bar-label');
+labels.forEach(function (label) {
+    label.style.display = 'none';
+});
+
+var selectedLabel = document.getElementById(category + '-label');
+if (selectedLabel) {
+    selectedLabel.style.display = 'block';
+}
+
+// Additional code to handle the display of input boxes
+var inputBoxes = document.querySelectorAll('.input-box1');
+inputBoxes.forEach(function (box) {
+    box.style.display = 'none';
+});
+
+var selectedInputBox = document.getElementById(category + '-input-box');
+if (selectedInputBox) {
+    selectedInputBox.style.display = 'block';
+}
+}
+$(function () {
+    var teacherdata = [
+        {% for item in datateacher %} 
+                "{{item}}",
+    {% endfor %} 
+        ];
+
+var facultydata = [
+    {% for item1 in datafaculty %}
+"{{item1}}",
+    {% endfor %} 
+        ];
+var coursedata = [
+    {% for item2 in datacourse %}
+"{{item2}}",
+    {% endfor %} 
+        ];
+
+var courseiddata = [
+    {% for item3 in datacourseid %}
+"{{item3}}",
+    {% endfor %} 
+        ];
+
+$("#teacher_name").autocomplete({
+    source: teacherdata
+});
+$("#faculty").autocomplete({
+    source: facultydata
+});
+$("#course_name").autocomplete({
+    source: coursedata
+});
+
+$("#course_id").autocomplete({
+    source: courseiddata
+});
+    });
+
+    $('#dataInsertionreturnm').submit(function (e) {
+                e.preventDefault();
+                let formData = $('#dataInsertionreturnm').serialize();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/paper_receives',
+                    data: formData,
+                    success: function (response) {
+                      
+                          alert("Data Added Successfully!");
+                          document.getElementById('dataInsertionreturnm').reset(); // Reset the form
+                     
+                  },
+                    error: function (error) {
+                        console.log(error);
+                        // Handle error
+                    }
+                })
+            })
+</script>
+</body>
+
+</html>
+{% endblock %}

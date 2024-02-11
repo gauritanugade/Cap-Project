@@ -1,0 +1,53 @@
+from flask import Flask,render_template,request
+
+app=Flask(__name__)
+
+@app.route('/')
+def form():
+	return render_template("paper_check_form.html")
+
+@app.route('/data', methods = ['POST','GET'])
+def data():
+	if request.method == 'POST':
+		pcheckername=request.form["Pcheckername"]
+		faculty= request.form ["Faculty"]
+		sem= request.form ["Sem"]
+		coursename= request.form ["Coursename"]
+	return render_template('paper_check.html',pcheckername=pcheckername,faculty=faculty,sem=sem,coursename=coursename)
+
+if __name__=='__main__':
+	app.run(debug=True)
+
+
+	from flask import Flask, Blueprint, render_template, request, jsonify, redirect,url_for
+from flask_mysqldb import MySQL
+from datetime import datetime
+
+paper_count= Blueprint('paper_count', __name__, template_folder='templates')
+
+app = paper_count
+
+mysql = MySQL()
+
+@app.route('/selectdate',methods=["POST","GET"])
+def home():
+    cursor =mysql.connection.cursor()
+    cursor.execute('SELECT month,exam_year,pattern_id,examsession_id FROM cap_project.examsession') 
+    # cursor.execute(' SELECT DISTINCT month, exam_year, MAX(examsession_id) AS examsession_id FROM cap_project.examsession GROUP BY month, exam_year') 
+
+   
+    joblist4=cursor.fetchall()
+    print("list:",joblist4)
+    cursor.execute('SELECT name,capfaculty_id FROM cap_project.cap_faculty') 
+    joblist=cursor.fetchall()
+    print("cap_faculty:",joblist)
+    
+    if request.method=="GET":
+        return render_template('paper_count.html',joblist4=joblist4,joblist=joblist,data=[],data1=[])
+    
+    else:
+        examsession_id=request.form['examsession_id']
+        date = request.form["date"]
+        querycap="use cap_project"
+        cursor=mysql.connection.cursor()
+        cursor.execute(querycap)
