@@ -314,17 +314,19 @@
                             addTextInCell("course_id", backdatas[i][5], newRow)
                             addTextInCell("count", backdatas[i][6], newRow)
                             addTextInCell("quespaper_code", backdatas[i][7], newRow)
-                            addTextInCell("moderation_remaining", backdatas[i][8], newRow)
+                            addTextInCell("moderation_remaining", backdatas[i][8], newRow)                      
+                            addTextInCell("teacher_name", backdatas[i][15], newRow)
                             addTextInCell("from_count", backdatas[i][10], newRow)
                             addTextInCell("to_count", backdatas[i][11], newRow)
                             addTextInCell("moderation_paper_count", backdatas[i][14], newRow)
+                            addTextInCell("cases", backdatas[i][16], newRow)
                             var today = new Date(backdatas[i][12])
                             var year = today.getFullYear();
                             var month = String(today.getMonth() + 1).padStart(2, '0');
                             var day = String(today.getDate()).padStart(2, '0');
                             var formattedDate = `${day}-${month}-${year}`;
                             addTextInCell("issue_date", formattedDate, newRow)
-                            addTextInCell("teacher_name", backdatas[i][15], newRow)
+                           
 
 
                         }
