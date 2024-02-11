@@ -99,8 +99,7 @@ def paper_moderation():
     now = datetime.now()
     issue_date=  now.strftime("%Y-%m-%d")
     print("issue_date=",issue_date)
-    # return_date = request.form.getlist('return_date[]')
-    # print("return_date=",return_date)
+     
     papercount_id = request.form['papercount_id']
     print("papercount_id=",papercount_id)
     teacher_id = request.form['teacher_id'] 
@@ -128,3 +127,17 @@ def paper_moderation():
     cur.close()
 
     return redirect('/moderationbuttion')
+
+
+@app.route('/backdatamoderation', methods=["POST"])
+def backdatamoderation():
+    papercount_id = request.form["papercount_id"]
+    print("papercount_id:", papercount_id)
+    cursor = mysql.connection.cursor()
+    querysubject = 'select faculty.faculty,time_table.year,time_table.sem,subject.subject,coursename.coursename,coursename.course_id,paper_count.count,paper_count.quespaper_code,paper_count.moderation_remaining,paper_count.papercount_id,moderation.from_count,moderation.to_count,moderation.issue_date,moderation.moderation_id,moderation.moderation_paper_count,teacher.teacher_name,moderation.cases from moderation join time_table ON moderation.timetable_id = time_table.timetable_id JOIN subject ON time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id inner join paper_count on paper_count.papercount_id=moderation.papercount_id inner join teacher on teacher.teacher_id=moderation.teacher_id where paper_count.papercount_id=%s'
+    cursor.execute(querysubject, (papercount_id,))
+    backdata = cursor.fetchall()
+
+    print("backdata:", backdata)
+    cursor.close()
+    return jsonify(backdata)

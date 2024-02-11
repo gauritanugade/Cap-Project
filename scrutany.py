@@ -124,4 +124,18 @@ def paper_scrutany():
     return redirect('/scrutanybuttion')
 
 
+@app.route('/backdatascrutany', methods=["POST"])
+def backdatascrutany():
+    papercount_id = request.form["papercount_id"]
+    print("papercount_id:", papercount_id)
+    cursor = mysql.connection.cursor()
+    querysubject = 'select faculty.faculty,time_table.year,time_table.sem,subject.subject,coursename.coursename,coursename.course_id,paper_count.count,paper_count.quespaper_code,paper_count.scrutany_remaining,paper_count.papercount_id,scrutany.from_count,scrutany.to_count,scrutany.issue_date,scrutany.scrutany_id,scrutany.scrutany_paper_count,cap_faculty.name from scrutany join time_table ON scrutany.timetable_id = time_table.timetable_id JOIN subject ON time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id inner join paper_count on paper_count.papercount_id=scrutany.papercount_id inner join cap_faculty on cap_faculty.capfaculty_id=scrutany.capfaculty_id where paper_count.papercount_id=%s'
+    cursor.execute(querysubject, (papercount_id,))
+    backdata = cursor.fetchall()
+
+    print("backdata:", backdata)
+    cursor.close()
+    return jsonify(backdata)
+
+
     

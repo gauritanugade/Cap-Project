@@ -267,48 +267,79 @@
                 console.log("countto: ", countto)
                 updateCount()
             }
-    function showSearchBar(category) {
-        var searchBars = document.querySelectorAll('.search-bar');
-        searchBars.forEach(function (bar) {
-            bar.style.display = 'none';
-        });
 
-        var selectedSearchBar = document.getElementById(category);
-        if (selectedSearchBar) {
-            selectedSearchBar.style.display = 'block';
-        }
 
-        var labels = document.querySelectorAll('.search-bar-label');
-        labels.forEach(function (label) {
-            label.style.display = 'none';
-        });
 
-        var selectedLabel = document.getElementById(category + '-label');
-        if (selectedLabel) {
-            selectedLabel.style.display = 'block';
-        }
 
-        // Additional code to handle the display of input boxes
-        var inputBoxes = document.querySelectorAll('.input-box1');
-        inputBoxes.forEach(function (box) {
-            box.style.display = 'none';
-        });
 
-        var selectedInputBox = document.getElementById(category + '-input-box');
-        if (selectedInputBox) {
-            selectedInputBox.style.display = 'block';
-        }
-    }
+
+
+   
     function displaySelectedRow(radio) {
         if (radio.checked) {
-            var row = radio.parentNode.parentNode;
-            var selectedRowBody = document.getElementById('selected_row_body');
-            selectedRowBody.innerHTML = '';
-            var newRow = selectedRowBody.insertRow();
-            for (var i = 1; i < row.cells.length; i++) {
-                var cell = newRow.insertCell();
-                cell.textContent = row.cells[i].textContent;
-            }
+                let papercount_id = radio.dataset.papercount_id
+                console.log("radio papercount_id", papercount_id)
+                var backData = new FormData();
+                backData.append("papercount_id", papercount_id);
+
+                fetch("/backdatamoderation", { method: "POST", body: backData })
+                    .then(x => x.json())
+                    .then(backdatas => {
+                        console.log("backdatas =", backdatas);
+                        var row = radio.parentNode.parentNode;
+                        var selectedRowBody = document.getElementById('selected_row_body');
+                        selectedRowBody.innerHTML = '';
+                        function addTextInCell(name, value, newRow) {
+                            console.log("value", value)
+                            var label = document.createElement('label');
+
+                            label.appendChild(document.createTextNode(value));
+
+                            var cell = newRow.insertCell();
+                            cell.appendChild(label);
+                        }
+
+                        for (var i = 0; i < backdatas.length; i++) {
+                            var newRow = selectedRowBody.insertRow();
+                            let cell = newRow.insertCell();
+                            let srNo = document.createElement('label')
+                            srNo.textContent = i + 1;
+                            cell.appendChild(srNo)
+
+                            addTextInCell("faculty", backdatas[i][0], newRow)
+                            addTextInCell("year", backdatas[i][1], newRow)
+                            addTextInCell("sem", backdatas[i][2], newRow)
+                            addTextInCell("subject", backdatas[i][3], newRow)
+                            addTextInCell("coursename", backdatas[i][4], newRow)
+                            addTextInCell("course_id", backdatas[i][5], newRow)
+                            addTextInCell("count", backdatas[i][6], newRow)
+                            addTextInCell("quespaper_code", backdatas[i][7], newRow)
+                            addTextInCell("moderation_remaining", backdatas[i][8], newRow)                      
+                            addTextInCell("teacher_name", backdatas[i][15], newRow)
+                            addTextInCell("from_count", backdatas[i][10], newRow)
+                            addTextInCell("to_count", backdatas[i][11], newRow)
+                            addTextInCell("moderation_paper_count", backdatas[i][14], newRow)
+                            addTextInCell("cases", backdatas[i][16], newRow)
+                            var today = new Date(backdatas[i][12])
+                            var year = today.getFullYear();
+                            var month = String(today.getMonth() + 1).padStart(2, '0');
+                            var day = String(today.getDate()).padStart(2, '0');
+                            var formattedDate = `${day}-${month}-${year}`;
+                            addTextInCell("issue_date", formattedDate, newRow)
+                           
+
+
+                        }
+
+
+                        var row = radio.parentNode.parentNode;
+                        var selectedRowBody = document.getElementById('selected_row_body');
+                        //selectedRowBody.innerHTML = '';
+                        var newRow = selectedRowBody.insertRow();
+                        for (var i = 1; i < row.cells.length; i++) {
+                            var cell = newRow.insertCell();
+                            cell.textContent = row.cells[i].textContent;
+                        }
 
                 // Add input fields for additional columns
 
@@ -368,6 +399,9 @@
 
                 document.getElementById('selected_row_heading').style.display = 'block';
                 document.getElementById('selected_row_table').style.display = 'block';
+                    }
+                    );                         
+            
             } else {
                 document.getElementById('selected_row_heading').style.display = 'none';
                 document.getElementById('selected_row_table').style.display = 'none';
@@ -375,6 +409,39 @@
         }
 
 
+
+        function showSearchBar(category) {
+        var searchBars = document.querySelectorAll('.search-bar');
+        searchBars.forEach(function (bar) {
+            bar.style.display = 'none';
+        });
+
+        var selectedSearchBar = document.getElementById(category);
+        if (selectedSearchBar) {
+            selectedSearchBar.style.display = 'block';
+        }
+
+        var labels = document.querySelectorAll('.search-bar-label');
+        labels.forEach(function (label) {
+            label.style.display = 'none';
+        });
+
+        var selectedLabel = document.getElementById(category + '-label');
+        if (selectedLabel) {
+            selectedLabel.style.display = 'block';
+        }
+
+        // Additional code to handle the display of input boxes
+        var inputBoxes = document.querySelectorAll('.input-box1');
+        inputBoxes.forEach(function (box) {
+            box.style.display = 'none';
+        });
+
+        var selectedInputBox = document.getElementById(category + '-input-box');
+        if (selectedInputBox) {
+            selectedInputBox.style.display = 'block';
+        }
+    }
 
 
     
