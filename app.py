@@ -29,6 +29,7 @@ app.secret_key='project'
 app.config['MYSQL_HOST']='localhost'
 app.config['MYSQL_USER']='root'
 app.config['MYSQL_DB']='cap_project'
+app.config['MYSQL_PASSWORD']='mysql'
 app.secret_key = 'VCK'
  
 

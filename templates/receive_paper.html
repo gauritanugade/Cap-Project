@@ -157,7 +157,7 @@
                                         data-quespaper_code="{{ result[1] }}" data-from_count="{{ result[11] }}"
                                         data-to_count="{{ result[12] }}"
                                         data-teacher_paper_count="{{ result[13] }}"
-                                        data-issue_check_id="{{ result[14]}}" id="radio_{{ loop.index }}"
+                                        data-issue_check_id="{{ result[14]}}" data-difference="{{ result[15]}}" id="radio_{{ loop.index }}"
                                         onclick="displaySelectedRow(this)">
                                 </td>
                                 <td>{{ loop.index }}</td>
@@ -199,6 +199,7 @@
                                 <th style="font-size: 12px; width: 10%;">Teacher Paper count</th>
                                 <th style="font-size: 12px; width: 10%;">Issue Date</th>
                                 <th style="font-size: 12px; width: 10%;">Received Date</th>
+                                <th style="font-size: 12px; width: 10%;">Difference (Days)</th> 
 
 
                                
@@ -206,6 +207,7 @@
                             </tr>
                         </thead>
                         <tbody id="selected_row_body">
+
                             {% for data in result %}
                             <tr>
                                 <td style="font-size: 12px; width: 5%;">{{ loop.index }}</td>
@@ -258,7 +260,15 @@
              
 
             var receiveDateCell = newRow.insertCell();
-            receiveDateCell.innerHTML = '<input type="date" name="return_date" required>'
+            var today = new Date();
+            var year = today.getFullYear();
+            var month = String(today.getMonth() + 1).padStart(2, '0');
+            var day = String(today.getDate()).padStart(2, '0');
+            var formattedDate = `${year}-${month}-${day}`;
+            receiveDateCell.innerHTML = `<input type="date" name="return_date" value="${formattedDate}" required>`;
+
+            var differenceCell = newRow.insertCell();
+            differenceCell.textContent = radio.dataset.difference;
 
             // Add teacher_id input hidden field
             
@@ -361,7 +371,7 @@
                       
                           alert("Data Added Successfully!");
                           document.getElementById('dataInsertionreturn').reset(); // Reset the form
-                     
+                          location.reload();
                   },
                     error: function (error) {
                         console.log(error);

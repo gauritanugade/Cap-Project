@@ -285,7 +285,12 @@
                 scrutanyPaperCountCell.innerHTML = '<input type="text" name="scrutany_paper_count"   id="totalCount" style="width:83%"  readonly tabindex="-1">'
 
                 var issueDateCell = newRow.insertCell();
-                issueDateCell.innerHTML = '<input type="date" name="issue_date" style="width:83%"  required>'
+                var today = new Date();
+                var year = today.getFullYear();
+                var month = String(today.getMonth() + 1).padStart(2, '0');
+                var day = String(today.getDate()).padStart(2, '0');
+                var formattedDate = `${year}-${month}-${day}`;
+                issueDateCell.innerHTML = `<input type="date" name="issue_date[]" style="width: 83%" value="${formattedDate}" required>`;
 
               
 

@@ -1,5 +1,8 @@
 from flask import Flask, Blueprint, render_template, request, jsonify, redirect,url_for,session
 from flask_mysqldb import MySQL
+from datetime import datetime
+from datetime import date
+
 
 
 scrutany_receive_paper = Blueprint('scrutany_receive_paper',__name__, template_folder='templates')
@@ -33,6 +36,7 @@ def home():
 @app.route("/searchscrutany", methods=['GET', 'POST'])
 def searchscrutany():
     
+    
     if request.method == 'POST':
         search_option = request.form.get('radio_option')
         faculty = request.form.get('faculty')
@@ -56,21 +60,21 @@ def searchscrutany():
         
 
         if search_option == "faculty":
-            query = "select paper_count.quespaper_code,time_table.year,time_table.sem,subject.subject,coursename.coursename,coursename.course_id,faculty.faculty,scrutany.papercount_id,scrutany.timetable_id,scrutany.issue_date,scrutany.from_count,scrutany.to_count,scrutany.scrutany_paper_count,scrutany.scrutany_id from scrutany JOIN time_table ON scrutany.timetable_id=time_table.timetable_id JOIN subject ON  time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id INNER JOIN paper_count ON paper_count.papercount_id=scrutany.papercount_id WHERE faculty.faculty=%s"
+            query = "select paper_count.quespaper_code,time_table.year,time_table.sem,subject.subject,coursename.coursename,coursename.course_id,faculty.faculty,scrutany.papercount_id,scrutany.timetable_id,scrutany.issue_date,scrutany.from_count,scrutany.to_count,scrutany.scrutany_paper_count,scrutany.scrutany_id, DATEDIFF(NOW(), scrutany.issue_date) AS difference from scrutany JOIN time_table ON scrutany.timetable_id=time_table.timetable_id JOIN subject ON  time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id INNER JOIN paper_count ON paper_count.papercount_id=scrutany.papercount_id WHERE faculty.faculty=%s and scrutany.return_date is null"
             cursor.execute(query, (faculty,))
         
         elif search_option == "course_name":
-            query = " select paper_count.quespaper_code,time_table.year,time_table.sem,subject.subject,coursename.coursename,coursename.course_id,faculty.faculty,scrutany.papercount_id,scrutany.timetable_id,scrutany.issue_date,scrutany.from_count,scrutany.to_count,scrutany.scrutany_paper_count,scrutany.scrutany_id from scrutany JOIN time_table ON scrutany.timetable_id=time_table.timetable_id JOIN subject ON  time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id INNER JOIN paper_count ON paper_count.papercount_id=scrutany.papercount_id WHERE coursename.coursename=%s"
+            query = " select paper_count.quespaper_code,time_table.year,time_table.sem,subject.subject,coursename.coursename,coursename.course_id,faculty.faculty,scrutany.papercount_id,scrutany.timetable_id,scrutany.issue_date,scrutany.from_count,scrutany.to_count,scrutany.scrutany_paper_count,scrutany.scrutany_id, DATEDIFF(NOW(), scrutany.issue_date) AS difference from scrutany JOIN time_table ON scrutany.timetable_id=time_table.timetable_id JOIN subject ON  time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id INNER JOIN paper_count ON paper_count.papercount_id=scrutany.papercount_id WHERE coursename.coursename=%s and scrutany.return_date is null"
             cursor.execute(query, (coursename,))
         
         elif search_option == "course_id":
-            query = "select paper_count.quespaper_code,time_table.year,time_table.sem,subject.subject,coursename.coursename,coursename.course_id,faculty.faculty,scrutany.papercount_id,scrutany.timetable_id,scrutany.issue_date,scrutany.from_count,scrutany.to_count,scrutany.scrutany_paper_count,scrutany.scrutany_id from scrutany JOIN time_table ON scrutany.timetable_id=time_table.timetable_id JOIN subject ON  time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id INNER JOIN paper_count ON paper_count.papercount_id=scrutany.papercount_id WHERE coursename.course_id=%s"
+            query = "select paper_count.quespaper_code,time_table.year,time_table.sem,subject.subject,coursename.coursename,coursename.course_id,faculty.faculty,scrutany.papercount_id,scrutany.timetable_id,scrutany.issue_date,scrutany.from_count,scrutany.to_count,scrutany.scrutany_paper_count,scrutany.scrutany_id, DATEDIFF(NOW(), scrutany.issue_date) AS difference from scrutany JOIN time_table ON scrutany.timetable_id=time_table.timetable_id JOIN subject ON  time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id INNER JOIN paper_count ON paper_count.papercount_id=scrutany.papercount_id WHERE coursename.course_id=%s and scrutany.return_date is null"
             cursor.execute(query, (course_id,))
 
         print("query=",query)
         result = cursor.fetchall()
         print(result)
-
+        
         cursor.close()
         return render_template("scrutany_receive_paper.html",  result=result, papercount_id=papercount_id, timetable_id=timetable_id,selected_values=selected_values)
     
@@ -79,18 +83,17 @@ def searchscrutany():
     
 @app.route('/scrutany_paper_receive', methods=["POST"])         
 def scrutany_paper_receive(): 
-
     cur = mysql.connection.cursor()  
     scrutany_id = request.form.get('scrutany_id')
     print("scrutany_id",scrutany_id)
     
-    return_date = request.form.get('return_date')
+    now = datetime.now()
+    return_date =  now.strftime("%Y-%m-%d")
     print("return_date",return_date)
- 
+
+
+    cur = mysql.connection.cursor()
     cur.execute('UPDATE scrutany SET return_date = %s  WHERE scrutany_id = %s',(return_date,scrutany_id))
-
     mysql.connection.commit()
-        
     cur.close()
-
     return redirect('/searchscrutany')
