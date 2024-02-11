@@ -74,11 +74,11 @@ def search_subject():
             cursor.execute(query, (teacher_name,))
 
         elif search_option == "faculty":
-            query = "SELECT faculty.faculty,teacher.year,teacher.sem,subject.subject,coursename.coursename,coursename.course_id,paper_count.count,paper_count.quespaper_code,time_table.timetable_id,teacher.teacher_id,paper_count.papercount_id,paper_count.remaining_paper teacher INNER JOIN faculty ON teacher.faculty_id = faculty.faculty_id INNER JOIN subject ON teacher.subject_id = subject.subject_id INNER JOIN coursename ON teacher.coursename_id = coursename.coursename_id INNER JOIN time_table ON time_table.coursename_id = teacher.coursename_id INNER JOIN paper_count ON time_table.timetable_id = paper_count.timetable_id WHERE faculty.faculty =%s  and paper_count.remaining_paper!=0"
+            query = "SELECT faculty.faculty,teacher.year,teacher.sem,subject.subject,coursename.coursename,coursename.course_id,paper_count.count,paper_count.quespaper_code,time_table.timetable_id,teacher.teacher_id,paper_count.papercount_id,paper_count.remaining_paper FROM teacher INNER JOIN faculty ON teacher.faculty_id = faculty.faculty_id INNER JOIN subject ON teacher.subject_id = subject.subject_id INNER JOIN coursename ON teacher.coursename_id = coursename.coursename_id INNER JOIN time_table ON time_table.coursename_id = teacher.coursename_id INNER JOIN paper_count ON time_table.timetable_id = paper_count.timetable_id WHERE faculty.faculty =%s  and paper_count.remaining_paper!=0"
             cursor.execute(query, (faculty,))
         
         elif search_option == "course_name":
-            query = "SELECT faculty.faculty,teacher.year,teacher.sem,subject.subject,coursename.coursename,coursename.course_id,paper_count.count,paper_count.quespaper_code,time_table.timetable_id,teacher.teacher_id,paper_count.papercount_id,paper_count.remaining_paper teacher INNER JOIN faculty ON teacher.faculty_id = faculty.faculty_id INNER JOIN subject ON teacher.subject_id = subject.subject_id INNER JOIN coursename ON teacher.coursename_id = coursename.coursename_id INNER JOIN time_table ON time_table.coursename_id = teacher.coursename_id INNER JOIN paper_count ON time_table.timetable_id = paper_count.timetable_id WHERE coursename.coursename =%s  and paper_count.remaining_paper!=0"
+            query = "SELECT faculty.faculty,teacher.year,teacher.sem,subject.subject,coursename.coursename,coursename.course_id,paper_count.count,paper_count.quespaper_code,time_table.timetable_id,teacher.teacher_id,paper_count.papercount_id,paper_count.remaining_paper FROM teacher INNER JOIN faculty ON teacher.faculty_id = faculty.faculty_id INNER JOIN subject ON teacher.subject_id = subject.subject_id INNER JOIN coursename ON teacher.coursename_id = coursename.coursename_id INNER JOIN time_table ON time_table.coursename_id = teacher.coursename_id INNER JOIN paper_count ON time_table.timetable_id = paper_count.timetable_id WHERE coursename.coursename =%s  and paper_count.remaining_paper!=0"
             cursor.execute(query, (coursename,))
         
         elif search_option == "course_id":
@@ -89,9 +89,12 @@ def search_subject():
         result = cursor.fetchall()
         print(result)
 
+        cursor.execute('SELECT  teacher.teacher_name,teacher_id FROM cap_project.teacher') 
+        joblist1=cursor.fetchall()
+
         cursor.close()
 
-        return render_template("searchitem1.html", result=result, papercount_id=papercount_id, teacher_id=teacher_id, timetable_id=timetable_id,selected_values=selected_values)
+        return render_template("searchitem1.html", result=result, papercount_id=papercount_id, teacher_id=teacher_id, timetable_id=timetable_id,selected_values=selected_values,joblist1=joblist1)
     
     else:
         return redirect("/issuehome")
