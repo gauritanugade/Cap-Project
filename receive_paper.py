@@ -1,5 +1,7 @@
 from flask import Flask, Blueprint, render_template, request, jsonify, redirect,url_for,session
 from flask_mysqldb import MySQL
+from datetime import datetime
+from datetime import date
 
 
 receive_paper = Blueprint('receive_paper', __name__, template_folder='templates')
@@ -63,19 +65,19 @@ def searchsubject():
         
         cursor = mysql.connection.cursor()
         if search_option == "teacher_name":
-            query = "select paper_count.quespaper_code,teacher.year,teacher.sem,subject.subject,coursename.coursename,coursename.course_id,faculty.faculty,issue_check.papercount_id,issue_check.teacher_id,issue_check.timetable_id,issue_check.issue_date,issue_check.from_count,issue_check.to_count,issue_check.teacher_paper_count,issue_check.issue_check_id from issue_check JOIN time_table ON issue_check.timetable_id=time_table.timetable_id JOIN subject ON  time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id inner join teacher on teacher.teacher_id=issue_check.teacher_id INNER JOIN paper_count ON paper_count.papercount_id=issue_check.papercount_id WHERE teacher.teacher_name=%s"
+            query = "select paper_count.quespaper_code,teacher.year,teacher.sem,subject.subject,coursename.coursename,coursename.course_id,faculty.faculty,issue_check.papercount_id,issue_check.teacher_id,issue_check.timetable_id,issue_check.issue_date,issue_check.from_count,issue_check.to_count,issue_check.teacher_paper_count,issue_check.issue_check_id,DATEDIFF(NOW(), issue_check.issue_date) AS difference from issue_check JOIN time_table ON issue_check.timetable_id=time_table.timetable_id JOIN subject ON  time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id inner join teacher on teacher.teacher_id=issue_check.teacher_id INNER JOIN paper_count ON paper_count.papercount_id=issue_check.papercount_id WHERE teacher.teacher_name=%s  and issue_check.return_date is null"
             cursor.execute(query, (teacher_name,))
 
         elif search_option == "faculty":
-            query = "select paper_count.quespaper_code,teacher.year,teacher.sem,subject.subject,coursename.coursename,coursename.course_id,faculty.faculty,issue_check.papercount_id,issue_check.teacher_id,issue_check.timetable_id,issue_check.issue_date,issue_check.from_count,issue_check.to_count,issue_check.teacher_paper_count, issue_check.issue_check_id from issue_check JOIN time_table ON issue_check.timetable_id=time_table.timetable_id JOIN subject ON  time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id inner join teacher on teacher.teacher_id=issue_check.teacher_id INNER JOIN paper_count ON paper_count.papercount_id=issue_check.papercount_id WHERE faculty.faculty =%s"
+            query = "select paper_count.quespaper_code,teacher.year,teacher.sem,subject.subject,coursename.coursename,coursename.course_id,faculty.faculty,issue_check.papercount_id,issue_check.teacher_id,issue_check.timetable_id,issue_check.issue_date,issue_check.from_count,issue_check.to_count,issue_check.teacher_paper_count, issue_check.issue_check_id,DATEDIFF(NOW(), issue_check.issue_date) AS difference from issue_check JOIN time_table ON issue_check.timetable_id=time_table.timetable_id JOIN subject ON  time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id inner join teacher on teacher.teacher_id=issue_check.teacher_id INNER JOIN paper_count ON paper_count.papercount_id=issue_check.papercount_id WHERE faculty.faculty =%s  and issue_check.return_date is null"
             cursor.execute(query, (faculty,))
         
         elif search_option == "course_name":
-            query = " select paper_count.quespaper_code,teacher.year,teacher.sem,subject.subject,coursename.coursename,coursename.course_id,faculty.faculty,issue_check.papercount_id,issue_check.teacher_id,issue_check.timetable_id,issue_check.issue_date,issue_check.from_count,issue_check.to_count,issue_check.teacher_paper_count, issue_check.issue_check_id from issue_check JOIN time_table ON issue_check.timetable_id=time_table.timetable_id JOIN subject ON  time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id inner join teacher on teacher.teacher_id=issue_check.teacher_id INNER JOIN paper_count ON paper_count.papercount_id=issue_check.papercount_id WHERE coursename.coursename =%s"
+            query = " select paper_count.quespaper_code,teacher.year,teacher.sem,subject.subject,coursename.coursename,coursename.course_id,faculty.faculty,issue_check.papercount_id,issue_check.teacher_id,issue_check.timetable_id,issue_check.issue_date,issue_check.from_count,issue_check.to_count,issue_check.teacher_paper_count, issue_check.issue_check_id,DATEDIFF(NOW(), issue_check.issue_date) AS difference from issue_check JOIN time_table ON issue_check.timetable_id=time_table.timetable_id JOIN subject ON  time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id inner join teacher on teacher.teacher_id=issue_check.teacher_id INNER JOIN paper_count ON paper_count.papercount_id=issue_check.papercount_id WHERE coursename.coursename =%s  and issue_check.return_date is null"
             cursor.execute(query, (coursename,))
         
         elif search_option == "course_id":
-            query = "select paper_count.quespaper_code,teacher.year,teacher.sem,subject.subject,coursename.coursename,coursename.course_id,faculty.faculty,issue_check.papercount_id,issue_check.teacher_id,issue_check.timetable_id,issue_check.issue_date,issue_check.from_count,issue_check.to_count,issue_check.teacher_paper_count, issue_check.issue_check_id from issue_check JOIN time_table ON issue_check.timetable_id=time_table.timetable_id JOIN subject ON  time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id inner join teacher on teacher.teacher_id=issue_check.teacher_id INNER JOIN paper_count ON paper_count.papercount_id=issue_check.papercount_id WHERE coursename.course_id=%s"
+            query = "select paper_count.quespaper_code,teacher.year,teacher.sem,subject.subject,coursename.coursename,coursename.course_id,faculty.faculty,issue_check.papercount_id,issue_check.teacher_id,issue_check.timetable_id,issue_check.issue_date,issue_check.from_count,issue_check.to_count,issue_check.teacher_paper_count, issue_check.issue_check_id,DATEDIFF(NOW(), issue_check.issue_date) AS difference from issue_check JOIN time_table ON issue_check.timetable_id=time_table.timetable_id JOIN subject ON  time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id inner join teacher on teacher.teacher_id=issue_check.teacher_id INNER JOIN paper_count ON paper_count.papercount_id=issue_check.papercount_id WHERE coursename.course_id=%s  and issue_check.return_date is null"
             cursor.execute(query, (course_id,))
 
         print("query=",query)
@@ -94,8 +96,8 @@ def paper_receive():
     cur = mysql.connection.cursor()  
     issue_check_id = request.form.get('issue_check_id')
     print("issue_check_id",issue_check_id)
-    
-    return_date = request.form.get('return_date')
+    now = datetime.now()
+    return_date =  now.strftime("%Y-%m-%d")
     print("return_date",return_date)
     # cur.execute(' UPDATE paper_count SET remaining_paper = remaining_paper - %s WHERE papercount_id = %s',(return_date))
 

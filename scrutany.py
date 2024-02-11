@@ -1,5 +1,8 @@
 from flask import Flask, Blueprint, render_template, request, jsonify, redirect,url_for,session
 from flask_mysqldb import MySQL
+from datetime import datetime
+from datetime import date
+
 
 
 scrutany = Blueprint('scrutany', __name__, template_folder='templates')
@@ -59,19 +62,19 @@ def scrutanybuttion():
         # query= "SELECT paper_count.quespaper_code, paper_count.count, time_table.year, time_table.sem, subject.subject, coursename.coursename, coursename.course_id, faculty.faculty,paper_count.papercount_id,time_table.timetable_id FROM paper_count JOIN time_table  ON paper_count.timetable_id = time_table.timetable_id JOIN subject ON time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id"
         cursor = mysql.connection.cursor()
         if search_option == "faculty":
-            query = "SELECT paper_count.quespaper_code, paper_count.count, time_table.year, time_table.sem, subject.subject, coursename.coursename, coursename.course_id, faculty.faculty,paper_count.papercount_id,time_table.timetable_id,paper_count.scrutany_remaining FROM paper_count JOIN time_table  ON paper_count.timetable_id = time_table.timetable_id JOIN subject ON time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id where faculty.faculty=%s"
+            query = "SELECT paper_count.quespaper_code, paper_count.count, time_table.year, time_table.sem, subject.subject, coursename.coursename, coursename.course_id, faculty.faculty,paper_count.papercount_id,time_table.timetable_id,paper_count.scrutany_remaining FROM paper_count JOIN time_table  ON paper_count.timetable_id = time_table.timetable_id JOIN subject ON time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id where faculty.faculty=%s and paper_count.scrutany_remaining!=0 and (paper_count.remaining_paper=0 or paper_count.moderation_remaining=0)"
             cursor.execute(query, (faculty,))
 
         elif search_option == "subject":
-            query = "SELECT paper_count.quespaper_code, paper_count.count, time_table.year, time_table.sem, subject.subject, coursename.coursename, coursename.course_id, faculty.faculty,paper_count.papercount_id,time_table.timetable_id,paper_count.scrutany_remaining FROM paper_count JOIN time_table  ON paper_count.timetable_id = time_table.timetable_id JOIN subject ON time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id where subject.subject=%s"
+            query = "SELECT paper_count.quespaper_code, paper_count.count, time_table.year, time_table.sem, subject.subject, coursename.coursename, coursename.course_id, faculty.faculty,paper_count.papercount_id,time_table.timetable_id,paper_count.scrutany_remaining FROM paper_count JOIN time_table  ON paper_count.timetable_id = time_table.timetable_id JOIN subject ON time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id where subject.subject=%s  and paper_count.scrutany_remaining!=0 and (paper_count.remaining_paper=0 or paper_count.moderation_remaining=0)"
             cursor.execute(query, (subject_name,))
         
         elif search_option == "course_name":
-            query = "SELECT paper_count.quespaper_code, paper_count.count, time_table.year, time_table.sem, subject.subject, coursename.coursename, coursename.course_id, faculty.faculty,paper_count.papercount_id,time_table.timetable_id,paper_count.scrutany_remaining FROM paper_count JOIN time_table  ON paper_count.timetable_id = time_table.timetable_id JOIN subject ON time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id where coursename.coursename=%s"
+            query = "SELECT paper_count.quespaper_code, paper_count.count, time_table.year, time_table.sem, subject.subject, coursename.coursename, coursename.course_id, faculty.faculty,paper_count.papercount_id,time_table.timetable_id,paper_count.scrutany_remaining FROM paper_count JOIN time_table  ON paper_count.timetable_id = time_table.timetable_id JOIN subject ON time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id where coursename.coursename=%s  and paper_count.scrutany_remaining!=0 and (paper_count.remaining_paper=0 or paper_count.moderation_remaining=0)"
             cursor.execute(query, (coursename,))
         
         elif search_option == "course_id":
-            query = " SELECT paper_count.quespaper_code, paper_count.count, time_table.year, time_table.sem, subject.subject, coursename.coursename, coursename.course_id, faculty.faculty,paper_count.papercount_id,time_table.timetable_id,paper_count.scrutany_remaining FROM paper_count JOIN time_table  ON paper_count.timetable_id = time_table.timetable_id JOIN subject ON time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id where coursename.course_id=%s"
+            query = "SELECT paper_count.quespaper_code, paper_count.count, time_table.year, time_table.sem, subject.subject, coursename.coursename, coursename.course_id, faculty.faculty,paper_count.papercount_id,time_table.timetable_id,paper_count.scrutany_remaining FROM paper_count JOIN time_table  ON paper_count.timetable_id = time_table.timetable_id JOIN subject ON time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id where coursename.course_id=%s  and paper_count.scrutany_remaining!=0 and (paper_count.remaining_paper=0 or paper_count.moderation_remaining=0)"
             cursor.execute(query, (course_id,))
 
         print("query=",query)
@@ -89,7 +92,8 @@ def scrutanybuttion():
 @app.route('/paper_scrutany', methods=["POST"])         
 def paper_scrutany():
     
-    issue_date = request.form['issue_date']
+    now = datetime.now()
+    issue_date=  now.strftime("%Y-%m-%d")
     print("issue_date=",issue_date)
     # return_date = request.form.getlist('return_date[]')
     # print("return_date=",return_date)
@@ -118,3 +122,6 @@ def paper_scrutany():
     cur.close()
 
     return redirect('/scrutanybuttion')
+
+
+    

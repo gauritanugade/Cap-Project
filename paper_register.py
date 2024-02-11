@@ -93,11 +93,11 @@ def paper_register8():
 
 @app.route('/pending')
 def pending():
-    
+    print("Heloooo")
     querycap="use cap_project"
     cursor=mysql.connection.cursor()
     cursor.execute(querycap)
-    querystatus='select * from paper_count_pending where status=0'
+    querystatus='select paperpending_id,quespaper_code,count,remark,reason,received_date,examsession_id,timetable_id,submited_name,capfaculty_id,case when status=1 then "ok" else "pending" end as status from paper_count_pending where status=0'
 
     cursor.execute(querystatus)
     statusdata=cursor.fetchall()
@@ -109,9 +109,10 @@ def pending():
     print("cap_faculty:",joblist5)
     return render_template('paper_count.html',statusdata=statusdata,joblist5=joblist5)
 
+
 @app.route('/paper_pending', methods=["POST"])         
 def paper_pending():
- 
+    print("Hiiiiiii")
     
     quespaper_code=request.form.getlist('quespaper_code[]')
     print("queapaper:",quespaper_code)
@@ -154,5 +155,3 @@ def paper_pending():
 
 
     return redirect('/pending')
- 
- 
