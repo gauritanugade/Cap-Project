@@ -27,11 +27,6 @@ def home():
 	cursor.close()
 	return render_template("techer.html",joblist=joblist,joblist1=joblist1,joblist3=joblist3 ) 
 
-
-
-
-
-
 @app.route("/getYear", methods=["POST"])
 def getYear():
 	faculty= request.form['faculty']
@@ -65,12 +60,14 @@ def submitteacher():
 		print(faculty_id)
 		# coursename_id=request.form["coursename"]
 		coursename_id=request.form["coursename"]
-
 		print("coursename_id:",coursename_id)
 		subject_id=request.form["subject"]
 		cursor =mysql.connection.cursor()
-		query="insert into cap_project.teacher(teacher_name,teacher_email,teacher_phoneno,year,sem,faculty_id,coursename_id,subject_id) values(%s,%s,%s,%s,%s,%s,%s,%s)"
-		cursor.execute(query,(teacher_name,teacher_email,teacher_phoneno,year,sem,faculty_id,coursename_id,subject_id,))	
+		query="insert into cap_project.teacher(teacher_name,teacher_email,teacher_phoneno) values(%s,%s,%s)"
+		cursor.execute(query,(teacher_name,teacher_email,teacher_phoneno,year,sem,faculty_id,coursename_id,subject_id,))
+		teacher_id = cursor.lastrowid
+		query1="insert into cap_project.teacher_course(year,sem,faculty_id,coursename_id,subject_id,teacher_id) values(%s,%s,%s,%s,%s,%s)"
+		cursor.execute(query1,(year,sem,faculty_id,coursename_id,subject_id,teacher_id))	
 		mysql.connection.commit()
 		cursor.close()
 	return render_template("techer.html")

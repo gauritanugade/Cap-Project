@@ -90,6 +90,8 @@
                     title="Please enter valid phone number" placeholder="Enter Phone Number">                                  
                 </div>
                   </div>
+
+
                 <div class="row">
                   <div class="col-md-4">
                     <label for="facultyDrop" class="form-label">Faculty</label>
@@ -134,6 +136,12 @@
                   </select>
               </div>
             </div><br>
+
+            <div class="row">
+                <div class="col-md-11">
+                  <button class="btn btn-success add_item_btn">Add More</button>
+                </div>
+            </div>    
                 <div class="col-md-2 mb-3 d-grid">
                     <input type="submit" value="SAVE" class="btn btn-primary" id="save_btn">
                 </div>
@@ -149,6 +157,66 @@
             crossorigin="anonymous"></script>
       
           <script>
+              
+        $(document).ready(function () {
+            $(".add_item_btn").click(function (e) {
+                e.preventDefault();
+                $("#show_item").append(`<div class="row">
+
+                <div class="row">
+                  <div class="col-md-4">
+                    <label for="facultyDrop" class="form-label">Faculty</label>
+                    <select id="facultyDrop" class="form-select" name="Faculty">
+                    <option value="" selected disabled></option>
+                    {% for j in joblist %}
+                    <OPTION value={{j[2]}}>{{j[0]}}</OPTION>
+                    {% endfor %}
+                    </select>
+                </div>
+               
+                <div class="col-md-4">
+                  <label for="year" class="form-label">Year</label>
+                  <select id="year" class="form-select" name="Year">
+                  <option value="" selected disabled></option>
+                  </select>
+              </div>
+              <div class="col-md-4">
+                <label for="sem" class="form-label">semester</label>
+                <select id="sem" class="form-select" name="Sem">
+                <option value="" selected disabled></option>
+                </select>
+              </div>   
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                  <label for="subject" class="form-label">Subject</label>
+                  <select id="subject" class="form-select" name="subject">
+                  <option value="" selected disabled></option>
+                  <!-- {% for j in joblist1 %}
+                  <OPTION value={{j[1]}}>{{j[0]}}</OPTION>
+                  {% endfor %} -->
+                  </select>
+              </div>
+              <div class="col-md-4">
+                  <label for="coursename" class="form-label">Course Name and code</label>
+                  <select id="coursename" class="form-select" name="coursename">
+                  <option value="" selected disabled></option>
+                  {% for i in joblist3 %}
+                  <OPTION value={{i[2]}}>{{i[1]}}-{{i[0]}}</OPTION>
+                  {% endfor %}
+                  </select>
+              </div>
+            </div><br>
+                
+                
+            <div class="col-md-2 mb-3 d-grid">
+            <button class="btn btn-danger rmv_btn">Remove</button>`);
+            });
+
+            $(document).on('click', '.rmv_btn', function (e) {
+                e.preventDefault();
+                $(this).parent().parent().remove();
+            })
               facultyDrop.onchange = function () {
                           faculty = this.value;
                           console.log("faculty: ", faculty)
@@ -235,8 +303,10 @@
                         console.log(error);
                         // Handle error
                     }
+                
                 })
             })
+        })
             </script>
 </body>
 </html>
