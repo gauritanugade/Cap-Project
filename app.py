@@ -27,15 +27,17 @@ from scrutanyremuneration import scrutanyremuneration
 from scrutanybilling import scrutanybilling
 from report_okpending import report_okpending
 from assismoderatereport import assismoderatereport
+import os
 
 
 
 app = Flask(__name__)
 app.secret_key='project'
 
-app.config['MYSQL_HOST']='localhost'
-app.config['MYSQL_USER']='root'
-app.config['MYSQL_DB']='cap_project'
+app.config['MYSQL_HOST']= os.environ.get("MYSQL_HOST", default='localhost')
+app.config['MYSQL_USER']= os.environ.get("MYSQL_USER", default='root')
+app.config['MYSQL_DB']= os.environ.get("MYSQL_DB", default='cap_project')
+app.config['MYSQL_PASSWORD']= os.environ.get("MYSQL_PASSWORD", default='mysql')
 
 app.secret_key = 'VCK'
  
@@ -68,10 +70,6 @@ app.register_blueprint(scrutanyremuneration)
 app.register_blueprint(scrutanybilling)
 app.register_blueprint(report_okpending)
 app.register_blueprint(assismoderatereport)
-
-
- 
-
 
 mysql = MySQL(app)
 
