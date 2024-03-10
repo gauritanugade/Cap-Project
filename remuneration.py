@@ -20,7 +20,12 @@ def home():
     joblist = cursor.fetchall()
     print("list:", joblist)
 
-    return render_template("remuneration.html", joblist=joblist)
+    cursor.execute(
+        'SELECT faculty,faculty_id FROM cap_project.faculty')
+    joblist1 = cursor.fetchall()
+    print("list1:", joblist1)
+
+    return render_template("remuneration.html", joblist=joblist,joblist1=joblist1)
 
 
 @app.route('/remunerationdata', methods=['POST', 'GET'])
@@ -31,6 +36,10 @@ def insert():
 
         degree = request.form["degree"]
         print("degree:",degree)
+
+        faculty_id = request.form["faculty_id"]
+        print("faculty_id:",faculty_id)
+
 
         slab = request.form.getlist("slab")
         print("slab:",slab)
@@ -51,9 +60,9 @@ def insert():
 
             cursor = mysql.connection.cursor()
 
-            cursor.execute("insert into cap_project.remuneration (examsession_id,degree,slab,lowerlimit,upperlimit,rupees) values (%s,%s,%s,%s,%s,%s)",(Examsession_id,degree,sl,lower_limit,upper_limit,rs))
+            cursor.execute("insert into cap_project.remuneration (examsession_id,degree,slab,lowerlimit,upperlimit,rupees,faculty_id) values (%s,%s,%s,%s,%s,%s,%s)",(Examsession_id,degree,sl,lower_limit,upper_limit,rs,faculty_id))
             remuneration_id = cursor.lastrowid
-            cursor.execute("insert into cap_project.remu_perpaper (examsession_id,degree,perpaper_rs,remuneration_id) values (%s,%s,%s,%s)",(Examsession_id,degree,perpaper_rs,remuneration_id))
+            cursor.execute("insert into cap_project.remu_perpaper (examsession_id,degree,perpaper_rs,remuneration_id,faculty_id) values (%s,%s,%s,%s,%s)",(Examsession_id,degree,perpaper_rs,remuneration_id,faculty_id))
             mysql.connection.commit()
             cursor.execute(displayall)
             data = cursor.fetchall()

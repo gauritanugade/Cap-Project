@@ -66,19 +66,19 @@ def searchsubjects():
         
         cursor = mysql.connection.cursor()
         if search_option == "teacher_name":
-            query = "select paper_count.quespaper_code,teacher.year,teacher.sem,subject.subject,coursename.coursename,coursename.course_id,faculty.faculty,moderation.papercount_id,moderation.teacher_id,moderation.timetable_id,moderation.issue_date,moderation.from_count,moderation.to_count,moderation.moderation_paper_count, moderation.moderation_id,DATEDIFF(NOW(), moderation.issue_date) AS difference from moderation JOIN time_table ON moderation.timetable_id=time_table.timetable_id JOIN subject ON  time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id inner join teacher on teacher.teacher_id=moderation.teacher_id INNER JOIN paper_count ON paper_count.papercount_id=moderation.papercount_id WHERE teacher.teacher_name=%s and moderation.return_date is null"
+            query = "select paper_count.quespaper_code,time_table.year,time_table.sem,subject.subject,coursename.coursename,coursename.course_id,faculty.faculty,moderation.papercount_id,moderation.teacher_id,moderation.timetable_id,moderation.issue_date,moderation.from_count,moderation.to_count,moderation.moderation_paper_count, moderation.moderation_id,DATEDIFF(NOW(), moderation.issue_date) AS difference from moderation JOIN time_table ON moderation.timetable_id=time_table.timetable_id JOIN subject ON  time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id inner join teacher on teacher.teacher_id=moderation.teacher_id INNER JOIN paper_count ON paper_count.papercount_id=moderation.papercount_id WHERE teacher.teacher_name=%s and moderation.return_date is null;"
             cursor.execute(query, (teacher_name,))
 
         elif search_option == "faculty":
-            query = "select paper_count.quespaper_code,teacher.year,teacher.sem,subject.subject,coursename.coursename,coursename.course_id,faculty.faculty,moderation.papercount_id,moderation.teacher_id,moderation.timetable_id,moderation.issue_date,moderation.from_count,moderation.to_count,moderation.moderation_paper_count, moderation.moderation_id,DATEDIFF(NOW(), moderation.issue_date) AS difference from moderation JOIN time_table ON moderation.timetable_id=time_table.timetable_id JOIN subject ON  time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id inner join teacher on teacher.teacher_id=moderation.teacher_id INNER JOIN paper_count ON paper_count.papercount_id=moderation.papercount_id WHERE faculty.faculty=%s and moderation.return_date is null"
+            query = "select paper_count.quespaper_code,time_table.year,time_table.sem,subject.subject,coursename.coursename,coursename.course_id,faculty.faculty,moderation.papercount_id,moderation.teacher_id,moderation.timetable_id,moderation.issue_date,moderation.from_count,moderation.to_count,moderation.moderation_paper_count, moderation.moderation_id,DATEDIFF(NOW(), moderation.issue_date) AS difference from moderation JOIN time_table ON moderation.timetable_id=time_table.timetable_id JOIN subject ON  time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id inner join teacher on teacher.teacher_id=moderation.teacher_id INNER JOIN paper_count ON paper_count.papercount_id=moderation.papercount_id WHERE faculty.faculty=%s and moderation.return_date is null"
             cursor.execute(query, (faculty,))
         
         elif search_option == "course_name":
-            query = " select paper_count.quespaper_code,teacher.year,teacher.sem,subject.subject,coursename.coursename,coursename.course_id,faculty.faculty,moderation.papercount_id,moderation.teacher_id,moderation.timetable_id,moderation.issue_date,moderation.from_count,moderation.to_count,moderation.moderation_paper_count, moderation.moderation_id,DATEDIFF(NOW(), moderation.issue_date) AS difference from moderation JOIN time_table ON moderation.timetable_id=time_table.timetable_id JOIN subject ON  time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id inner join teacher on teacher.teacher_id=moderation.teacher_id INNER JOIN paper_count ON paper_count.papercount_id=moderation.papercount_id WHERE coursename.coursename=%s and moderation.return_date is null"
+            query = " select paper_count.quespaper_code,time_table.year,time_table.sem,subject.subject,coursename.coursename,coursename.course_id,faculty.faculty,moderation.papercount_id,moderation.teacher_id,moderation.timetable_id,moderation.issue_date,moderation.from_count,moderation.to_count,moderation.moderation_paper_count, moderation.moderation_id,DATEDIFF(NOW(), moderation.issue_date) AS difference from moderation JOIN time_table ON moderation.timetable_id=time_table.timetable_id JOIN subject ON  time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id inner join teacher on teacher.teacher_id=moderation.teacher_id INNER JOIN paper_count ON paper_count.papercount_id=moderation.papercount_id WHERE coursename.coursename=%s and moderation.return_date is null"
             cursor.execute(query, (coursename,))
         
         elif search_option == "course_id":
-            query = "select paper_count.quespaper_code,teacher.year,teacher.sem,subject.subject,coursename.coursename,coursename.course_id,faculty.faculty,moderation.papercount_id,moderation.teacher_id,moderation.timetable_id,moderation.issue_date,moderation.from_count,moderation.to_count,moderation.moderation_paper_count, moderation.moderation_id,DATEDIFF(NOW(), moderation.issue_date) AS difference from moderation JOIN time_table ON moderation.timetable_id=time_table.timetable_id JOIN subject ON  time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id inner join teacher on teacher.teacher_id=moderation.teacher_id INNER JOIN paper_count ON paper_count.papercount_id=moderation.papercount_id WHERE coursename.course_id=%s and moderation.return_date is null"
+            query = "select paper_count.quespaper_code,time_table.year,time_table.sem,subject.subject,coursename.coursename,coursename.course_id,faculty.faculty,moderation.papercount_id,moderation.teacher_id,moderation.timetable_id,moderation.issue_date,moderation.from_count,moderation.to_count,moderation.moderation_paper_count, moderation.moderation_id,DATEDIFF(NOW(), moderation.issue_date) AS difference from moderation JOIN time_table ON moderation.timetable_id=time_table.timetable_id JOIN subject ON  time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id inner join teacher on teacher.teacher_id=moderation.teacher_id INNER JOIN paper_count ON paper_count.papercount_id=moderation.papercount_id WHERE coursename.course_id=%s and moderation.return_date is null"
             cursor.execute(query, (course_id,))
 
         print("query=",query)
@@ -99,13 +99,16 @@ def paper_receives():
     cur = mysql.connection.cursor()  
     moderation_id = request.form.get('moderation_id')
     print("moderation_id",moderation_id)
+
+    cases = request.form.get('cases')
+    print("cases",cases)
     
     now = datetime.now()
     return_date =  now.strftime("%Y-%m-%d")
     print("return_date",return_date)
    
     cur.execute('UPDATE moderation SET return_date = %s  WHERE moderation_id = %s',(return_date,moderation_id))
-
+    cur.execute('UPDATE moderation SET cases = %s  WHERE moderation_id = %s',(cases,moderation_id))
     mysql.connection.commit()
         
     cur.close()

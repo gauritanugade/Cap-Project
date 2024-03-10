@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login</title>
+    <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{{ url_for('static',filename='moderna/assets/img/favicon.png') }}" rel="icon">
+  <link href="{{ url_for('static',filename='moderna/assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,700,700i&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{{ url_for('static',filename='moderna/assets/vendor/animate.css/animate.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static',filename='moderna/assets/vendor/aos/aos.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static',filename='moderna/assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static',filename='moderna/assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static',filename='moderna/assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static',filename='moderna/assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static',filename='moderna/assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{{ url_for('static',filename='moderna/assets/css/style.css') }}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Moderna
+  * Updated: Sep 18 2023 with Bootstrap v5.3.2
+  * Template URL: https://bootstrapmade.com/free-bootstrap-template-corporate-moderna/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+    <style>
+         body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            /* background: linear-gradient(135deg, #2980B9, #6DD5FA); */ /* Commented out background color */
+        }
+
+        #header {
+            height: 80px; /* Adjust the height of the header as needed */
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 650px; /* Adjust the height of the container to match the header */
+        }
+
+        .wrapper {
+            text-align: center;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+            max-width: 350px; /* Adjust as needed */
+            width: 100%;
+        }
+
+        .logo img {
+            width: 100px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .name {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        /* Custom button styles */
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #2980B9;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980B9;
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background-color: #2980B9;
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background-color: #2980B9;
+            color: #fff;
+        }
+
+        .box-below-header {
+            background-color: #fff; /* Background color for the box */
+            padding: 20px; /* Padding for content inside the box */
+            margin-top: 20px; /* Margin to separate the box from the header */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Box shadow for the box */
+        }
+        #dataheader {
+            height: 80px;
+            transition: all 0.5s;
+            z-index: 997;
+            transition: all 0.5s;
+            background: #353d48;
+        }
+       
+    </style>
+</head>
+<body>
+    <!-- ======= Header ======= -->
+  <header id="dataheader" class="fixed-top d-flex align-items-center ">
+    <div class="container d-flex justify-content-between align-items-center">
+
+      <!-- <div class="logo"> -->
+        <h1 class="text-light"><span>Central Assessment System</span></h1>
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+      </div>
+
+      <nav id="navbar" class="navbar">
+        <!-- <ul>
+          <li><a class="/" href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/objective">Objectives</a></li>
+          <li><a href="/faculty">Faculty Profile</a></li>
+          <li><a href="/photo">Photo Gallery</a></li>
+          <li><a href="/activities">Activities</a></li>
+          <li><a href="/enstud">Enrolled Students</a></li>
+          <li><a href="/achieve">Achievements</a></li>
+          <li><a href="/camp">Camps</a></li>
+          <li><a href="/contact">Contact Us</a></li>
+          <li><a class="active" href="/login">Login</a></li>
+        </ul> -->
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main">
+
+
+   <div class="container">
+    <div class="wrapper">
+        <div class="logo">
+            <img src="https://th.bing.com/th/id/OIP.8zoRnVjvCIL0ABgJGC-G0gHaHa?rs=1&pid=ImgDetMain" alt="vck Logo" style="width: 160px; height: 160px;">
+        </div>
+        <div class="name">CAP Member </div>
+        <form action="/caplogin" method="POST" class="p-3 mt-3">
+            <div class="form-field mb-3">
+                <label for="userid" class="visually-hidden">User Id</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    <input type="text" name="userName" id="userName" class="form-control" placeholder="User Id" required>
+                </div>
+            </div>
+            <div class="form-field mb-3">
+                <label for="pass1" class="visually-hidden">Password</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+                </div>
+            </div>
+            <button class="btn btn-primary w-100 mb-3">Login</button>
+            {% if msg %}
+                <p>{{ msg }}</p>
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+
+
+
+
+</main>
+</body>
+</html>

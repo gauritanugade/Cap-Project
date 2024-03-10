@@ -70,19 +70,19 @@ def search_subject():
         
         cursor = mysql.connection.cursor()
         if search_option == "teacher_name":
-            query = "SELECT faculty.faculty,teacher.year,teacher.sem,subject.subject,coursename.coursename,coursename.course_id,paper_count.count,paper_count.quespaper_code,time_table.timetable_id,teacher.teacher_id,paper_count.papercount_id,paper_count.remaining_paper FROM teacher INNER JOIN faculty ON teacher.faculty_id = faculty.faculty_id INNER JOIN subject ON teacher.subject_id = subject.subject_id INNER JOIN coursename ON teacher.coursename_id = coursename.coursename_id INNER JOIN time_table ON time_table.coursename_id = teacher.coursename_id INNER JOIN paper_count ON time_table.timetable_id = paper_count.timetable_id WHERE teacher.teacher_name=%s  and paper_count.remaining_paper!=0"
+            query = " SELECT faculty.faculty,time_table.year,time_table.sem,subject.subject,coursename.coursename,coursename.course_id,paper_count.count,paper_count.quespaper_code,time_table.timetable_id,teacher.teacher_id,paper_count.papercount_id,paper_count.remaining_paper FROM paper_count join time_table on time_table.timetable_id=paper_count.timetable_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id JOIN subject ON time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id join teacher_course on coursename.coursename_id=teacher_course.coursename_id join teacher on teacher_course.teacher_id=teacher.teacher_id where teacher.teacher_name=%s and paper_count.remaining_paper!=0;"
             cursor.execute(query, (teacher_name,))
 
         elif search_option == "faculty":
-            query = "SELECT faculty.faculty,teacher.year,teacher.sem,subject.subject,coursename.coursename,coursename.course_id,paper_count.count,paper_count.quespaper_code,time_table.timetable_id,teacher.teacher_id,paper_count.papercount_id,paper_count.remaining_paper from teacher INNER JOIN faculty ON teacher.faculty_id = faculty.faculty_id INNER JOIN subject ON teacher.subject_id = subject.subject_id INNER JOIN coursename ON teacher.coursename_id = coursename.coursename_id INNER JOIN time_table ON time_table.coursename_id = teacher.coursename_id INNER JOIN paper_count ON time_table.timetable_id = paper_count.timetable_id WHERE faculty.faculty =%s  and paper_count.remaining_paper!=0"
+            query ="SELECT faculty.faculty,time_table.year,time_table.sem,subject.subject,coursename.coursename,coursename.course_id,paper_count.count,paper_count.quespaper_code,time_table.timetable_id,paper_count.papercount_id,paper_count.remaining_paper from paper_count  JOIN time_table ON time_table.timetable_id = paper_count.timetable_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id  JOIN subject ON time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id  WHERE faculty.faculty =%s and paper_count.remaining_paper!=0"            
             cursor.execute(query, (faculty,))
         
         elif search_option == "course_name":
-            query = "SELECT faculty.faculty,teacher.year,teacher.sem,subject.subject,coursename.coursename,coursename.course_id,paper_count.count,paper_count.quespaper_code,time_table.timetable_id,teacher.teacher_id,paper_count.papercount_id,paper_count.remaining_paper from teacher INNER JOIN faculty ON teacher.faculty_id = faculty.faculty_id INNER JOIN subject ON teacher.subject_id = subject.subject_id INNER JOIN coursename ON teacher.coursename_id = coursename.coursename_id INNER JOIN time_table ON time_table.coursename_id = teacher.coursename_id INNER JOIN paper_count ON time_table.timetable_id = paper_count.timetable_id WHERE coursename.coursename =%s  and paper_count.remaining_paper!=0"
+            query="SELECT faculty.faculty,time_table.year,time_table.sem,subject.subject,coursename.coursename,coursename.course_id,paper_count.count,paper_count.quespaper_code,time_table.timetable_id,paper_count.papercount_id,paper_count.remaining_paper from paper_count  JOIN time_table ON time_table.timetable_id = paper_count.timetable_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id  JOIN subject ON time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id  WHERE coursename.coursename =%s and paper_count.remaining_paper!=0"            
             cursor.execute(query, (coursename,))
         
         elif search_option == "course_id":
-            query = "SELECT faculty.faculty,teacher.year,teacher.sem,subject.subject,coursename.coursename,coursename.course_id,paper_count.count,paper_count.quespaper_code,time_table.timetable_id,teacher.teacher_id,paper_count.papercount_id,paper_count.remaining_paper FROM teacher INNER JOIN faculty ON teacher.faculty_id = faculty.faculty_id INNER JOIN subject ON teacher.subject_id = subject.subject_id INNER JOIN coursename ON teacher.coursename_id = coursename.coursename_id INNER JOIN time_table ON time_table.coursename_id = teacher.coursename_id INNER JOIN paper_count ON time_table.timetable_id = paper_count.timetable_id WHERE coursename.course_id =%s  and paper_count.remaining_paper!=0"
+            query = "SELECT faculty.faculty,time_table.year,time_table.sem,subject.subject,coursename.coursename,coursename.course_id,paper_count.count,paper_count.quespaper_code,time_table.timetable_id,paper_count.papercount_id,paper_count.remaining_paper from paper_count  JOIN time_table ON time_table.timetable_id = paper_count.timetable_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id  JOIN subject ON time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id  WHERE coursename.course_id =%s and paper_count.remaining_paper!=0"            
             cursor.execute(query, (course_id,))
 
         print("query=",query)
@@ -149,15 +149,10 @@ def backdata():
     papercount_id = request.form["papercount_id"]
     print("papercount_id:", papercount_id)
     cursor = mysql.connection.cursor()
-    querysubject = 'select faculty.faculty,teacher.year,teacher.sem,subject.subject,coursename.coursename,coursename.course_id,paper_count.count,paper_count.quespaper_code,paper_count.remaining_paper,paper_count.papercount_id,issue_check.from_count,issue_check.to_count,issue_check.issue_date,issue_check.issue_check_id,issue_check.teacher_paper_count from issue_check  JOIN time_table  ON issue_check.timetable_id = time_table.timetable_id  JOIN subject ON time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id inner join paper_count on paper_count.papercount_id=issue_check.papercount_id inner join teacher on teacher.teacher_id=issue_check.teacher_id where paper_count.papercount_id=%s'
+    querysubject = 'select faculty.faculty,time_table.year,time_table.sem,subject.subject,coursename.coursename,coursename.course_id,paper_count.count,paper_count.quespaper_code,paper_count.remaining_paper,paper_count.papercount_id,issue_check.from_count,issue_check.to_count,issue_check.issue_date,issue_check.issue_check_id,issue_check.teacher_paper_count from issue_check  JOIN time_table  ON issue_check.timetable_id = time_table.timetable_id  JOIN subject ON time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id inner join paper_count on paper_count.papercount_id=issue_check.papercount_id inner join teacher on teacher.teacher_id=issue_check.teacher_id where paper_count.papercount_id=%s'
     cursor.execute(querysubject, (papercount_id,))
     backdata = cursor.fetchall()
 
     print("backdata:", backdata)
     cursor.close()
     return jsonify(backdata)
-    
-
-
-
-

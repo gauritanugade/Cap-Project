@@ -15,27 +15,27 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='/webtemplate/dist/css/adminlte.min.css') }}">
 
   <style>
-    .navbar-white {
-    background-color: #353d48;
-    color: #656e7a;
+      .navbar-white {
+    background-color: #191C24;
+    color: #191C24;
     }
     .navbar-light .navbar-nav .nav-link {
     color: rgb(236 229 229);
     }
-    /* .fix {
-      margin-top: -55%;
-    } */
+    [class*=sidebar-dark-] {
+    background-color: #191C24;
+}
+   .main-sidebar {
+    height: inherit;
+    min-height: 200%;
+    position: absolute;
+    top: 0;
+    background-color: #191C24;
+}
+    
   </style>
 </head>
-<!--
-`body` tag options:
 
-  Apply one or more of the following classes to to the body tag
-  to get the desired effect
-
-  * sidebar-collapse
-  * sidebar-mini
--->
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
   <div class="side">
@@ -87,9 +87,7 @@
         <div class="input-group" data-widget="sidebar-search">
           <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
           <div class="input-group-append">
-            <button class="btn btn-sidebar">
-              <i class="fas fa-search fa-fw"></i>
-            </button>
+            
           </div>
         </div>
       </div>
@@ -100,7 +98,7 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="{{ url_for('main_app.adminPage') }}" class="nav-link">
               <i class="fas fa-tachometer-alt"></i>
               <p>
                 Dashboard

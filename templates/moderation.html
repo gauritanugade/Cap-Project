@@ -23,12 +23,14 @@
             .center {
             width: 100.5%;
             max-width: 400%;
-            background: rgba(31, 158, 172, 0.881);
+            background: rgb(103 212 225 / 89%);
             padding: 20px;
             margin: 0 120px;
             box-shadow: inset -2px 2px 2px rgb(32, 30, 30);
             color: #ecf0f4;
             margin-top: 7%;
+            box-shadow: 0 0 40px rgba(8,7,16,0.6);
+
 
         }
 
@@ -73,27 +75,27 @@
     <div class="row my-4">
       <div class="col-lg-10 mx-auto">
         <div class="center">
-          <div class="word">
-            <h2 style="font-style: normal;">Moderation</h2>
+          <div class="word"><br>
+            <h2 style="font-style: normal;">Moderation</h2><br>
             <hr style="border-bottom: 5px solid rgb(11, 11, 11);"><br>
             <div align="center" >
                 <form action="/moderationbuttion" method="POST" align="center">
                  
 
                     <label>
-                        <input type="radio" name="radio_option" value="faculty" onchange="showSearchBar('faculty')"> Faculty
+                       <h4> <input type="radio" name="radio_option" value="faculty" onchange="showSearchBar('faculty')"> Faculty</h4>
                     </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                     <label>
-                        <input type="radio" name="radio_option" value="subject" onchange="showSearchBar('subject_name')"> Subject
+                       <h4> <input type="radio" name="radio_option" value="subject" onchange="showSearchBar('subject_name')"> Subject</h4>
                     </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                     <label>
-                        <input type="radio" name="radio_option" value="course_name" onchange="showSearchBar('course_name')"> Course Name
+                       <h4> <input type="radio" name="radio_option" value="course_name" onchange="showSearchBar('course_name')"> Course Name</h4>
                     </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 
                     <label>
-                        <input type="radio" name="radio_option" value="course_id" onchange="showSearchBar('course_id')"> Course_id
+                        <h4><input type="radio" name="radio_option" value="course_id" onchange="showSearchBar('course_id')"> Course_id </h4>
                     </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                        
                     <br><br><br>
@@ -200,7 +202,6 @@
                                 <th style="font-size: 12px; width: 7%;">from Papercount</th>
                                 <th style="font-size: 12px; width: 7%;">To Paper count</th>
                                 <th style="font-size: 12px; width: 10%;">moderation Paper count</th>
-                                <th style="width: 63px; height: 27.8px;">Cases</th>
                                 <th style="width: 98.9875px; height: 27.8px;">Issue Date</th>
                                 <!-- <th style="width: 103.013px; height: 27.8px;">Received Date</th> -->
                                 </tr>
@@ -319,7 +320,6 @@
                             addTextInCell("from_count", backdatas[i][10], newRow)
                             addTextInCell("to_count", backdatas[i][11], newRow)
                             addTextInCell("moderation_paper_count", backdatas[i][14], newRow)
-                            addTextInCell("cases", backdatas[i][16], newRow)
                             var today = new Date(backdatas[i][12])
                             var year = today.getFullYear();
                             var month = String(today.getMonth() + 1).padStart(2, '0');
@@ -360,11 +360,6 @@
                 var moderationPaperCountCell = newRow.insertCell();
                 moderationPaperCountCell.innerHTML = '<input type="text" name="moderation_paper_count" id="totalCount" style="width:83%" readonly tabindex="-1">'
         
-
-                
-                var teacherPaperCountCell = newRow.insertCell();
-                teacherPaperCountCell.innerHTML = '<input type="text" name="cases" style="width:83%"  required>'
-
 
                 var issueDateCell = newRow.insertCell();
                 var today = new Date();

@@ -247,12 +247,12 @@
                     <li><a href="#">Blog</a></li>
                     <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
-            <a class="btn-getstarted" onclick="openForm()">Login</a>
+            <a href="{{ url_for('login.home') }}" class="btn-getstarted" onclick="openForm()">Login</a>
             <div class="background">
                 <div class="shape"></div>
                 <div class="shape"></div>
             </div>
-            <div class="form-container" id="myForm">
+            <!-- <div class="form-container" id="myForm">
                 <form action="{{ url_for('login.home') }}" method="post">
                     <h3>Login Here</h3><br>
                     <div class="msg">{{ msg }}</div>
@@ -262,7 +262,7 @@
                     <input type="password" placeholder="Password" id="password" name="password">
                     <button>Log In</button>
                 </form>
-            </div>
+            </div> -->
 
         </div>
     </header><!-- End Header -->

@@ -1,0 +1,295 @@
+{% extends "capfacultypage.html" %} 
+{% block content %}
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AdminLTE 3 | Dashboard 3</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='/webtemplate/plugins/fontawesome-free/css/all.min.css') }}">
+  <!-- IonIcons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='/webtemplate/dist/css/adminlte.min.css') }}">
+
+  <style>
+     .navbar-white {
+    background-color: #191C24;
+    color: #191C24;
+    }
+    .navbar-light .navbar-nav .nav-link {
+    color: rgb(236 229 229);
+    }
+    [class*=sidebar-dark-] {
+    background-color: #191C24;
+}
+   .main-sidebar {
+    height: inherit;
+    min-height: 200%;
+    position: absolute;
+    top: 0;
+    background-color: #191C24;
+}
+    .add_item_btn {
+            width: 200%;
+            position: absolute;
+            top: 65%;
+            transform: translateY(-40%);
+            left: 7.5%;
+            padding: 10px 20px;
+        }
+  </style>
+</head>
+<body>
+<div class="content-wrapper">
+    <div class="fix">
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Dashboard</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-3 col-6">
+              <div class="small-box bg-info">
+                  <div class="inner">
+                      <h3>{{okdata}}</h3>
+                      <p>Ready To Issue</p>
+                  </div>
+                  <div class="icon">
+                      <!-- <i class="fas fa-chalkboard-teacher"></i>  -->
+                  </div>
+                  <a href="{{ url_for('paper_issue1.home') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+        
+      
+      
+          </div>
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-success">
+              <div class="inner">
+                <h2>{{pendingdata}}</h2>
+  
+                <p>Pending</p>
+              </div>
+              <div class="icon">
+                <!-- <i class="fas fa-cog"></i>  -->
+  
+              </div>
+              <a href="{{ url_for('paper_register.pending') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-warning">
+              <div class="inner">
+                <h2>{{isuuerecive}}</h2>
+  
+                <p>Recive For Issue</p>
+              </div>
+              <div class="icon">
+                <div class="icon">
+                  <!-- <i class="fas fa-book"></i>  -->
+              </div>
+              </div>
+              <a href="{{ url_for('add_subject.home') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          </div>
+          <div class="fix">
+            <div class="content-header">
+              <div class="container-fluid">
+                <div class="row mb-2">
+                  <div class="col-sm-6">
+                    <h1 class="m-0">Reports</h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+          <div class="row">
+          <div class="card card-body" style="width: 40%;">
+            <h4>Bill</h4>
+            <hr style="border-bottom: 5px solid rgb(13, 3, 3);">
+            <form action="/download/report/bill" method="POST">
+          <div class="form-group">
+              <label>Teacher Name: </label>&nbsp;&nbsp;
+                <input type="text" id="teacher_name" name="teacher_name" style=" width: 60%;  padding: 10px 20px;">
+            </div><br>
+              
+              <div class="col-md-2 mb-3 d-grid">
+                <button class="btn btn-success add_item_btn">Generate Bill</button>
+            </div>
+             </form>
+      </div>&nbsp;&nbsp;&nbsp;&nbsp;
+      <div class="card card-body" style="width: 40%;">
+        <h4>Scrutiny Bill</h4>
+        <hr style="border-bottom: 5px solid rgb(11, 11, 11);">
+
+        <form action="/download/report/scrutanybill" method="POST">
+      <div class="form-group">
+          <label>Cap Member Name: </label>&nbsp;&nbsp;
+            <input type="text" id="name" name="name" style=" width: 60%;  padding: 10px 20px;">
+        </div><br>
+          
+          <div class="col-md-2 mb-3 d-grid">
+            <button class="btn btn-success add_item_btn">Generate Bill</button>
+        </div>
+         </form>
+      </div>
+      </div>
+      <div class="card card-body" style="width: 49%;">
+        <h4>Report</h4>
+        <hr style="border-bottom: 5px solid rgb(11, 11, 11);">
+        <div class="form-group">
+        <h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Paper Register &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#8658; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{{url_for('report.home')}}" method="POST">Click</a></h5>
+        <h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Time Table &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#8658; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{{url_for('report_time_table.home')}}" method="POST">Click</a></h5>
+        <h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ok_Pending&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#8658; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{{url_for('report_okpending.home')}}" method="POST">Click</a></h5>
+
+          <h5></h5>
+         </form>
+      </div>
+      </div>
+      </div>
+      </section>
+      </div>
+          <!--
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-danger">
+              <div class="inner">
+                <h2>{{teacherdata}}</h2>
+
+                <p>Teacher Details</p>
+
+              </div>
+              <div class="icon">
+                <div class="icon">
+                  <i class="fas fa-graduation-cap"></i> 
+              </div>
+             </div>
+             <a href="{{ url_for('add_teacher_details.home') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-danger">
+              <div class="inner">
+                <h2>{{coursenamedata}}</h2>
+  
+                <p>Course</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-chalkboard-teacher"></i> 
+              </div>
+              <a href="{{ url_for('add_course.home') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+       
+       
+     
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-warning">
+          <div class="inner">
+            <h2>{{capmemeber}}</h2>
+
+            <p>CAP Member</p>
+          </div>
+          <div class="icon">
+            <div class="icon">
+              <i class="fas fa-user-friends"></i> 
+          </div>
+          </div>
+          <a href="{{ url_for('capfaculty.home') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+    </div> -->
+  </div>
+    </section>
+</div>
+<script src="{{ url_for('static', filename='/webtemplate/plugins/jquery/jquery.min.js') }}"></script>
+<!-- Bootstrap -->
+<script src="{{ url_for('static', filename='/webtemplate/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<!-- AdminLTE -->
+<script src="{{ url_for('static', filename='/webtemplate/dist/js/adminlte.js') }}"></script>
+
+<!-- OPTIONAL SCRIPTS -->
+<script src="{{ url_for('static', filename='/webtemplate/plugins/chart.js/Chart.min.js') }}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{{ url_for('static', filename='/webtemplate/dist/js/demo.js') }}"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>         
+<script>
+        function showSearchBar(category) {
+            var searchBars = document.querySelectorAll('.search-bar');
+            searchBars.forEach(function (bar) {
+                bar.style.display = 'none';
+            });
+
+            var selectedSearchBar = document.getElementById(category);
+            if (selectedSearchBar) {
+                selectedSearchBar.style.display = 'block';
+            }
+
+            var labels = document.querySelectorAll('.search-bar-label');
+            labels.forEach(function (label) {
+                label.style.display = 'none';
+            });
+
+            var selectedLabel = document.getElementById(category + '-label');
+            if (selectedLabel) {
+                selectedLabel.style.display = 'block';
+            }
+
+            var inputBoxes = document.querySelectorAll('.input-box1');
+            inputBoxes.forEach(function (box) {
+                box.style.display = 'none';
+            });
+
+            var selectedInputBox = document.getElementById(category + '-input-box');
+            if (selectedInputBox) {
+                selectedInputBox.style.display = 'block';
+            }
+        }
+
+        $(function () {
+            var teacher = [
+                {% for item in teacherdata %} 
+                            "{{item[0]}}",
+                {% endfor %} 
+            ];
+            
+        
+        $("#teacher_name").autocomplete({
+            source: teacher
+        });
+        
+    });
+    $(function () {
+            var capfacultyname = [
+                {% for item in capname %} 
+                            "{{item[0]}}",
+                {% endfor %} 
+            ];
+            
+        
+        $("#name").autocomplete({
+            source: capfacultyname
+        });
+        
+    });
+
+    </script>
+</body>
+</html>
+{% endblock %}

@@ -10,14 +10,15 @@
 
 .input-box {
   position: relative;
-  height: 50px;
+  height: 53px;
   max-width: 400px;
   width: 100%;
   background: #fff;
   margin: 0 20px;
-  border-radius: 40px;
+  border-radius: -3px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-  left: 35%;
+  left: 34.0%;
+  padding: 20;
 }
 .input-box i,
 .input-box .button {
@@ -55,19 +56,17 @@
   transform: translateY(-50%) scale(0.98);
 }
 
-.designBtn{
-  /* element.style { */
-    /* color: blue; */
-    /* background: blue; */
-    border-radius: 18px;
-    /* size: a5; */
-    width: 10%;
-    position: absolute;
-    top: 87%;
-    transform: translateY(-40%);
-    /* margin-right: -16%; */
-    left: 66.5%;
-
+.designBtn {
+  /* color: blue; */
+  /* background: blue; */
+  border-radius: -3px;
+  /* size: a5; */
+  width: 10%;
+  position: absolute;
+  top: 89%;
+  transform: translateY(-40%);
+  /* margin-right: -16%; */
+  left: 67.1%;
 }
 
 /* Responsive */

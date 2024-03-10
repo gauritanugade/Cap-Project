@@ -82,3 +82,20 @@ ALTER TABLE issue_check ADD COLUMN timetable_id INT,ADD CONSTRAINT fk_timetable 
 
  <li class="sidebar-item"><a href="{{ url_for('paper_register.home') }}" class="sidebar-link"><i class="mdi mdi-note-outline"></i><span class="hide-menu"> Paper Register </span></a></li>
   <li class="sidebar-item"><a href="{{ url_for('paper_issue1.home') }}" class="sidebar-link"><i class="mdi mdi-note-outline"></i><span class="hide-menu"> Paper Issue </span></a></li>
+
+
+ALTER TABLE remuneration
+ADD COLUMN faculty_id INT AFTER rupees;
+
+ALTER TABLE remuneration
+ADD CONSTRAINT fk_faculty_id
+FOREIGN KEY (faculty_id) REFERENCES faculty(faculty_id);
+
+ALTER TABLE remu_perpaper
+    -> ADD COLUMN faculty_id INT AFTER perpaper_rs;
+
+ ALTER TABLE remu_perpaper
+    -> ADD CONSTRAINT fk_facultyid
+    -> FOREIGN KEY (faculty_id) REFERENCES faculty(faculty_id);
+
+    #121f26;

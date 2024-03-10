@@ -21,6 +21,13 @@ from receive_paper import receive_paper
 from scrutany_receive_paper import scrutany_receive_paper
 from moderation_receive_paper import moderation_receive_paper
 from report import report
+# from Billing import Billing
+from report_time_table import report_time_table
+from scrutanyremuneration import scrutanyremuneration
+from scrutanybilling import scrutanybilling
+from report_okpending import report_okpending
+from assismoderatereport import assismoderatereport
+
 
 
 app = Flask(__name__)
@@ -29,7 +36,7 @@ app.secret_key='project'
 app.config['MYSQL_HOST']='localhost'
 app.config['MYSQL_USER']='root'
 app.config['MYSQL_DB']='cap_project'
-app.config['MYSQL_PASSWORD']='mysql'
+
 app.secret_key = 'VCK'
  
 
@@ -55,7 +62,12 @@ app.register_blueprint(receive_paper)
 app.register_blueprint(scrutany_receive_paper)
 app.register_blueprint(moderation_receive_paper)
 app.register_blueprint(report)
-
+# app.register_blueprint(Billing)
+app.register_blueprint(report_time_table)
+app.register_blueprint(scrutanyremuneration)
+app.register_blueprint(scrutanybilling)
+app.register_blueprint(report_okpending)
+app.register_blueprint(assismoderatereport)
 
 
  

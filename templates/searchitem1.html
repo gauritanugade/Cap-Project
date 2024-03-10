@@ -16,12 +16,14 @@
         .center {
             width: 100.5%;
             max-width: 400%;
-            background: rgba(31, 158, 172, 0.881);
+            background: rgb(103 212 225 / 89%);
             padding: 20px;
             margin: 0 120px;
-            box-shadow: inset -2px 2px 2px rgb(32, 30, 30);
+            /* box-shadow: inset -2px 2px 2px rgb(32, 30, 30); */
             color: #ecf0f4;
             margin-top: 7%;
+            box-shadow: 0 0 40px rgba(8,7,16,0.6);
+
 
         }
 
@@ -96,29 +98,29 @@
     <div class="row my-4">
         <div class="col-lg-10 mx-auto">
             <div class="center">
-                <div class="word">
-                    <h2 style="font-style: normal;">PAPER ISSUE DETAILS</h2>
-                    <hr style="border-bottom: 5px solid rgb(11, 11, 11);"><br>
+                <div class="word"><br>
+                    <h2 style="font-style: normal;">PAPER ISSUE DETAILS</h2><br>
+                    <hr style="border-bottom: 5px solid rgb(11, 11, 11);"><br><br>
                     <div align="center">
                         <form action="/search_subject" method="POST" align="center">
                             <label>
-                                <input type="radio" name="radio_option" value="teacher_name"
-                                    onchange="showSearchBar('teacher_name')"> Teacher Name
+                                <h4><input type="radio" name="radio_option" value="teacher_name"
+                                    onchange="showSearchBar('teacher_name')"> Teacher Name</h4>
                             </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                             <label>
-                                <input type="radio" name="radio_option" value="faculty"
-                                    onchange="showSearchBar('faculty')"> Faculty
+                                <h4><input type="radio" name="radio_option" value="faculty"
+                                    onchange="showSearchBar('faculty')"> Faculty</h4>
                             </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                             <label>
-                                <input type="radio" name="radio_option" value="course_name"
-                                    onchange="showSearchBar('course_name')"> Course Name
+                                <h4><input type="radio" name="radio_option" value="course_name"
+                                    onchange="showSearchBar('course_name')"> Course Name</h4>
                             </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                             <label>
-                                <input type="radio" name="radio_option" value="course_id"
-                                    onchange="showSearchBar('course_id')"> Course_id
+                                <h4><input type="radio" name="radio_option" value="course_id"
+                                    onchange="showSearchBar('course_id')"> Course_id</h4>
                             </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                             <br><br><br>
@@ -191,8 +193,8 @@
                                                 data-sem="{{ result[2] }}" data-subject="{{ result[3] }}"
                                                 data-coursename="{{ result[4] }}" data-course_id="{{ result[5] }}"
                                                 data-count="{{ result[6] }}" data-quespaper_code="{{ result[7] }}"
-                                                data-teacher_id="{{ result[9] }}" data-timetable_id="{{ result[8] }}"
-                                                data-papercount_id="{{ result[10]}}" id="radio_{{ loop.index }}"
+                                                data-timetable_id="{{ result[8] }}"
+                                                data-papercount_id="{{ result[9]}}" id="radio_{{ loop.index }}"
                                                 onclick="displaySelectedRow(this)">
                                         </td>
                                         <td>{{ loop.index }}</td>
@@ -204,10 +206,10 @@
                                         <td>{{ result[5] }}</td>
                                         <td>{{ result[6] }}</td>
                                         <td>{{ result[7] }}</td>
-                                        <td>{{ result[11] }}</td>
+                                        <td>{{ result[10] }}</td>
 
                                         <input type="hidden" name="timetable_id[]" value="{{ result[8] }}">
-                                        <input type="hidden" name="papercount_id[]" value="{{ result[10] }}">
+                                        <input type="hidden" name="papercount_id[]" value="{{ result[9] }}">
                                     </tr>
                                     {% endfor %}
                                 </tbody>

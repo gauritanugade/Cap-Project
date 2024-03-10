@@ -104,8 +104,7 @@ def paper_moderation():
     print("papercount_id=",papercount_id)
     teacher_id = request.form['teacher_id'] 
     print("teacher_id=",teacher_id)
-    cases = request.form['cases']
-    print("cases=",cases)
+ 
     timetable_id = request.form['timetable_id']
     print("timetable_id=",timetable_id)
     moderation_paper_count = request.form.get('moderation_paper_count')
@@ -121,7 +120,7 @@ def paper_moderation():
     cur = mysql.connection.cursor()
     papercount_id = request.form.get('papercount_id')
     cur.execute('UPDATE paper_count SET moderation_remaining=moderation_remaining - %s WHERE papercount_id=%s',(moderation_paper_count,papercount_id,))
-    cur.execute("INSERT INTO moderation (issue_date,cases, papercount_id, teacher_id, from_count,to_count,moderation_paper_count,timetable_id) VALUES (%s, %s, %s,%s,%s, %s, %s,%s)", (issue_date,cases, papercount_id, teacher_id,from_count,to_count,moderation_paper_count, timetable_id))
+    cur.execute("INSERT INTO moderation (issue_date, papercount_id, teacher_id, from_count,to_count,moderation_paper_count,timetable_id) VALUES (%s,%s,%s,%s, %s, %s,%s)", (issue_date,papercount_id, teacher_id,from_count,to_count,moderation_paper_count, timetable_id))
     mysql.connection.commit()
         
     cur.close()
@@ -134,7 +133,7 @@ def backdatamoderation():
     papercount_id = request.form["papercount_id"]
     print("papercount_id:", papercount_id)
     cursor = mysql.connection.cursor()
-    querysubject = 'select faculty.faculty,time_table.year,time_table.sem,subject.subject,coursename.coursename,coursename.course_id,paper_count.count,paper_count.quespaper_code,paper_count.moderation_remaining,paper_count.papercount_id,moderation.from_count,moderation.to_count,moderation.issue_date,moderation.moderation_id,moderation.moderation_paper_count,teacher.teacher_name,moderation.cases from moderation join time_table ON moderation.timetable_id = time_table.timetable_id JOIN subject ON time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id inner join paper_count on paper_count.papercount_id=moderation.papercount_id inner join teacher on teacher.teacher_id=moderation.teacher_id where paper_count.papercount_id=%s'
+    querysubject = 'select faculty.faculty,time_table.year,time_table.sem,subject.subject,coursename.coursename,coursename.course_id,paper_count.count,paper_count.quespaper_code,paper_count.moderation_remaining,paper_count.papercount_id,moderation.from_count,moderation.to_count,moderation.issue_date,moderation.moderation_id,moderation.moderation_paper_count,teacher.teacher_name from moderation join time_table ON moderation.timetable_id = time_table.timetable_id JOIN subject ON time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id inner join paper_count on paper_count.papercount_id=moderation.papercount_id inner join teacher on teacher.teacher_id=moderation.teacher_id where paper_count.papercount_id=%s'
     cursor.execute(querysubject, (papercount_id,))
     backdata = cursor.fetchall()
 

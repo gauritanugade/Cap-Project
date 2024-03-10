@@ -1,4 +1,4 @@
-from flask import Flask,Blueprint,render_template,request,session,make_response,redirect,flash
+from flask import Flask,Blueprint,render_template,request,session,make_response,redirect,flash,jsonify
 from flask_mysqldb import MySQL
 import itertools
 
@@ -27,11 +27,6 @@ def home():
 	cursor.close()
 	return render_template("techer.html",joblist=joblist,joblist1=joblist1,joblist3=joblist3 ) 
 
-
-
-
-
-
 @app.route("/getYear", methods=["POST"])
 def getYear():
 	faculty= request.form['faculty']
@@ -52,31 +47,49 @@ def getSem():
 	sem2 = year * 2
 	return [sem1, sem2]
 
-@app.route('/submitteacher', methods = ['POST','GET'])
+
+
+@app.route('/subject', methods=["POST"])
+def subject():
+    faculty = request.form["faculty"]
+    print("faculty:", faculty)
+    cursor = mysql.connection.cursor()
+    querysubject = 'select subject.subject, faculty.faculty, subject.subject_id from subject inner join faculty on faculty.faculty_id=subject.faculty_id where cap_project.faculty.faculty_id=%s'
+    cursor.execute(querysubject, (faculty,))
+    subjects = cursor.fetchall()
+    print("subject:", subjects)
+    cursor.close()
+    return jsonify(subjects)
+
+@app.route('/submitteacher', methods=['POST', 'GET'])
 def submitteacher():
 	if request.method == 'POST':
-		teacher_name=request.form["teacher_name"]
+		teacher_name = request.form["teacher_name"]
 		print(teacher_name)
-		teacher_email=request.form["teacher_email"]
-		teacher_phoneno= request.form ["teacher_phoneno"]
-		year=request.form["Year"]
-		sem=request.form["Sem"]
-		faculty_id=request.form["Faculty"]
+		teacher_email = request.form["teacher_email"]
+		teacher_phoneno = request.form["teacher_phoneno"]
+		faculty_id = request.form.getlist('Faculty')
 		print(faculty_id)
-		# coursename_id=request.form["coursename"]
-		coursename_id=request.form["coursename"]
-
-		print("coursename_id:",coursename_id)
-		subject_id=request.form["subject"]
-		cursor =mysql.connection.cursor()
-		query="insert into cap_project.teacher(teacher_name,teacher_email,teacher_phoneno,year,sem,faculty_id,coursename_id,subject_id) values(%s,%s,%s,%s,%s,%s,%s,%s)"
-		cursor.execute(query,(teacher_name,teacher_email,teacher_phoneno,year,sem,faculty_id,coursename_id,subject_id,))	
+		year = request.form.getlist('Year')
+		sem = request.form.getlist('Sem')
+		subject_id = request.form.getlist('subject')
+		coursename_id = request.form.getlist('coursename')
+		
+		print("coursename_id:", coursename_id)
+		cursor = mysql.connection.cursor()
+		query = "INSERT INTO cap_project.teacher (teacher_name, teacher_email, teacher_phoneno) VALUES (%s, %s, %s)"
+		cursor.execute(query, (teacher_name, teacher_email, teacher_phoneno))
+		teac_id = cursor.lastrowid
+		
+		for (fac, y, s, sub, cour) in zip(faculty_id, year, sem, subject_id, coursename_id):
+			query1 = "INSERT INTO cap_project.teacher_course (year, sem, faculty_id, coursename_id, subject_id, teacher_id) VALUES (%s, %s, %s, %s, %s, %s)"
+			cursor.execute(query1, (y, s, fac, cour, sub, teac_id))
 		mysql.connection.commit()
 		cursor.close()
-	return render_template("techer.html")
+		return render_template("techer.html")
 
 
-	
+
 @app.route('/teacher_data', methods = ['POST'])
 def teacher_data():
 	msg=''
@@ -87,3 +100,4 @@ def teacher_data():
 		data=cursor.fetchall()
 		cursor.close()
 		return render_template("teacher_data.html",teacher=data)
+	

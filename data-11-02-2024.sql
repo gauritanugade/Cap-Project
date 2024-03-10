@@ -17,7 +17,7 @@
 
 --
 -- Table structure for table `accounts`
---
+--#1e4356
 
 DROP TABLE IF EXISTS `accounts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

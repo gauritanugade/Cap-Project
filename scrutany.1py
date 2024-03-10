@@ -1,0 +1,81 @@
+from flask import Flask,Blueprint,render_template,request,session,make_response,redirect,flash,Response
+from flask_mysqldb import MySQL
+from fpdf import FPDF
+from datetime import datetime
+import inflect
+
+date = datetime.now()
+
+
+scrutanybilling = Blueprint('scrutanybilling', __name__, template_folder='templates')
+
+app=scrutanybilling
+
+mysql=MySQL()
+
+@app.route('/scrutanybilling')
+def home():
+    return render_template('scrutanybilling.html')
+
+@app.route('/download/report/scrutanybill', methods=["POST"])
+def generatescrutany_bill():
+    if request.method == "POST":
+        session['name'] = request.form['name']
+        name = session['name']
+
+        cursor = mysql.connection.cursor()
+        cursor.execute("select name from cap_faculty where cap_faculty.name=%s",(name,))
+        capfacname = cursor.fetchone()
+        print("capfacname",capfacname)
+
+
+        # cursor.execute(" select scrutany.scrutany_id,scrutany.issue_date,scrutany.return_date,scrutany.papercount_id,scrutany.capfaculty_id,scrutany.timetable_id,scrutany.scrutany_paper_count,scrutany.from_count,scrutany.to_count,time_table.year,time_table.sem,faculty.faculty,subject.subject,coursename.coursename,coursename.course_id,cap_faculty.name,paper_count.quespaper_code,examsession.month,examsession.exam_year from scrutany JOIN time_table ON time_table.timetable_id = scrutany.timetable_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id  JOIN subject ON time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN examsession ON time_table.examsession_id = examsession.examsession_id inner join cap_faculty on cap_faculty.capfaculty_id=scrutany.capfaculty_id inner join paper_count on paper_count.papercount_id=scrutany.papercount_id where cap_faculty.name=%s and scrutany.return_date is not null;",(name,))
+        # result = cursor.fetchall()
+        # print("result",result)
+        
+        cursor.execute("select scrutany.scrutany_id,scrutany.issue_date,scrutany.return_date,scrutany.papercount_id,scrutany.capfaculty_id,scrutany.timetable_id,scrutany.scrutany_paper_count,scrutany.from_count,scrutany.to_count,time_table.year,time_table.sem,faculty.faculty,subject.subject,coursename.coursename,coursename.course_id,cap_faculty.name,paper_count.quespaper_code,examsession.month,examsession.exam_year, DATEDIFF(return_date,issue_date) AS 'Days difference' from scrutany JOIN time_table ON time_table.timetable_id = scrutany.timetable_id JOIN faculty ON time_table.faculty_id = faculty.faculty_id  JOIN subject ON time_table.subject_id = subject.subject_id JOIN coursename ON time_table.coursename_id = coursename.coursename_id JOIN examsession ON time_table.examsession_id = examsession.examsession_id inner join cap_faculty on cap_faculty.capfaculty_id=scrutany.capfaculty_id inner join paper_count on paper_count.papercount_id=scrutany.papercount_id where cap_faculty.name=%s and scrutany.return_date is not null",(name,))
+        result = cursor.fetchall()
+        print("result",result)
+
+        if len(result)<=0:
+            return redirect("/scrutanybilling")
+        
+        if result != None:
+            days= int(result[0][19])
+            print("days:", days)
+
+            cursor.execute('select scrutanyremuneration.rupees,cap_faculty.name,cap_faculty.designation from scrutanyremuneration inner join cap_faculty on cap_faculty.capfaculty_id=scrutanyremuneration.capfaculty_id where cap_faculty.name=%s',(name,))
+            scrutanyrupees = cursor.fetchone()
+            print("scrutanyrupees",scrutanyrupees)
+            if scrutanyrupees!=None:
+                scrutanytotal=days*scrutanyrupees[0]
+                print("scrutanytotal",scrutanytotal)
+            else:
+                print("No data found.")
+
+        
+           
+        else:
+            print("No data found.")
+ 
+
+
+        scrutanytotalInWords=number_to_words(scrutanytotal)
+        print("scrutanytotalInWords",scrutanytotalInWords)
+
+        pdf = FPDF()
+        pdf.add_page()
+
+ 
+
+
+
+        return render_template("srutanybilling_form.html",name=name,result=result,days= days,scrutanyrupees=scrutanyrupees,scrutanytotal=scrutanytotal,scrutanytotalInWords=scrutanytotalInWords)
+
+def number_to_words(number):
+    p = inflect.engine()
+    return p.number_to_words(number)
+
+
+       
+

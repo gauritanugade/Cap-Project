@@ -23,12 +23,13 @@
             .center {
             width: 100.5%;
             max-width: 400%;
-            background: rgba(31, 158, 172, 0.881);
+            background: rgb(103 212 225 / 89%);
             padding: 20px;
             margin: 0 120px;
             box-shadow: inset -2px 2px 2px rgb(32, 30, 30);
             color: #ecf0f4;
             margin-top: 7%;
+            box-shadow: 0 0 40px rgba(8,7,16,0.6);
 
         }
 
@@ -60,29 +61,29 @@
     <div class="row my-4">
       <div class="col-lg-10 mx-auto">
         <div class="center">
-          <div class="word">
-            <h2 style="font-style: normal;">Moderation Receive Paper</h2>
+          <div class="word"><br>
+            <h2 style="font-style: normal;">Moderation Receive Paper</h2><br>
             <hr style="border-bottom: 5px solid rgb(11, 11, 11);"><br>
             <div align="center">
                 <form action="/searchsubjects" method="POST" align="center">
                     <label>
-                        <input type="radio" name="radio_option" value="teacher_name"
-                            onchange="showSearchBar('teacher_name')"> Teacher Name
+                       <h4> <input type="radio" name="radio_option" value="teacher_name"
+                            onchange="showSearchBar('teacher_name')"> Teacher Name </h4>
                     </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                     <label>
-                        <input type="radio" name="radio_option" value="faculty"
-                            onchange="showSearchBar('faculty')"> Faculty
+                        <h4><input type="radio" name="radio_option" value="faculty"
+                            onchange="showSearchBar('faculty')"> Faculty </h4>
                     </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                     <label>
-                        <input type="radio" name="radio_option" value="course_name"
-                            onchange="showSearchBar('course_name')"> Course Name
+                        <h4><input type="radio" name="radio_option" value="course_name"
+                            onchange="showSearchBar('course_name')"> Course Name </h4>
                     </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                     <label>
-                        <input type="radio" name="radio_option" value="course_id"
-                            onchange="showSearchBar('course_id')"> Course_id
+                        <h4><input type="radio" name="radio_option" value="course_id"
+                            onchange="showSearchBar('course_id')"> Course_id </h4>
                     </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <br><br><br>
 
@@ -202,6 +203,8 @@
                             <th style="font-size: 12px; width: 10%;">Issue Date</th>
                             <th style="font-size: 12px; width: 10%;">Received Date</th>
                             <th style="font-size: 12px; width: 10%;">Difference (Days)</th> 
+                            <th style="font-size: 12px; width: 10%;">cases</th> 
+
                         </tr>
                     </thead>
                     <tbody id="selected_row_body">
@@ -225,6 +228,7 @@
                             <td>
                                 <input type="date" class=" s2" name="received_date" >
                             </td>
+ 
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -298,9 +302,12 @@ function displaySelectedRow(radio) {
             var day = String(today.getDate()).padStart(2, '0');
             var formattedDate = `${year}-${month}-${day}`;
             receiveDateCell.innerHTML = `<input type="date" name="return_date" value="${formattedDate}" required readonly>`;
-
+ 
             var differenceCell = newRow.insertCell();
             differenceCell.textContent = radio.dataset.difference;
+            var teacherPaperCountCell = newRow.insertCell();
+            teacherPaperCountCell.innerHTML = '<input type="text" name="cases" style="width:83%"  required>'
+
             
         // Add teacher_id input hidden field
         var teacherIdInput = document.createElement('input');

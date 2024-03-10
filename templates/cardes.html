@@ -1,0 +1,165 @@
+{% extends "homepage.html" %} 
+{% block content %}
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AdminLTE 3 | Dashboard 3</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='/webtemplate/plugins/fontawesome-free/css/all.min.css') }}">
+  <!-- IonIcons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='/webtemplate/dist/css/adminlte.min.css') }}">
+
+  <style>
+   .navbar-white {
+    background-color: #191C24;
+    color: #191C24;
+    }
+    .navbar-light .navbar-nav .nav-link {
+    color: rgb(236 229 229);
+    }
+    [class*=sidebar-dark-] {
+    background-color: #191C24;
+}
+   .main-sidebar {
+    height: inherit;
+    min-height: 200%;
+    position: absolute;
+    top: 0;
+    background-color: #191C24;
+}
+  </style>
+</head>
+<body>
+<div class="content-wrapper">
+    <div class="fix">
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Dashboard</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-3 col-6">
+              <div class="small-box bg-info">
+                  <div class="inner">
+                      <h3>{{facultydata}}</h3>
+                      <p>Faculty</p>
+                  </div>
+                  <div class="icon">
+                      <i class="fas fa-chalkboard-teacher"></i> 
+                  </div>
+                  <a href="{{ url_for('add_faculty.home') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+        
+      
+      
+          </div>
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-success">
+              <div class="inner">
+                <h2>{{patterndata}}</h2>
+  
+                <p>Pattern</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-cog"></i> 
+  
+              </div>
+              <a href="{{ url_for('add_pattern.home') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-warning">
+              <div class="inner">
+                <h2>{{subjectdata}}</h2>
+  
+                <p>Subject</p>
+              </div>
+              <div class="icon">
+                <div class="icon">
+                  <i class="fas fa-book"></i> 
+              </div>
+              </div>
+              <a href="{{ url_for('add_subject.home') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-danger">
+              <div class="inner">
+                <h2>{{teacherdata}}</h2>
+
+                <p>Teacher Details</p>
+
+              </div>
+              <div class="icon">
+                <div class="icon">
+                  <i class="fas fa-graduation-cap"></i> 
+              </div>
+             </div>
+             <a href="{{ url_for('add_teacher_details.home') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-danger">
+              <div class="inner">
+                <h2>{{coursenamedata}}</h2>
+  
+                <p>Course</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-chalkboard-teacher"></i> 
+              </div>
+              <a href="{{ url_for('add_course.home') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+       
+       
+     
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-warning">
+          <div class="inner">
+            <h2>{{capmemeber}}</h2>
+
+            <p>CAP Member</p>
+          </div>
+          <div class="icon">
+            <div class="icon">
+              <i class="fas fa-user-friends"></i> 
+          </div>
+          </div>
+          <a href="{{ url_for('capfaculty.home') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+    </section>
+</div>
+<script src="{{ url_for('static', filename='/webtemplate/plugins/jquery/jquery.min.js') }}"></script>
+<!-- Bootstrap -->
+<script src="{{ url_for('static', filename='/webtemplate/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<!-- AdminLTE -->
+<script src="{{ url_for('static', filename='/webtemplate/dist/js/adminlte.js') }}"></script>
+
+<!-- OPTIONAL SCRIPTS -->
+<script src="{{ url_for('static', filename='/webtemplate/plugins/chart.js/Chart.min.js') }}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{{ url_for('static', filename='/webtemplate/dist/js/demo.js') }}"></script>
+</body>
+</html>
+{% endblock %}

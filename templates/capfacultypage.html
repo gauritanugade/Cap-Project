@@ -5,13 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AdminLTE 3 | Dashboard 3</title>
 
-  <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome Icons -->
   <link rel="stylesheet"
     href="{{ url_for('static', filename='/webtemplate/plugins/fontawesome-free/css/all.min.css') }}">
-  <!-- IonIcons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ url_for('static', filename='/webtemplate/dist/css/adminlte.min.css') }}">
@@ -29,44 +26,34 @@
 
 
   <style>
-    .navbar-white {
-      background-color: #353d48;
-      color: #656e7a;
+      .navbar-white {
+    background-color: #191C24;
+    color: #191C24;
     }
-
     .navbar-light .navbar-nav .nav-link {
-      color: rgb(236 229 229);
+    color: rgb(236 229 229);
     }
+    [class*=sidebar-dark-] {
+    background-color: #191C24;
+}
+   .main-sidebar {
+    height: inherit;
+    min-height: 200%;
+    position: absolute;
+    top: 0;
+    background-color: #191C24;
+}
 
-    /* .fix {
-      margin-top: -55%;
-    } */
+    
   </style>
 </head>
-<!--
-`body` tag options:
 
-  Apply one or more of the following classes to to the body tag
-  to get the desired effect
-
-  * sidebar-collapse
-  * sidebar-mini
--->
 
 <body class="hold-transition sidebar-mini">
   <div class="wrapper">
     <div class="side">
-      <!-- Navbar -->
       <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-        <!-- Left navbar links -->
-        <!-- <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-      </li>
-     
-    </ul> -->
-
-        <!-- Right navbar links -->
+        
         <ul class="navbar-nav ml-auto">
 
 
@@ -82,43 +69,35 @@
           </li>
         </ul>
       </nav>
-      <!-- /.navbar -->
-
-      <!-- Main Sidebar Container -->
-      <aside class="main-sidebar sidebar-dark-primary elevation-4">
-        <!-- Brand Logo -->
+      
+      <aside class="main-sidebar sidebar-dark-primary elevation-4" style=" min-height: 200%;color: #191C24;">
         <a href="/" class="brand-link">
-          <!-- <img src="{{ url_for('static', filename='/webtemplate/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8"> -->
           <span class="brand-text font-weight-light">CAP PORTAL</span>
         </a>
 
-        <!-- Sidebar -->
         <div class="sidebar">
-          <!-- Sidebar user panel (optional) -->
           <div class="user-panel mt-3 pb-3 mb-3 d-flex">
 
           </div>
 
-          <!-- SidebarSearch Form -->
           <div class="form-inline">
             <div class="input-group" data-widget="sidebar-search">
               <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
               <div class="input-group-append">
-                <button class="btn btn-sidebar">
-                  <i class="fas fa-search fa-fw"></i>
+                <!-- <button class="btn btn-sidebar"> -->
+                  <!-- <i class="fas fa-search fa-fw"></i> -->
                 </button>
               </div>
             </div>
           </div>
 
-          <!-- Sidebar Menu -->
           <ul class="nav nav-treeview">
 
             <nav class="mt-2">
               <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
+                  <a href="{{ url_for('main_app.capfacultypage') }}" class="nav-link">
                     <i class="fas fa-tachometer-alt"></i>
                     <p>
                       Dashboard
@@ -128,7 +107,6 @@
                 <li class="nav-item">
                   <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-chart-pie"></i>
-                    <!-- <i class="bi bi-box-arrow-right"></i> -->
 
                     <p>
                       CAP PROCESS
@@ -179,89 +157,89 @@
                         <p>Moderation<br>Receive Paper </p>
                       </a>
                     </li>
+                  </ul>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="fas fa-file-alt "></i>
 
-                    <li class="nav-item">
+                    <p>
+                      Reports
+                      <i class="right fas fa-angle-left"></i>
+                    </p>
+                  </a>
+                  <ul class="nav nav-treeview">
+                  <li class="nav-item">
                       <a href="{{ url_for('report.home') }}" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Report </p>
+                        <p>Pepar Register</p>
+                      </a>
+                    </li>
+
+                   
+                    <li class="nav-item">
+                      <a href="{{ url_for('report_time_table.home') }}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Time Table </p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="{{ url_for('scrutanyremuneration.home') }}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Scrutany Remuneration </p>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="{{ url_for('scrutanybilling.home') }}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Scrutany Bill</p>
+                      </a>
+                    </li>
+
+                    <li class="nav-item">
+                      <a href="{{ url_for('report_okpending.home') }}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Ok_Pending
+                         </p>
+                      </a>
+                    </li>
+
+                    <li class="nav-item">
+                      <a href="{{ url_for('assismoderatereport.home') }}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Assismoderate Bill
+                         </p>
                       </a>
                     </li>
                     
-                    <!-- <li class="nav-item">
-                <a href="{{ url_for('add_subject.home') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add Subject</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ url_for('add_course.home') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add Course</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ url_for('add_examsession.home') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add Examsession</p>
-                </a>
-              </li>
+                    
+                    
+                   
             
           
-          <li class="nav-item">
-            <a href="{{ url_for('timetable.home') }}" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Timetable</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{ url_for('add_teacher_details.home') }}" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Add Teacher Details</p>
-            </a>
-          </li> -->
+          
 
                   </ul>
                 </li>
+                
               </ul>
-              <!-- /.sidebar-menu -->
         </div>
-        <!-- /.sidebar -->
       </aside>
 
 
-      <!-- Content Wrapper. Contains page content -->
-      <!-- <div class="content-wrapper"> -->
-      <!-- Content Header (Page header) -->
+     
     </div>
+    
     {% block content %}
     {% endblock %}
-    <!-- /.content-header -->
-
-    <!-- Main content -->
-
-    <!-- /.col-md-6 -->
-
-    <!-- ./wrapper -->
-
-    <!-- REQUIRED SCRIPTS -->
-
-
-
-
-    <!-- <script src="{{ url_for('static', filename='/webtemplate/plugins/jquery/jquery.min.js') }}"></script> -->
-    <!-- Bootstrap -->
+    
     <script
       src="{{ url_for('static', filename='/webtemplate/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <!-- AdminLTE -->
     <script src="{{ url_for('static', filename='/webtemplate/dist/js/adminlte.js') }}"></script>
 
-    <!-- OPTIONAL SCRIPTS -->
     <script src="{{ url_for('static', filename='/webtemplate/plugins/chart.js/Chart.min.js') }}"></script>
-    <!-- AdminLTE for demo purposes -->
     <script src="{{ url_for('static', filename='/webtemplate/dist/js/demo.js') }}"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <!-- <script src="{{ url_for('static', filename='/webtemplate/dist/js/pages/dashboard3.js') }}"></script> -->
-
+    
 </body>
 
 </html>

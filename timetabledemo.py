@@ -159,11 +159,11 @@ def insert():
         query1="use cap_project"
         cursor=mysql.connection.cursor()
         cursor.execute(query1)
-        query2=" select cap_project.time_table.date,cap_project.time_table.starttime,time_table.endtime,coursename.course_id,coursename.coursename,faculty.faculty,time_table.year,time_table.sem,examsession.month,examsession.exam_year,pattern.pattern from time_table inner join cap_project.coursename on time_table.coursename_id=cap_project.coursename.coursename_id inner join cap_project.examsession  on cap_project.time_table.examsession_id=cap_project.examsession.examsession_id inner join cap_project.faculty on time_table.faculty_id=faculty.faculty_id inner join pattern on examsession.pattern_id=pattern.pattern_id"
+        query2="select cap_project.time_table.date,cap_project.time_table.starttime,time_table.endtime,coursename.course_id,coursename.coursename,faculty.faculty,time_table.year,time_table.sem,examsession.month,examsession.exam_year,pattern.pattern from time_table inner join cap_project.coursename on time_table.coursename_id=cap_project.coursename.coursename_id inner join cap_project.examsession  on cap_project.time_table.examsession_id=cap_project.examsession.examsession_id inner join cap_project.faculty on time_table.faculty_id=faculty.faculty_id inner join pattern on examsession.pattern_id=pattern.pattern_id"
         cursor.execute(query2)
 
         data=cursor.fetchall()
-        cursor.close()
+        cursor.close() 
         print("print:",data)
         return render_template('timetable.html',timetable=data,Examsession_id="",faculty="faculty",Year="Year")
     
